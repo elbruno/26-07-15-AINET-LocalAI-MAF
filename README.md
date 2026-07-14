@@ -71,6 +71,52 @@ curl -k -X POST https://localhost:7013/api/usage/ingest `
 
 Then open `https://localhost:7025/` and confirm KPI cards and the recent requests table show data.
 
+## Foundry Local samples
+
+Three standalone console samples are available under `samples\`:
+
+- `01-foundrylocal-hello-world` — non-streaming single prompt/response with preflight checks.
+- `02-foundrylocal-streaming` — streaming token-by-token output with prompt variants (`eli5`, `bullets`).
+- `03-foundrylocal-scenarios` — practical scenarios (`summarize`, `sentiment`, `structured`) with deterministic prompts.
+
+### Prerequisites and environment variables
+
+- .NET SDK `10.0.301`
+- Foundry Local service running and reachable (default endpoint: `http://127.0.0.1:5273/v1`)
+- Optional environment variables:
+  - `FOUNDRY_LOCAL_BASE_URL` (default: `http://127.0.0.1:5273/v1`)
+  - `FOUNDRY_LOCAL_MODEL` (default: `qwen2.5-0.5b`)
+  - `FOUNDRY_LOCAL_API_KEY` (default: `local-dev-key`)
+  - `FOUNDRY_LOCAL_PROMPT_VARIANT` (streaming sample only; default: `eli5`)
+
+### Commands
+
+```powershell
+# 01 - hello world
+cd samples\01-foundrylocal-hello-world
+dotnet restore
+dotnet run
+
+# 02 - streaming
+cd ..\02-foundrylocal-streaming
+dotnet restore
+dotnet run
+# optional variant
+dotnet run -- bullets
+
+# 03 - scenarios
+cd ..\03-foundrylocal-scenarios
+dotnet restore
+dotnet run -- summarize
+dotnet run -- sentiment
+dotnet run -- structured
+# interactive menu
+dotnet run
+```
+
+Detailed flow, expected output, and troubleshooting:
+[docs\foundry-local-samples-runbook.md](docs/foundry-local-samples-runbook.md)
+
 ## Troubleshooting
 
 - **SDK not found / wrong version:** run `dotnet --info` and ensure SDK `10.0.301` is installed.
@@ -82,4 +128,5 @@ Then open `https://localhost:7025/` and confirm KPI cards and the recent request
 
 - Step-by-step runbook: `docs\demo-runbook.md`
 - Demo narrative/story flow: `docs\demo-story-flow.md`
+- Foundry Local samples runbook: [docs\foundry-local-samples-runbook.md](docs/foundry-local-samples-runbook.md)
 - Product requirements: `docs\Local-AI-with-dotNET-PRD.md`

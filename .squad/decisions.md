@@ -26,3 +26,9 @@
 - All meaningful changes require team consensus
 - Document architectural decisions here
 - Keep history focused on work, decisions focused on direction
+
+### 2026-07-14: Foundry Local sample suite baseline accepted
+- Apone scaffolded Foundry Local samples structure and solution wiring for runnable sample composition.
+- Bishop implemented `hello-world`, `streaming`, and `scenarios` Foundry Local samples.
+- Apone and Bishop added a shared sample support helper to reduce duplication and keep sample behavior consistent.
+- Ripley updated README coverage and authored a Foundry Local samples runbook for execution guidance.

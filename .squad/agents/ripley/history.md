@@ -15,3 +15,5 @@
 - 2026-07-14: Decomposed PRD into first executable batch and produced todo dependency chain used for Batch 1 orchestration.
 
 - 2026-07-14: Authored `README.md`, `docs/demo-runbook.md`, and `docs/demo-story-flow.md` to document demo execution and narrative flow.
+
+- 2026-07-14: Updated README and published Foundry Local samples runbook for execution and onboarding.

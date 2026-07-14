@@ -13,3 +13,5 @@
 ## Session Updates
 
 - 2026-07-14: Implemented shared contracts and analytics API ingest/query/summary baseline for backend delivery.
+
+- 2026-07-14: Implemented Foundry Local `hello-world`, `streaming`, and `scenarios` samples; co-authored shared sample support helper with Apone.

@@ -21,3 +21,5 @@ Initial setup complete.
 - 2026-07-14: Consolidated Batch 1 decisions, produced orchestration logs, and updated cross-agent history/session records.
 
 - 2026-07-14: Logged Ripley documentation delivery, added decision entry for demo docs baseline, and persisted orchestration/session records.
+
+- 2026-07-14: Recorded Foundry Local sample decisions, orchestration log, session record, and cross-agent history updates.

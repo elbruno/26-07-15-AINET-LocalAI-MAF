@@ -13,3 +13,5 @@
 ## Session Updates
 
 - 2026-07-14: Scaffolded solution/projects and completed baseline platform wiring for implementation handoff.
+
+- 2026-07-14: Scaffolded Foundry Local sample structure and solution wiring; co-delivered shared sample support helper with Bishop.
