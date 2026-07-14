@@ -8,3 +8,8 @@
 ## Recent Updates
 
 📌 Testing charter initialized from PRD section 14 and acceptance checklist section 16.
+
+
+## Session Updates
+
+- 2026-07-14: Added shared/API tests, CI workflow coverage, and a stability fix for deterministic SQLite ordering.
