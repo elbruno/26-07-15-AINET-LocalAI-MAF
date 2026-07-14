@@ -17,6 +17,10 @@
 ### 2026-07-14: Analytics query ordering must be deterministic
 - Minor API fix from Vasquez set stable SQLite ordering as a required behavior for analytics query outputs.
 
+### 2026-07-14: Demo documentation baseline and narrative are now explicit
+- Ripley published `README.md`, `docs/demo-runbook.md`, and `docs/demo-story-flow.md`.
+- These documents define the canonical demo startup flow and presentation sequence for current delivery.
+
 ## Governance
 
 - All meaningful changes require team consensus

@@ -19,3 +19,5 @@ Initial setup complete.
 ## Session Updates
 
 - 2026-07-14: Consolidated Batch 1 decisions, produced orchestration logs, and updated cross-agent history/session records.
+
+- 2026-07-14: Logged Ripley documentation delivery, added decision entry for demo docs baseline, and persisted orchestration/session records.
