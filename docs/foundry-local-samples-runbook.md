@@ -94,7 +94,41 @@ Expected output includes:
 - `Input:`
 - `Output:`
 
-## 5) Troubleshooting
+## 5) Run sample 04 (native chat completions, Microsoft Learn parity)
+
+Prerequisites for this sample:
+
+- Windows target/package is already configured in this repo (`net8.0-windows10.0.18362` + `Microsoft.AI.Foundry.Local.WinML` in `samples\04-foundrylocal-native-chat-completions\FoundryLocal.NativeChatCompletions.csproj`).
+- Foundry Local service installed on this Windows machine.
+
+Optional model alias override:
+
+```powershell
+$env:FOUNDRY_LOCAL_NATIVE_MODEL="qwen2.5-0.5b"
+# or use FOUNDRY_LOCAL_MODEL
+```
+
+Run:
+
+```powershell
+cd ..\04-foundrylocal-native-chat-completions
+dotnet restore
+dotnet run
+```
+
+Expected output includes:
+
+- `Foundry Local native chat completions sample`
+- `Execution providers:`
+- `Resolved model:`
+- `Streaming chat completion:`
+- `Model unloaded.`
+
+Troubleshooting note:
+
+- If restore/build fails on non-Windows OS, run sample `04` on Windows or switch to package `Microsoft.AI.Foundry.Local` for cross-platform use.
+
+## 6) Troubleshooting
 
 ### Service offline / unreachable
 

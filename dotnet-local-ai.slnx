@@ -11,4 +11,7 @@
     <Project Path="tests/Analytics.Tests/Analytics.Tests.csproj" />
     <Project Path="tests/Shared.Tests/Shared.Tests.csproj" />
   </Folder>
+  <Folder Name="/samples/">
+    <Project Path="samples/04-foundrylocal-native-chat-completions/FoundryLocal.NativeChatCompletions.csproj" />
+  </Folder>
 </Solution>

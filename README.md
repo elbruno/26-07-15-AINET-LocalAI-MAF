@@ -73,11 +73,12 @@ Then open `https://localhost:7025/` and confirm KPI cards and the recent request
 
 ## Foundry Local samples
 
-Three standalone console samples are available under `samples\`:
+Four standalone console samples are available under `samples\`:
 
 - `01-foundrylocal-hello-world` — non-streaming single prompt/response with preflight checks.
 - `02-foundrylocal-streaming` — streaming token-by-token output with prompt variants (`eli5`, `bullets`).
 - `03-foundrylocal-scenarios` — practical scenarios (`summarize`, `sentiment`, `structured`) with deterministic prompts.
+- `04-foundrylocal-native-chat-completions` — Microsoft Learn parity sample for **native SDK chat completions** (in-process `FoundryLocalManager` flow). Use this when you need direct SDK model lifecycle control (discover/register EPs, download/load/unload model), not OpenAI endpoint mode.
 
 ### Prerequisites and environment variables
 
@@ -88,6 +89,7 @@ Three standalone console samples are available under `samples\`:
   - `FOUNDRY_LOCAL_MODEL` (default: `qwen2.5-0.5b`)
   - `FOUNDRY_LOCAL_API_KEY` (default: `local-dev-key`)
   - `FOUNDRY_LOCAL_PROMPT_VARIANT` (streaming sample only; default: `eli5`)
+  - `FOUNDRY_LOCAL_NATIVE_MODEL` (native sample alias override; falls back to `FOUNDRY_LOCAL_MODEL`)
 
 ### Commands
 
@@ -111,6 +113,11 @@ dotnet run -- summarize
 dotnet run -- sentiment
 dotnet run -- structured
 # interactive menu
+dotnet run
+
+# 04 - native chat completions (Microsoft Learn parity; native SDK in-process, not OpenAI endpoint mode)
+cd ..\04-foundrylocal-native-chat-completions
+dotnet restore
 dotnet run
 ```
 
