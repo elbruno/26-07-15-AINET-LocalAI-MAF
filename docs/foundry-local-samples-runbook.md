@@ -128,7 +128,47 @@ Troubleshooting note:
 
 - If restore/build fails on non-Windows OS, run sample `04` on Windows or switch to package `Microsoft.AI.Foundry.Local` for cross-platform use.
 
-## 6) Troubleshooting
+## 6) Run sample 05 (native audio transcription, Microsoft Learn parity)
+
+Prerequisites for this sample:
+
+- Windows target/package is already configured in this repo (`net8.0-windows10.0.18362` + `Microsoft.AI.Foundry.Local.WinML` in `samples\05-foundrylocal-audio-transcription\FoundryLocal.AudioTranscription.csproj`).
+- Foundry Local service installed on this Windows machine.
+
+Optional model alias override:
+
+```powershell
+$env:FOUNDRY_LOCAL_WHISPER_MODEL="whisper-tiny"
+# or use FOUNDRY_LOCAL_AUDIO_MODEL / FOUNDRY_LOCAL_MODEL
+```
+
+Run:
+
+```powershell
+cd ..\05-foundrylocal-audio-transcription
+dotnet restore
+dotnet run
+# optional custom audio file path
+dotnet run -- "C:\path\to\audio.mp3"
+```
+
+Expected output includes:
+
+- `Foundry Local native audio transcription sample`
+- `Execution providers:`
+- `Resolved model:`
+- `Selected CPU variant:` (when available)
+- `Transcribing audio with streaming output:`
+- Streamed transcription text
+- `Model unloaded.`
+
+Input file behavior:
+
+- If an argument is provided, that path is used.
+- If no argument is provided, sample defaults to `samples\05-foundrylocal-audio-transcription\Recording.mp3`.
+- If the file is missing, the sample prints an actionable message and exits.
+
+## 7) Troubleshooting
 
 ### Service offline / unreachable
 

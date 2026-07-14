@@ -73,12 +73,13 @@ Then open `https://localhost:7025/` and confirm KPI cards and the recent request
 
 ## Foundry Local samples
 
-Four standalone console samples are available under `samples\`:
+Five standalone console samples are available under `samples\`:
 
 - `01-foundrylocal-hello-world` — non-streaming single prompt/response with preflight checks.
 - `02-foundrylocal-streaming` — streaming token-by-token output with prompt variants (`eli5`, `bullets`).
 - `03-foundrylocal-scenarios` — practical scenarios (`summarize`, `sentiment`, `structured`) with deterministic prompts.
 - `04-foundrylocal-native-chat-completions` — Microsoft Learn parity sample for **native SDK chat completions** (in-process `FoundryLocalManager` flow). Use this when you need direct SDK model lifecycle control (discover/register EPs, download/load/unload model), not OpenAI endpoint mode.
+- `05-foundrylocal-audio-transcription` — Microsoft Learn parity sample for **native SDK audio transcription** (download/load whisper model, prefer CPU variant, stream transcript output from an audio file).
 
 ### Prerequisites and environment variables
 
@@ -90,6 +91,8 @@ Four standalone console samples are available under `samples\`:
   - `FOUNDRY_LOCAL_API_KEY` (default: `local-dev-key`)
   - `FOUNDRY_LOCAL_PROMPT_VARIANT` (streaming sample only; default: `eli5`)
   - `FOUNDRY_LOCAL_NATIVE_MODEL` (native sample alias override; falls back to `FOUNDRY_LOCAL_MODEL`)
+  - `FOUNDRY_LOCAL_WHISPER_MODEL` / `FOUNDRY_LOCAL_AUDIO_MODEL` (audio transcription sample alias override; default: `whisper-tiny`)
+  - `FOUNDRY_LOCAL_AUDIO_LANGUAGE` (audio transcription language hint; default: `en`)
 
 ### Commands
 
@@ -119,6 +122,13 @@ dotnet run
 cd ..\04-foundrylocal-native-chat-completions
 dotnet restore
 dotnet run
+
+# 05 - native audio transcription (Microsoft Learn parity)
+cd ..\05-foundrylocal-audio-transcription
+dotnet restore
+dotnet run
+# optional custom file
+dotnet run -- "C:\path\to\audio.mp3"
 ```
 
 Detailed flow, expected output, and troubleshooting:
