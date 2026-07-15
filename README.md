@@ -73,7 +73,7 @@ Then open `https://localhost:7025/` and confirm KPI cards and the recent request
 
 ## Foundry Local samples
 
-Six standalone console samples are available under `samples\`:
+Seven standalone console samples are available under `samples\`:
 
 - `01-foundrylocal-hello-world` — non-streaming single prompt/response with preflight checks.
 - `02-foundrylocal-streaming` — streaming token-by-token output with prompt variants (`eli5`, `bullets`).
@@ -81,6 +81,7 @@ Six standalone console samples are available under `samples\`:
 - `04-foundrylocal-native-chat-completions` — Microsoft Learn parity sample for **native SDK chat completions** (in-process `FoundryLocalManager` flow). Use this when you need direct SDK model lifecycle control (discover/register EPs, download/load/unload model), not OpenAI endpoint mode.
 - `05-foundrylocal-audio-transcription` — Microsoft Learn parity sample for **native SDK audio transcription** (download/load whisper model, prefer CPU variant, stream transcript output from an audio file).
 - `06-foundrylocal-native-auto-chat` — native SDK sample that resolves model alias, chooses best variant for machine capabilities (GPU/CPU), auto-downloads, asks a question with quality guard, and unloads.
+- `07-foundrylocal-agent-tools` — local agent-style sample using `ElBruno.MAF.FoundryLocal.Adapter` + `Microsoft.Extensions.AI` tool invocation with tools defined in a separate file.
 
 ### Prerequisites and environment variables
 
@@ -96,6 +97,7 @@ Six standalone console samples are available under `samples\`:
   - `FOUNDRY_LOCAL_AUDIO_LANGUAGE` (audio transcription language hint; default: `en`)
   - `FOUNDRY_LOCAL_PROMPT` (native auto chat sample prompt override; default: `Why is the sky blue?`)
   - `FOUNDRY_LOCAL_CLEANUP_MODEL` (native auto chat cache cleanup toggle; `true` removes model cache after run)
+  - `FOUNDRY_LOCAL_AGENT_PROMPT` (agent tools sample prompt override)
 
 ### Commands
 
@@ -164,6 +166,14 @@ dotnet run
 # end-of-run prompt defaults to Yes: "Delete downloaded model? [Y/n]"
 # optional non-interactive override:
 $env:FOUNDRY_LOCAL_CLEANUP_MODEL="true"
+dotnet run
+
+# 07 - local agent + tools (adapter + MEAI function invocation)
+cd ..\07-foundrylocal-agent-tools
+# optional overrides (defaults shown)
+$env:FOUNDRY_LOCAL_MODEL="phi-3.5-mini"
+$env:FOUNDRY_LOCAL_AGENT_PROMPT="I am in Pacific Standard Time. Bill is 42.50 with 18% tip. Use tools and return JSON."
+dotnet restore
 dotnet run
 ```
 

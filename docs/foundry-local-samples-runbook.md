@@ -220,13 +220,34 @@ Expected output includes:
 - `Resolved model alias:`
 - `Selected variant: ... (GPU|CPU)` (based on registered machine capabilities)
 - `Question: Why is the sky blue?` (or your prompt override)
+- `Prompt: Why is the sky blue?` (shown in Step 6)
 - `Answer:`
 - `Primary response looked malformed or off-topic. Retrying once...` (only if fallback kicks in)
 - `Model unloaded.`
 - `Delete downloaded model? [Y/n]`
 - `Model cache removed.` (when answer is yes, or override is `true`)
 
-## 8) Troubleshooting
+## 8) Run sample 07 (local agent + tools)
+
+This sample uses `ElBruno.MAF.FoundryLocal.Adapter` with `Microsoft.Extensions.AI` function invocation middleware to run an agent-like local turn with tools.
+
+```powershell
+cd ..\07-foundrylocal-agent-tools
+# optional overrides (defaults shown)
+$env:FOUNDRY_LOCAL_MODEL="phi-3.5-mini"
+$env:FOUNDRY_LOCAL_AGENT_PROMPT="I am in Pacific Standard Time. Bill is 42.50 with 18% tip. Use tools and return JSON."
+dotnet restore
+dotnet run
+```
+
+Expected output includes:
+
+- `Foundry Local agent + tools sample`
+- `Step 1/5 ... Step 5/5`
+- `Registered tools: get_time_in_timezone, calculate_tip, get_demo_fact`
+- `Agent response:`
+
+## 9) Troubleshooting
 
 ### Service offline / unreachable
 

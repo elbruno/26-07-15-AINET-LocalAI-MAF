@@ -65,6 +65,7 @@ Output includes:
 - `Selected variant: ... (GPU|CPU)`
 - `Downloading model:`
 - `Question: Why is the sky blue?` (or your `FOUNDRY_LOCAL_PROMPT`)
+- `Prompt: Why is the sky blue?` (shown in Step 6)
 - `Answer:`
 - `Primary response looked malformed or off-topic. Retrying once...` (only when fallback is needed)
 - `Model unloaded.`
