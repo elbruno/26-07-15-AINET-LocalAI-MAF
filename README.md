@@ -73,13 +73,14 @@ Then open `https://localhost:7025/` and confirm KPI cards and the recent request
 
 ## Foundry Local samples
 
-Five standalone console samples are available under `samples\`:
+Six standalone console samples are available under `samples\`:
 
 - `01-foundrylocal-hello-world` — non-streaming single prompt/response with preflight checks.
 - `02-foundrylocal-streaming` — streaming token-by-token output with prompt variants (`eli5`, `bullets`).
 - `03-foundrylocal-scenarios` — practical scenarios (`summarize`, `sentiment`, `structured`) with deterministic prompts.
 - `04-foundrylocal-native-chat-completions` — Microsoft Learn parity sample for **native SDK chat completions** (in-process `FoundryLocalManager` flow). Use this when you need direct SDK model lifecycle control (discover/register EPs, download/load/unload model), not OpenAI endpoint mode.
 - `05-foundrylocal-audio-transcription` — Microsoft Learn parity sample for **native SDK audio transcription** (download/load whisper model, prefer CPU variant, stream transcript output from an audio file).
+- `06-foundrylocal-native-auto-chat` — native SDK sample that resolves catalog model alias, auto-downloads model when missing, loads, streams response, and unloads.
 
 ### Prerequisites and environment variables
 
@@ -93,6 +94,7 @@ Five standalone console samples are available under `samples\`:
   - `FOUNDRY_LOCAL_NATIVE_MODEL` (native sample alias override; falls back to `FOUNDRY_LOCAL_MODEL`)
   - `FOUNDRY_LOCAL_WHISPER_MODEL` / `FOUNDRY_LOCAL_AUDIO_MODEL` (audio transcription sample alias override; default: `whisper-tiny`)
   - `FOUNDRY_LOCAL_AUDIO_LANGUAGE` (audio transcription language hint; default: `en`)
+  - `FOUNDRY_LOCAL_PROMPT` (native auto chat sample prompt override; default: `Why is the sky blue?`)
 
 ### Commands
 
@@ -150,6 +152,14 @@ dotnet restore
 dotnet run
 # optional custom file
 dotnet run -- "C:\path\to\audio.mp3"
+
+# 06 - native auto chat (SDK-first, no endpoint URL config)
+cd ..\06-foundrylocal-native-auto-chat
+# optional overrides (defaults shown)
+$env:FOUNDRY_LOCAL_MODEL="qwen2.5-0.5b"
+$env:FOUNDRY_LOCAL_PROMPT="Why is the sky blue?"
+dotnet restore
+dotnet run
 ```
 
 Detailed flow, expected output, and troubleshooting:

@@ -183,7 +183,29 @@ Input file behavior:
 - If no argument is provided, sample defaults to `samples\05-foundrylocal-audio-transcription\Recording.mp3`.
 - If the file is missing, the sample prints an actionable message and exits.
 
-## 7) Troubleshooting
+## 7) Run sample 06 (native auto chat, SDK-first)
+
+This sample does not use an OpenAI-compatible endpoint URL. It uses the native SDK flow to discover/register EPs, resolve model alias, auto-download if needed, load, run streaming chat, and unload.
+
+```powershell
+cd ..\06-foundrylocal-native-auto-chat
+# optional overrides (defaults shown)
+$env:FOUNDRY_LOCAL_MODEL="qwen2.5-0.5b"
+$env:FOUNDRY_LOCAL_PROMPT="Why is the sky blue?"
+dotnet restore
+dotnet run
+```
+
+Expected output includes:
+
+- `Foundry Local native auto chat sample`
+- `Available execution providers:`
+- `Downloading/registering execution providers:`
+- `Resolved model:`
+- `Chat completion response:`
+- `Model unloaded.`
+
+## 8) Troubleshooting
 
 ### Service offline / unreachable
 
