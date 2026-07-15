@@ -56,7 +56,7 @@ public sealed class FoundryLocalModelStatusService(
             var isLoaded = await model.IsLoadedAsync(cancellationToken);
             var modelPath = isDownloaded ? await model.GetPathAsync(cancellationToken) : null;
             var statusText = BuildStatusText(snapshot, isDownloaded, isLoaded);
-            var detail = BuildDetailText(snapshot, isDownloaded);
+            var detail = BuildDetailText(snapshot, isDownloaded, isLoaded);
 
             return new FoundryLocalModelStatus(
                 resolvedAlias,
@@ -219,12 +219,17 @@ public sealed class FoundryLocalModelStatusService(
         return "Not downloaded";
     }
 
-    private static string? BuildDetailText(FoundryLocalDiagnosticsSnapshot snapshot, bool isDownloaded)
+    private static string? BuildDetailText(FoundryLocalDiagnosticsSnapshot snapshot, bool isDownloaded, bool isLoaded)
     {
         var warning = snapshot.Warnings.FirstOrDefault(static w => !string.IsNullOrWhiteSpace(w));
         if (!string.IsNullOrWhiteSpace(warning))
         {
             return warning;
+        }
+
+        if (isLoaded)
+        {
+            return "Model is loaded and ready for chat.";
         }
 
         return isDownloaded

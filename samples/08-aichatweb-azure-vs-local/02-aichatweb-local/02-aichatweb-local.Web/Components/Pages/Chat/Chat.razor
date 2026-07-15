@@ -26,6 +26,12 @@
         <div>To get started, try asking about these example documents. You can replace these with your own data and replace this message.</div>
         <ChatCitation File="Example_Emergency_Survival_Kit.pdf"/>
         <ChatCitation File="Example_GPS_Watch.md"/>
+        <div class="quick-questions page-width">
+            @foreach (var question in quickQuestions)
+            {
+                <button class="btn-subtle" @onclick="@(() => AskQuickQuestionAsync(question))">@question</button>
+            }
+        </div>
     </NoMessagesContent>
 </ChatMessageList>
 
@@ -55,11 +61,14 @@
         ";
 
     private int statefulMessageCount;
-    private readonly ChatOptions chatOptions = new()
-    {
-        ToolMode = ChatToolMode.RequireAny
-    };
+    private readonly ChatOptions chatOptions = new();
     private readonly List<ChatMessage> messages = new();
+    private readonly string[] quickQuestions =
+    [
+        "Tell me about the GPS watch.",
+        "What are the key features of the GPS watch?",
+        "Summarize the emergency survival kit."
+    ];
     private CancellationTokenSource? currentResponseCancellation;
     private ChatMessage? currentResponseMessage;
     private ChatInput? chatInput;
@@ -113,9 +122,27 @@
         await foreach (var update in ChatClient.GetStreamingResponseAsync(messages.Skip(statefulMessageCount), chatOptions, currentResponseCancellation.Token))
         {
             messages.AddMessages(update, filter: c => c is not TextContent);
-            responseText.Text += update.Text;
+
+            var textChunk = update.Text;
+            if (string.IsNullOrWhiteSpace(textChunk) && update.Contents is not null)
+            {
+                textChunk = string.Concat(update.Contents
+                    .OfType<TextContent>()
+                    .Select(static content => content.Text));
+            }
+
+            if (!string.IsNullOrWhiteSpace(textChunk))
+            {
+                responseText.Text += textChunk;
+            }
+
             chatOptions.ConversationId = update.ConversationId;
             ChatMessageItem.NotifyChanged(currentResponseMessage);
+        }
+
+        if (string.IsNullOrWhiteSpace(responseText.Text))
+        {
+            responseText.Text = "I couldn't generate a final text response. Please try again.";
         }
 
         // Store the final response in the conversation, and begin getting suggestions
@@ -169,6 +196,11 @@
     private async Task PrepareModelAsync()
     {
         await EnsureModelReadyAsync();
+    }
+
+    private async Task AskQuickQuestionAsync(string question)
+    {
+        await AddUserMessageAsync(new ChatMessage(ChatRole.User, question));
     }
 
     private async Task RefreshStatusAsync()

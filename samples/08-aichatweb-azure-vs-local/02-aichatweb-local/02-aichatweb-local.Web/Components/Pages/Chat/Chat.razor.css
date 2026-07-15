@@ -9,3 +9,11 @@
     background-color: #F3F4F6; 
     border-color: #E5E7EB;
 }
+
+.quick-questions {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 1rem;
+}
