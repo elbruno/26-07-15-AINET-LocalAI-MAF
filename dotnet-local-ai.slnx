@@ -30,5 +30,6 @@
     <Project Path="samples/06-foundrylocal-native-auto-chat/FoundryLocal.NativeAutoChat.csproj" />
     <Project Path="samples/07-foundrylocal-agent-tools/FoundryLocal.AgentTools.csproj" />
     <Project Path="samples/10-live-speech-to-text/LiveSpeechToText.csproj" />
+    <Project Path="samples/11-foundrylocal-live-transcription/FoundryLocalLiveTranscription.csproj" />
   </Folder>
 </Solution>

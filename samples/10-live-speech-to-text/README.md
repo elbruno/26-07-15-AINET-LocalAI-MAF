@@ -8,14 +8,16 @@ first run** — no manual model preparation. The download uses
 [`ElBruno.HuggingFace.Downloader`](https://www.nuget.org/packages/ElBruno.HuggingFace.Downloader)
 (pulled in transitively by [`ElBruno.Whisper`](https://www.nuget.org/packages/ElBruno.Whisper)).
 
-## Why not Foundry Local here?
+## ElBruno.Whisper vs. Foundry Local streaming (sample 11)
 
-The reference Microsoft Learn walkthrough
-([live transcribe audio](https://learn.microsoft.com/en-us/azure/foundry-local/how-to/how-to-live-transcribe-audio?tabs=windows&pivots=programming-language-csharp))
-uses Foundry Local's streaming ASR model `nemotron-speech-streaming-en-0.6b`. That model — and
-Whisper — are **not present in the Foundry Local catalog** on this machine (`foundry model list`
-returns only chat and vision-language-chat models). So this sample takes the auto-download route:
-it fetches an ONNX Whisper model from HuggingFace and runs inference locally with ONNX Runtime.
+This sample downloads an ONNX **Whisper** model from HuggingFace (via `ElBruno.HuggingFace.Downloader`)
+and runs inference locally with ONNX Runtime. It transcribes each spoken *utterance* in a batch after
+a short pause — a simple, dependency-light approach that doesn't require the Foundry Local runtime.
+
+If you want **true real-time streaming** (interim + final results as you speak) through Foundry
+Local's native ASR API (`nemotron-speech-streaming-en-0.6b`), see
+[sample 11](../11-foundrylocal-live-transcription) — the Microsoft Learn parity sample. That path
+uses Foundry Local's own model download; this one uses ElBruno/HuggingFace and no Foundry runtime.
 
 Everything runs on-device: **no cloud, no API keys.**
 

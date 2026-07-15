@@ -24,7 +24,7 @@ Then choose a sample under `samples\` and run its README instructions.
 
 ## Foundry Local samples
 
-Ten standalone samples/projects are available under `samples\`:
+Eleven standalone samples/projects are available under `samples\`:
 
 - `01-foundrylocal-hello-world` — non-streaming single prompt/response with preflight checks.
 - `02-foundrylocal-streaming` — streaming token-by-token output with prompt variants (`eli5`, `bullets`).
@@ -35,7 +35,8 @@ Ten standalone samples/projects are available under `samples\`:
 - `07-foundrylocal-agent-tools` — local agent-style sample using `ElBruno.MAF.FoundryLocal.Adapter` + `Microsoft.Extensions.AI` tool invocation with tools defined in a separate file.
 - `08-aichatweb-azure-vs-local` — side-by-side AI Chat Web template comparison: `01-aichatweb-azure` (cloud baseline) and `02-aichatweb-local` (Foundry Local chat + local embeddings).
 - `09-analytics-aspire` — companion Aspire analytics app moved from `src\` into the samples folder.
-- `10-live-speech-to-text` — live **microphone → text** transcription running fully locally. Auto-downloads an ONNX Whisper model from HuggingFace via `ElBruno.Whisper` / `ElBruno.HuggingFace.Downloader` (Whisper/nemotron are not in the Foundry Local catalog) and captures the mic with NAudio. Windows-only.
+- `10-live-speech-to-text` — live **microphone → text** transcription running fully locally. Auto-downloads an ONNX Whisper model from HuggingFace via `ElBruno.Whisper` / `ElBruno.HuggingFace.Downloader` and captures the mic with NAudio. Windows-only.
+- `11-foundrylocal-live-transcription` — Microsoft Learn parity sample for **native Foundry Local streaming** speech-to-text. Uses the `nemotron-speech-streaming-en-0.6b` streaming ASR model from the Foundry Local catalog (auto-downloaded on first run) with `CreateLiveTranscriptionSession()` for real-time interim + final results. Windows-only.
 
 ### Prerequisites and environment variables
 
@@ -153,6 +154,14 @@ $env:WHISPER_MODEL="tiny.en"
 $env:WHISPER_LANGUAGE="en"
 dotnet run
 # model auto-downloads from HuggingFace on first run; then speak and press ENTER to stop
+
+# 11 - Foundry Local streaming transcription (mic -> text, real-time; Windows-only)
+cd ..\11-foundrylocal-live-transcription
+# optional overrides (defaults shown)
+$env:FOUNDRY_LOCAL_SPEECH_MODEL="nemotron-speech-streaming-en-0.6b"
+$env:FOUNDRY_LOCAL_SPEECH_LANGUAGE="en"
+dotnet run
+# Foundry Local auto-downloads the streaming ASR model on first run; speak and press ENTER to stop
 ```
 
 ## Troubleshooting
