@@ -5,8 +5,11 @@
 .squad/sessions/
 .squad/.scratch/
 .squad/.cache/
+.squad/.first-run
+.squad/memory/audit.jsonl
 # Squad: SubSquad activation file (local to this machine)
 .squad-workstream
+*.local-backup
 
 # .NET build output
 **/[Bb]in/

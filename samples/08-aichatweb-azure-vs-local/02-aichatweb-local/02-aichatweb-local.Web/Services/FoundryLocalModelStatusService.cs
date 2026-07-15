@@ -193,7 +193,7 @@ public sealed class FoundryLocalModelStatusService(
                 await FoundryLocalManager.CreateAsync(
                     new Configuration
                     {
-                        AppName = "02-aichatweb-local.Web"
+                        AppName = "02-aichatweb-local-Web"
                     },
                     NullLogger.Instance,
                     cancellationToken);
