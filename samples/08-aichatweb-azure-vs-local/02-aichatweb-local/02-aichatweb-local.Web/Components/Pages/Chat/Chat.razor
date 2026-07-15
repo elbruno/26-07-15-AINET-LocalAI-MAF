@@ -102,7 +102,21 @@
         var requestMessages = new List<ChatMessage>(messages.Skip(statefulMessageCount));
         var question = userMessage.Text ?? string.Empty;
         var retrievedContext = await BuildRetrievedContextAsync(question);
-        requestMessages.Add(new ChatMessage(ChatRole.System, retrievedContext));
+
+        // Small local models (e.g. phi-4-mini) follow grounding far better when the
+        // retrieved context travels inside the user turn rather than as a trailing
+        // system message. Rewrite the last user message for the request only; the
+        // displayed conversation keeps the clean question.
+        if (requestMessages.Count > 0 && requestMessages[^1].Role == ChatRole.User)
+        {
+            requestMessages[^1] = new ChatMessage(
+                ChatRole.User,
+                $"{retrievedContext}\n\nQuestion: {question}\n\nAnswer the question using only the context above.");
+        }
+        else
+        {
+            requestMessages.Add(new ChatMessage(ChatRole.System, retrievedContext));
+        }
 
         // Stream and display a new response from the IChatClient
         var responseText = new TextContent("");
@@ -145,18 +159,22 @@
     private async Task<string> BuildRetrievedContextAsync(string question)
     {
         var results = await Search.SearchAsync(question, documentIdFilter: null, maxResults: 5);
-        if (results.Count == 0)
+
+        var nonEmpty = results
+            .Where(r => !string.IsNullOrWhiteSpace(r.Text))
+            .ToList();
+
+        if (nonEmpty.Count == 0)
         {
             return "Retrieved context: none. If there is no relevant context, say you do not have enough context.";
         }
 
-        var lines = results.Select(result =>
-            $"- filename: {result.DocumentId}\n  excerpt: {result.Text}");
+        var lines = nonEmpty.Select(result =>
+            $"- filename: {result.DocumentId}\n  excerpt: {result.Text.Trim()}");
 
         return
             "Retrieved context:\n" +
-            string.Join("\n", lines) +
-            "\n\nUse only this context for the answer.";
+            string.Join("\n", lines);
     }
 
     private void CancelAnyCurrentResponse()

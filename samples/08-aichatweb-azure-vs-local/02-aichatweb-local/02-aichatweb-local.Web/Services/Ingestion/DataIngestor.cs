@@ -1,4 +1,3 @@
-﻿using Microsoft.Extensions.AI;
 using Microsoft.Extensions.DataIngestion;
 using Microsoft.Extensions.DataIngestion.Chunkers;
 using Microsoft.Extensions.VectorData;
@@ -9,8 +8,7 @@ namespace _02_aichatweb_local.Web.Services.Ingestion;
 public class DataIngestor(
     ILogger<DataIngestor> logger,
     ILoggerFactory loggerFactory,
-    VectorStore vectorStore,
-    IEmbeddingGenerator<string, Embedding<float>> embeddingGenerator)
+    VectorStore vectorStore)
 {
     public async Task IngestDataAsync(DirectoryInfo directory, string searchPattern)
     {
@@ -23,7 +21,7 @@ public class DataIngestor(
 
         using var pipeline = new IngestionPipeline<string>(
             reader: new DocumentReader(directory),
-            chunker: new SemanticSimilarityChunker(embeddingGenerator, new(TiktokenTokenizer.CreateForModel("gpt-4o"))),
+            chunker: new SectionChunker(new IngestionChunkerOptions(TiktokenTokenizer.CreateForModel("gpt-4o"))),
             writer: writer,
             loggerFactory: loggerFactory);
 
