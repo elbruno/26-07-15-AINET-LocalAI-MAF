@@ -15,6 +15,7 @@
             OnRefreshStatus="@RefreshStatusAsync"
             IsPreparingModel="@isPreparingModel"
             IsModelReady="@isModelReady"
+            IsModelDownloaded="@isModelDownloaded"
             CanRetryPrepare="@canRetryPrepare"
             ModelAlias="@currentModelAlias"
             ModelStatus="@currentModelStatus"
@@ -68,9 +69,10 @@
     private string? currentModelStatusDetail;
     private bool isPreparingModel;
     private bool isModelReady;
+    private bool isModelDownloaded;
     private bool canRetryPrepare;
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
         statefulMessageCount = 0;
         messages.Add(new(ChatRole.System, SystemPrompt));
@@ -85,13 +87,13 @@
                 "Search",
                 "Searches for information using a phrase or keyword across loaded documents.")
         ];
-        RefreshModelStatus();
+        await RefreshModelStatusAsync();
     }
 
     private async Task AddUserMessageAsync(ChatMessage userMessage)
     {
         CancelAnyCurrentResponse();
-        RefreshModelStatus();
+        await RefreshModelStatusAsync();
 
         // Add the user message to the conversation
         messages.Add(userMessage);
@@ -121,7 +123,7 @@
         statefulMessageCount = chatOptions.ConversationId is not null ? messages.Count : 0;
         currentResponseMessage = null;
         chatSuggestions?.Update(messages);
-        RefreshModelStatus();
+        await RefreshModelStatusAsync();
     }
 
     private void CancelAnyCurrentResponse()
@@ -144,20 +146,24 @@
         chatOptions.ConversationId = null;
         statefulMessageCount = 0;
         chatSuggestions?.Clear();
-        RefreshModelStatus();
+        await RefreshModelStatusAsync();
         await chatInput!.FocusAsync();
     }
 
-    private void RefreshModelStatus()
+    private async Task RefreshModelStatusAsync()
     {
-        var status = ModelStatusService.GetCurrentStatus();
+        var status = await ModelStatusService.GetCurrentStatusAsync(CancellationToken.None);
+        ApplyModelStatus(status);
+    }
+
+    private void ApplyModelStatus(FoundryLocalModelStatus status)
+    {
         currentModelAlias = status.ModelAlias;
         currentModelStatus = status.StatusText;
         currentModelStatusDetail = status.Detail;
         isModelReady = status.IsReady;
-        canRetryPrepare = !status.IsReady &&
-                          (currentModelStatus.Contains("Unavailable", StringComparison.OrdinalIgnoreCase)
-                           || !string.IsNullOrWhiteSpace(currentModelStatusDetail));
+        isModelDownloaded = status.IsDownloaded;
+        canRetryPrepare = !status.IsReady;
     }
 
     private async Task PrepareModelAsync()
@@ -165,17 +171,17 @@
         await EnsureModelReadyAsync();
     }
 
-    private Task RefreshStatusAsync()
+    private async Task RefreshStatusAsync()
     {
-        RefreshModelStatus();
-        return InvokeAsync(StateHasChanged);
+        await RefreshModelStatusAsync();
+        await InvokeAsync(StateHasChanged);
     }
 
     private async Task OpenModelLocationAsync()
     {
         var result = await ModelStatusService.OpenModelLocationAsync(CancellationToken.None);
         messages.Add(new ChatMessage(ChatRole.Assistant, result.Message));
-        RefreshModelStatus();
+        await RefreshModelStatusAsync();
         await InvokeAsync(StateHasChanged);
     }
 
@@ -183,7 +189,7 @@
     {
         var result = await ModelStatusService.DeleteDownloadedModelAsync(CancellationToken.None);
         messages.Add(new ChatMessage(ChatRole.Assistant, result.Message));
-        RefreshModelStatus();
+        await RefreshModelStatusAsync();
         await InvokeAsync(StateHasChanged);
     }
 
@@ -202,13 +208,7 @@
         try
         {
             var status = await ModelStatusService.EnsureModelReadyAsync(CancellationToken.None);
-            currentModelAlias = status.ModelAlias;
-            currentModelStatus = status.StatusText;
-            currentModelStatusDetail = status.Detail;
-            isModelReady = status.IsReady;
-            canRetryPrepare = !status.IsReady &&
-                              (currentModelStatus.Contains("Unavailable", StringComparison.OrdinalIgnoreCase)
-                               || !string.IsNullOrWhiteSpace(currentModelStatusDetail));
+            ApplyModelStatus(status);
 
             if (status.IsReady)
             {

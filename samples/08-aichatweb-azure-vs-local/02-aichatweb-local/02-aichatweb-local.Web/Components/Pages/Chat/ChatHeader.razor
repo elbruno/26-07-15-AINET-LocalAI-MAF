@@ -45,10 +45,10 @@
             </button>
             <button class="icon-action-button"
                     @onclick="@OnOpenModelLocation"
-                    disabled="@IsPreparingModel"
+                    disabled="@IsPreparingModel || !IsModelDownloaded"
                     aria-label="Open downloaded model location"
-                    title="Open downloaded model location"
-                    data-tooltip="Open downloaded model location">
+                    title="@OpenModelLocationTooltip"
+                    data-tooltip="@OpenModelLocationTooltip">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                     <title>Open model location</title>
                     <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12.75V12A2.25 2.25 0 0 1 4.5 9.75h15A2.25 2.25 0 0 1 21.75 12v6A2.25 2.25 0 0 1 19.5 20.25h-15A2.25 2.25 0 0 1 2.25 18v-.75M2.25 12.75l3-3m-3 3 3 3M21.75 12.75l-3-3m3 3-3 3" />
@@ -56,10 +56,10 @@
             </button>
             <button class="icon-action-button destructive"
                     @onclick="@OnDeleteModel"
-                    disabled="@IsPreparingModel"
+                    disabled="@IsPreparingModel || !IsModelDownloaded"
                     aria-label="Delete downloaded model"
-                    title="Delete downloaded model"
-                    data-tooltip="Delete downloaded model">
+                    title="@DeleteModelTooltip"
+                    data-tooltip="@DeleteModelTooltip">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                     <title>Delete downloaded model</title>
                     <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673A2.25 2.25 0 0 1 15.916 21.75H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0A48.11 48.11 0 0 1 8.25 5.393m7.5 0a48.667 48.667 0 0 0-7.5 0" />
@@ -113,6 +113,9 @@
     public bool IsModelReady { get; set; }
 
     [Parameter]
+    public bool IsModelDownloaded { get; set; }
+
+    [Parameter]
     public bool CanRetryPrepare { get; set; }
 
     [Parameter]
@@ -139,4 +142,12 @@
             : CanRetryPrepare
                 ? "Retry model preparation"
                 : "Prepare model and download if missing";
+
+    private string OpenModelLocationTooltip => IsModelDownloaded
+        ? "Open downloaded model location"
+        : "Model is not downloaded yet";
+
+    private string DeleteModelTooltip => IsModelDownloaded
+        ? "Delete downloaded model"
+        : "Model is not downloaded yet";
 }

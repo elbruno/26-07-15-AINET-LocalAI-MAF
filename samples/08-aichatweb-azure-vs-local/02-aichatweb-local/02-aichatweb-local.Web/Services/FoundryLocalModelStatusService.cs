@@ -20,11 +20,56 @@ public sealed class FoundryLocalModelStatusService(
             return new FoundryLocalModelStatus(
                 resolvedAlias,
                 BuildStatusText(snapshot),
-                snapshot.ModelLoaded);
+                snapshot.ModelLoaded,
+                snapshot.DownloadedThisSession,
+                true);
         }
         catch
         {
-            return new FoundryLocalModelStatus(configuredModelAlias, "Status unavailable", false);
+            return new FoundryLocalModelStatus(configuredModelAlias, "Status unavailable", false, false, false);
+        }
+    }
+
+    public async Task<FoundryLocalModelStatus> GetCurrentStatusAsync(CancellationToken cancellationToken)
+    {
+        try
+        {
+            var snapshot = lifecycle.GetDiagnosticsSnapshot();
+            var resolvedAlias = string.IsNullOrWhiteSpace(snapshot.ModelAlias)
+                ? configuredModelAlias
+                : snapshot.ModelAlias;
+
+            var model = await ResolveModelAsync(cancellationToken);
+            if (model is null)
+            {
+                return new FoundryLocalModelStatus(
+                    resolvedAlias,
+                    "Unavailable (model not in catalog)",
+                    false,
+                    false,
+                    false,
+                    null,
+                    $"Model '{resolvedAlias}' was not found in the local Foundry catalog.");
+            }
+
+            var isDownloaded = await model.IsCachedAsync(cancellationToken);
+            var isLoaded = await model.IsLoadedAsync(cancellationToken);
+            var modelPath = isDownloaded ? await model.GetPathAsync(cancellationToken) : null;
+            var statusText = BuildStatusText(snapshot, isDownloaded, isLoaded);
+            var detail = BuildDetailText(snapshot, isDownloaded);
+
+            return new FoundryLocalModelStatus(
+                resolvedAlias,
+                statusText,
+                isLoaded,
+                isDownloaded,
+                true,
+                modelPath,
+                detail);
+        }
+        catch (Exception ex)
+        {
+            return new FoundryLocalModelStatus(configuredModelAlias, "Status unavailable", false, false, false, null, ex.Message);
         }
     }
 
@@ -32,8 +77,24 @@ public sealed class FoundryLocalModelStatusService(
     {
         try
         {
+            await lifecycle.DownloadModelAsync(configuredModelAlias, cancellationToken);
+
+            var model = await ResolveModelAsync(cancellationToken);
+            if (model is null)
+            {
+                return new FoundryLocalModelStatus(
+                    configuredModelAlias,
+                    "Unavailable (model not in catalog)",
+                    false,
+                    false,
+                    false,
+                    null,
+                    $"Model '{configuredModelAlias}' was not found in the local Foundry catalog.");
+            }
+
+            await model.LoadAsync(cancellationToken);
             await lifecycle.GetChatClientAsync(cancellationToken);
-            return GetCurrentStatus();
+            return await GetCurrentStatusAsync(cancellationToken);
         }
         catch (Exception ex)
         {
@@ -41,7 +102,7 @@ public sealed class FoundryLocalModelStatusService(
             var statusText = ContainsAny(message, "not found", "missing", "download", "unavailable")
                 ? "Unavailable (not downloaded)"
                 : "Unavailable";
-            return new FoundryLocalModelStatus(configuredModelAlias, statusText, false, message);
+            return new FoundryLocalModelStatus(configuredModelAlias, statusText, false, false, true, null, message);
         }
     }
 
@@ -56,7 +117,8 @@ public sealed class FoundryLocalModelStatusService(
             }
 
             var modelPath = await model.GetPathAsync(cancellationToken);
-            if (string.IsNullOrWhiteSpace(modelPath) || !Directory.Exists(modelPath))
+            var isDownloaded = await model.IsCachedAsync(cancellationToken);
+            if (!isDownloaded || string.IsNullOrWhiteSpace(modelPath) || !Directory.Exists(modelPath))
             {
                 return new FoundryLocalModelActionResult(false, "Model is not downloaded yet.");
             }
@@ -87,7 +149,8 @@ public sealed class FoundryLocalModelStatusService(
             }
 
             var modelPath = await model.GetPathAsync(cancellationToken);
-            if (string.IsNullOrWhiteSpace(modelPath) || !Directory.Exists(modelPath))
+            var isDownloaded = await model.IsCachedAsync(cancellationToken);
+            if (!isDownloaded || string.IsNullOrWhiteSpace(modelPath) || !Directory.Exists(modelPath))
             {
                 return new FoundryLocalModelActionResult(false, "Model is not downloaded yet.");
             }
@@ -139,6 +202,36 @@ public sealed class FoundryLocalModelStatusService(
         return "Not loaded yet";
     }
 
+    private static string BuildStatusText(FoundryLocalDiagnosticsSnapshot snapshot, bool isDownloaded, bool isLoaded)
+    {
+        if (isLoaded)
+        {
+            return snapshot.DownloadedThisSession
+                ? "Loaded (downloaded this session)"
+                : "Loaded";
+        }
+
+        if (isDownloaded)
+        {
+            return "Downloaded (not loaded)";
+        }
+
+        return "Not downloaded";
+    }
+
+    private static string? BuildDetailText(FoundryLocalDiagnosticsSnapshot snapshot, bool isDownloaded)
+    {
+        var warning = snapshot.Warnings.FirstOrDefault(static w => !string.IsNullOrWhiteSpace(w));
+        if (!string.IsNullOrWhiteSpace(warning))
+        {
+            return warning;
+        }
+
+        return isDownloaded
+            ? "Use Prepare model to load the cached model into memory."
+            : "Use Prepare model to download and load this model.";
+    }
+
     private static bool ContainsAny(string value, params string[] terms)
         => terms.Any(term => value.Contains(term, StringComparison.OrdinalIgnoreCase));
 }
@@ -147,6 +240,9 @@ public sealed record FoundryLocalModelStatus(
     string ModelAlias,
     string StatusText,
     bool IsReady,
+    bool IsDownloaded,
+    bool IsInCatalog,
+    string? ModelPath = null,
     string? Detail = null);
 
 public sealed record FoundryLocalModelActionResult(bool Success, string Message);

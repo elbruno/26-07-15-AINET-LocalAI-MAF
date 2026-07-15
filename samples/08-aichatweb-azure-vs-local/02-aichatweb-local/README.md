@@ -12,9 +12,18 @@ Everything else (UI, ingestion, vector-store usage) remains aligned with the tem
 ## Run
 
 ```powershell
-foundry model run phi-4-mini
 dotnet run --project .\02-aichatweb-local.AppHost\02-aichatweb-local.AppHost.csproj
 ```
+
+Then in the web app:
+
+1. Use **Prepare model** (download icon) to download/load the configured model if needed.
+2. Use **Refresh model status** (refresh icon) to re-check the local model cache/load state.
+3. Optional model actions:
+   - **Open model location** (folder icon) when a model is downloaded.
+   - **Delete downloaded model** (trash icon) to clear local cache.
+
+See [Model Status and Actions](./docs/model-status-and-actions.md) for the full lifecycle and troubleshooting.
 
 ## Notes
 
