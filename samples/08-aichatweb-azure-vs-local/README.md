@@ -1,6 +1,6 @@
 # 08-aichatweb-azure-vs-local (Aspire)
 
-This scenario contains two **Aspire-enabled** AI Chat Web template outputs:
+This scenario contains two **Aspire-enabled** AI Chat Web template outputs. Both use in-process `ElBruno.MarkItDotNet` for document conversion, so no Docker-based MarkItDown container is needed:
 
 - `01-aichatweb-azure` — Azure OpenAI baseline (`--provider azureopenai --vector-store local --aspire`)
 - `02-aichatweb-local` — local baseline (`--provider ollama --vector-store local --aspire`) adapted to:
@@ -27,4 +27,5 @@ dotnet run --project .\02-aichatweb-local.AppHost\02-aichatweb-local.AppHost.csp
 ## Notes
 
 - The local sample keeps the template UI, ingestion pipeline, and local vector store flow.
+- Document-to-Markdown conversion is in-process for both variants.
 - If you switch embedding providers, clear any prior local ingestion/vector-store artifacts to force re-embedding with the correct dimensions.

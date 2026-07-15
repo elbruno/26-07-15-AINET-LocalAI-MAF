@@ -277,6 +277,7 @@ Expected behavior:
 - AppHost + Web projects start for each variant.
 - Azure variant uses Azure OpenAI provisioning from AppHost.
 - Local variant uses Foundry Local chat + `ElBruno.LocalEmbeddings` with the same UI and ingestion flow.
+- Both variants convert docs in-process with `ElBruno.MarkItDotNet`, so no MarkItDown Docker container is needed.
 - Both use the local Sqlite vector store for retrieved-citation answers.
 
 ## 10) Run sample 09 (companion Aspire analytics app)

@@ -14,15 +14,9 @@ openai.AddDeployment(
     modelName: "text-embedding-3-small",
     modelVersion: "1");
 
-var markitdown = builder.AddContainer("markitdown", "mcp/markitdown")
-    .WithArgs("--http", "--host", "0.0.0.0", "--port", "3001")
-    .WithHttpEndpoint(targetPort: 3001, name: "http");
-
 var webApp = builder.AddProject<Projects._01_aichatweb_azure_Web>("aichatweb-app");
 webApp
     .WithReference(openai)
     .WaitFor(openai);
-webApp
-    .WithEnvironment("MARKITDOWN_MCP_URL", markitdown.GetEndpoint("http"));
 
 builder.Build().Run();

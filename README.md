@@ -178,6 +178,7 @@ Detailed flow, expected output, and troubleshooting:
 
 - Located under `samples\08-aichatweb-azure-vs-local\`.
 - Both outputs are generated with Aspire: `dotnet new aichatweb ... --aspire`.
+- Document-to-Markdown conversion is in-process with `ElBruno.MarkItDotNet`; no Docker MarkItDown container is required.
 - `01-aichatweb-azure` is the cloud baseline from `dotnet new aichatweb --provider azureopenai --vector-store local --aspire`.
 - `02-aichatweb-local` uses the same Aspire template structure but swaps only the two provider seams:
   - Chat `IChatClient` -> Foundry Local (`ElBruno.MAF.FoundryLocal.Adapter`)
