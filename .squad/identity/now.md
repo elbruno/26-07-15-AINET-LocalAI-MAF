@@ -1,9 +1,9 @@
 ---
-updated_at: 2026-07-14T15:35:47.556-04:00
-focus_area: PRD-driven team initialization
+updated_at: 2026-07-15T07:38:06.686-04:00
+focus_area: Aspire orchestration/runtime layer
 active_issues: []
 ---
 
 # What We're Focused On
 
-Team cast and routing aligned to `docs\Local-AI-with-dotNET-PRD.md`; ready for milestone decomposition (M0-M7).
+Team cast and routing now include Lambert for Aspire AppHost, integrations, service discovery, observability, and local developer workflow.

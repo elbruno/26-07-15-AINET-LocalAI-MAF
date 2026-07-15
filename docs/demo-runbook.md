@@ -17,11 +17,11 @@ Expected outcome:
 ## 2) Start the full graph with AppHost
 
 ```powershell
-dotnet run --project src\AppHost\AppHost.csproj
+aspire start --apphost src\AppHost\AppHost.csproj
 ```
 
 Expected outcome:
-- Aspire dashboard opens (default `https://localhost:17116`).
+- Aspire CLI reports startup details, including the dashboard endpoint.
 - `analytics-api` and `analytics-web` resources show as running.
 
 ## 3) Open the dashboard UI

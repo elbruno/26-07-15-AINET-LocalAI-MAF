@@ -11,19 +11,19 @@ using System;
 using System.Reflection;
 
 [assembly: Microsoft.Extensions.Configuration.UserSecrets.UserSecretsIdAttribute("75a402b1-66ca-4568-839a-bb4b4b325989")]
-[assembly: System.Reflection.AssemblyMetadata("dcpclipath", ("C:\\Users\\brunocapuano\\.nuget\\packages\\aspire.hosting.orchestration.win-x64\\13.4.6" +
-    "\\tools\\dcp.exe"))]
-[assembly: System.Reflection.AssemblyMetadata("dcpextensionpaths", ("C:\\Users\\brunocapuano\\.nuget\\packages\\aspire.hosting.orchestration.win-x64\\13.4.6" +
-    "\\tools\\ext\\"))]
+[assembly: System.Reflection.AssemblyMetadata("dcpclipath", ("C:\\Users\\bruno\\.nuget\\packages\\aspire.hosting.orchestration.win-x64\\13.4.6\\tools\\" +
+    "dcp.exe"))]
+[assembly: System.Reflection.AssemblyMetadata("dcpextensionpaths", ("C:\\Users\\bruno\\.nuget\\packages\\aspire.hosting.orchestration.win-x64\\13.4.6\\tools\\" +
+    "ext\\"))]
 [assembly: System.Reflection.AssemblyMetadata("apphostprojectpath", "C:\\src\\26-07-15-AINET-LocalAI-MAF\\src\\AppHost")]
 [assembly: System.Reflection.AssemblyMetadata("apphostprojectname", "AppHost.csproj")]
-[assembly: System.Reflection.AssemblyMetadata("aspiredashboardpath", ("C:\\Users\\brunocapuano\\.nuget\\packages\\aspire.dashboard.sdk.win-x64\\13.4.6\\tools\\A" +
-    "spire.Dashboard.exe"))]
+[assembly: System.Reflection.AssemblyMetadata("aspiredashboardpath", ("C:\\Users\\bruno\\.nuget\\packages\\aspire.dashboard.sdk.win-x64\\13.4.6\\tools\\Aspire.D" +
+    "ashboard.exe"))]
 [assembly: System.Reflection.AssemblyMetadataAttribute("apphostprojectbaseintermediateoutputpath", "C:\\src\\26-07-15-AINET-LocalAI-MAF\\src\\AppHost\\obj\\")]
 [assembly: System.Reflection.AssemblyCompanyAttribute("AppHost")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+59c16ad3b069af8d05f6f7faf2d5055420d57014")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a2a7538e939d65ab29ad652a131a7b038140af5e")]
 [assembly: System.Reflection.AssemblyProductAttribute("AppHost")]
 [assembly: System.Reflection.AssemblyTitleAttribute("AppHost")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

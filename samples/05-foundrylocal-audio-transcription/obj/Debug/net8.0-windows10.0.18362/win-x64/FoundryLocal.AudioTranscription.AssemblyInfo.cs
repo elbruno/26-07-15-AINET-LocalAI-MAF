@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("FoundryLocal.AudioTranscription")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+fd6b1e866f207662e988a5dd877d7c84aff1f582")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a2a7538e939d65ab29ad652a131a7b038140af5e")]
 [assembly: System.Reflection.AssemblyProductAttribute("FoundryLocal.AudioTranscription")]
 [assembly: System.Reflection.AssemblyTitleAttribute("FoundryLocal.AudioTranscription")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

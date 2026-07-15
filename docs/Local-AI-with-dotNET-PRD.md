@@ -141,7 +141,7 @@ flowchart LR
 | Web / proxies | **ASP.NET Core Minimal APIs** | One project per proxy. |
 | Dashboard | **Blazor** (Server or Web App) | Matches OD805's Blazor UI. |
 | Persistence | **SQLite** + **EF Core** | Matches OD805's SQLite store; zero external infra. |
-| Orchestration | **.NET Aspire** (`AppHost`) | `aspire run` starts the whole graph. |
+| Orchestration | **.NET Aspire** (`AppHost`) | `aspire start` starts the whole graph. |
 | Observability | **OpenTelemetry** (OTLP) + Aspire dashboard + collector | `infra/otel-collector`. |
 | Solution format | `.slnx` | Modern solution file. |
 | Tests | **xUnit** + `Microsoft.AspNetCore.Mvc.Testing` | Unit + integration. |
@@ -268,7 +268,7 @@ All three share the same contract; only the backend differs.
 - `R-AH-1` Reference and start: the three proxies, `Analytics.Api`, `Analytics.Web`, and the OTel collector; wire service discovery so `Analytics.Web` → `Analytics.Api` and proxies → `Analytics.Api` resolve by name.
 - `R-AH-2` Expose the Aspire dashboard with all endpoints and live traces.
 - `R-AH-3` Pass backend endpoints/credentials as Aspire configuration/parameters (no secrets in code).
-- `R-AH-4` `aspire run` (or `dotnet run --project src/AppHost`) brings the full graph up with one command.
+- `R-AH-4` `aspire start` brings the full graph up in the background with one command.
 
 ---
 
@@ -329,7 +329,7 @@ Copilot must generate code that follows these rules (also emit them into `.githu
 | `NFR-4` (Security) | BYOK secrets only from config/user-secrets; never logged, never in `UsageRecord`. |
 | `NFR-5` (Observability) | 100% of proxied requests produce a trace span and a `UsageRecord`. |
 | `NFR-6` (Portability) | Runs on Windows and macOS; Foundry Local sample notes platform/hardware requirements. |
-| `NFR-7` (Demo-safety) | Fresh clone → `aspire run` succeeds even if one backend is offline (that backend's proxy reports unhealthy, others work). |
+| `NFR-7` (Demo-safety) | Fresh clone → `aspire start` succeeds even if one backend is offline (that backend's proxy reports unhealthy, others work). |
 
 ---
 
@@ -370,7 +370,7 @@ Each milestone is independently shippable and demoable.
 - [ ] `samples/03` downloads, loads, streams, and unloads a Foundry Local model with no Azure sign-in (G2).
 - [ ] All three proxies answer `/v1/chat/completions` (stream + non-stream) with an identical OpenAI contract (G3).
 - [ ] Every proxied call appears in the Blazor dashboard within one refresh cycle (G4).
-- [ ] `aspire run` starts proxies + analytics + collector; Aspire dashboard shows live traces (G5).
+- [ ] `aspire start` starts proxies + analytics + collector; Aspire dashboard shows live traces (G5).
 - [ ] Killing one backend does not break the others; its proxy reports unhealthy (NFR-7).
 - [ ] `docs/bridge-to-od805.md` explains the connection to OD805 and links `aka.ms/dotnet-ai`.
 

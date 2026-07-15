@@ -9,7 +9,8 @@ How to decide who handles what.
 | Scope, milestones, architecture | Ripley | PRD decomposition, sequencing M0-M7, cross-service design |
 | Backend APIs, proxies, shared contracts | Bishop | OpenAI-compatible proxy endpoints, analytics API, DTO wiring |
 | Frontend dashboard and UX | Hicks | Blazor dashboard, filters, charts, empty-state behavior |
-| Platform, orchestration, observability | Apone | Aspire AppHost, OTel collector wiring, CI/build automation |
+| Platform, CI/build automation, run reliability | Apone | Build guards, environment setup, one-command run experience |
+| Aspire AppHost, integrations, service discovery, observability | Lambert | AppHost composition, resource wiring, dashboard diagnostics |
 | Code review | Ripley | Review PRs, check quality, suggest improvements |
 | Testing | Vasquez | Unit/integration tests, edge cases, acceptance verification |
 | Scope & priorities | Ripley | What to build next, trade-offs, decisions |

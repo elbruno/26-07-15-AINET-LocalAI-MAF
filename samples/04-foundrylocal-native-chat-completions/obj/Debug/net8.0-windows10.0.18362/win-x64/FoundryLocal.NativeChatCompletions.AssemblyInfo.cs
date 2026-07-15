@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("FoundryLocal.NativeChatCompletions")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+45a6c7329ebd37f8ae9ceaeb5ea1e6c9d54afab4")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a2a7538e939d65ab29ad652a131a7b038140af5e")]
 [assembly: System.Reflection.AssemblyProductAttribute("FoundryLocal.NativeChatCompletions")]
 [assembly: System.Reflection.AssemblyTitleAttribute("FoundryLocal.NativeChatCompletions")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

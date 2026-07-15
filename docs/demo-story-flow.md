@@ -17,11 +17,11 @@ Use this script to tell a clear “local AI observability” story with the curr
 Run:
 
 ```powershell
-dotnet run --project src\AppHost\AppHost.csproj
+aspire start --apphost src\AppHost\AppHost.csproj
 ```
 
 Talk track:
-- “Aspire starts the service graph and gives me one dashboard to operate everything.”
+- “Aspire starts the service graph in the background and gives me one dashboard to operate everything.”
 - Show `analytics-api` and `analytics-web` resources in running state.
 
 ## Act 3 — Simulate AI traffic

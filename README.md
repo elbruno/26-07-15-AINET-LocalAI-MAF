@@ -23,12 +23,12 @@ From repository root:
 ```powershell
 dotnet restore dotnet-local-ai.slnx
 dotnet build dotnet-local-ai.slnx
-dotnet run --project src\AppHost\AppHost.csproj
+aspire start --apphost src\AppHost\AppHost.csproj
 ```
 
 What to expect:
 
-- Aspire AppHost starts and opens dashboard (default profile uses `https://localhost:17116`).
+- Aspire AppHost starts in the background and reports startup details in the CLI output.
 - `analytics-api` and `analytics-web` start as part of the AppHost graph.
 - Open the `analytics-web` resource from the Aspire dashboard to view the dashboard UI.
 

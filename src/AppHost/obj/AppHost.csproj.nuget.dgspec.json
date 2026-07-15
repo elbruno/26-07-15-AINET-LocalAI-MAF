@@ -10,23 +10,16 @@
         "projectUniqueName": "C:\\src\\26-07-15-AINET-LocalAI-MAF\\src\\AppHost\\AppHost.csproj",
         "projectName": "AppHost",
         "projectPath": "C:\\src\\26-07-15-AINET-LocalAI-MAF\\src\\AppHost\\AppHost.csproj",
-        "packagesPath": "C:\\Users\\brunocapuano\\.nuget\\packages\\",
+        "packagesPath": "C:\\Users\\bruno\\.nuget\\packages\\",
         "outputPath": "C:\\src\\26-07-15-AINET-LocalAI-MAF\\src\\AppHost\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
-          "C:\\Users\\brunocapuano\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "C:\\Users\\bruno\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net10.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
