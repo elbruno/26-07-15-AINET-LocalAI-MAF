@@ -22,21 +22,6 @@ dotnet build dotnet-local-ai.slnx
 
 Then choose a sample under `samples\` and run its README instructions.
 
-## Sample 09 (companion Aspire analytics app)
-
-The moved analytics app now lives here:
-
-- `samples\09-analytics-aspire\AppHost`
-- `samples\09-analytics-aspire\analytics\Analytics.Api`
-- `samples\09-analytics-aspire\analytics\Analytics.Web`
-- `samples\09-analytics-aspire\Shared`
-
-Run it with:
-
-```powershell
-aspire start --apphost samples\09-analytics-aspire\AppHost\AppHost.csproj
-```
-
 ## Foundry Local samples
 
 Nine standalone samples/projects are available under `samples\`:

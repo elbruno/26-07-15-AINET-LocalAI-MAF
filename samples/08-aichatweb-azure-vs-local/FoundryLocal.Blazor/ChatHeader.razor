@@ -12,7 +12,7 @@
             </button>
             <button class="icon-action-button"
                     @onclick="@OnPrepareModel"
-                    disabled="@IsPreparingModel || IsModelReady"
+                    disabled="@(IsPreparingModel || IsModelReady)"
                     aria-label="@PrepareButtonLabel"
                     title="@PrepareButtonTooltip"
                     data-tooltip="@PrepareButtonTooltip">
@@ -47,7 +47,7 @@
             </button>
             <button class="icon-action-button"
                     @onclick="@OnOpenModelLocation"
-                    disabled="@IsPreparingModel || !IsModelDownloaded"
+                    disabled="@(IsPreparingModel || !IsModelDownloaded)"
                     aria-label="Open downloaded model location"
                     title="@OpenModelLocationTooltip"
                     data-tooltip="@OpenModelLocationTooltip">
@@ -58,7 +58,7 @@
             </button>
             <button class="icon-action-button destructive"
                     @onclick="@OnDeleteModel"
-                    disabled="@IsPreparingModel || !IsModelDownloaded"
+                    disabled="@(IsPreparingModel || !IsModelDownloaded)"
                     aria-label="Delete downloaded model"
                     title="@DeleteModelTooltip"
                     data-tooltip="@DeleteModelTooltip">
