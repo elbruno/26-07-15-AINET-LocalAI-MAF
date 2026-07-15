@@ -1,3 +1,5 @@
+@namespace ElBruno.MAF.FoundryLocal.Components
+
 <div class="chat-header-container main-background-gradient">
     <div class="chat-header-controls page-width">
         <div class="header-actions">
@@ -87,7 +89,7 @@
         </div>
     </div>
 
-    <h1 class="page-width">02-aichatweb-local.Web</h1>
+    <h1 class="page-width">@Title</h1>
 </div>
 
 @code {
@@ -126,6 +128,9 @@
 
     [Parameter]
     public string? ModelStatusDetail { get; set; }
+
+    [Parameter]
+    public string Title { get; set; } = "";
 
     private string PrepareButtonLabel => IsPreparingModel
         ? "Preparing model"

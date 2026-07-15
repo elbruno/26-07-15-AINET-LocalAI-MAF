@@ -23,6 +23,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\02-aichatweb-local.ServiceDefaults\02-aichatweb-local.ServiceDefaults.csproj" />
+    <ProjectReference Include="..\..\FoundryLocal.Blazor\FoundryLocal.Blazor.csproj" />
   </ItemGroup>
 
 </Project>

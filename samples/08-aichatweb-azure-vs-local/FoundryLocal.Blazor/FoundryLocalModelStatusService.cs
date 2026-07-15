@@ -1,9 +1,8 @@
 using ElBruno.MAF.FoundryLocal;
 using Microsoft.AI.Foundry.Local;
-using Microsoft.Extensions.Logging.Abstractions;
 using System.Diagnostics;
 
-namespace _02_aichatweb_local.Web.Services;
+namespace ElBruno.MAF.FoundryLocal.Components;
 
 public sealed class FoundryLocalModelStatusService(
     string configuredModelAlias,
@@ -178,7 +177,15 @@ public sealed class FoundryLocalModelStatusService(
         return await catalog.GetModelAsync(configuredModelAlias, cancellationToken);
     }
 
-    private static async Task EnsureManagerInitializedAsync(CancellationToken cancellationToken)
+    // The Foundry Local SDK exposes a single static FoundryLocalManager singleton and
+    // FoundryLocalManager.CreateAsync throws if it has already been created. The ElBruno
+    // lifecycle service owns that singleton (it creates it inside its own EnsureManagerAsync).
+    // We must NOT call CreateAsync here as well, otherwise whichever component initializes
+    // first wins and the other throws "FoundryLocalManager has already been created.",
+    // permanently breaking downloads and chat. Instead we ensure initialization THROUGH the
+    // lifecycle service. ListModelsAsync triggers the lifecycle's manager creation without
+    // downloading or loading a model, so both components share the same manager instance.
+    private async Task EnsureManagerInitializedAsync(CancellationToken cancellationToken)
     {
         if (FoundryLocalManager.IsInitialized)
         {
@@ -190,13 +197,7 @@ public sealed class FoundryLocalModelStatusService(
         {
             if (!FoundryLocalManager.IsInitialized)
             {
-                await FoundryLocalManager.CreateAsync(
-                    new Configuration
-                    {
-                        AppName = "02-aichatweb-local-Web"
-                    },
-                    NullLogger.Instance,
-                    cancellationToken);
+                await lifecycle.ListModelsAsync(cancellationToken);
             }
         }
         finally

@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>ElBruno.MAF.FoundryLocal.Components</RootNamespace>
+    <AssemblyName>ElBruno.MAF.FoundryLocal.Components</AssemblyName>
+    <RuntimeIdentifiers>win-x64</RuntimeIdentifiers>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="ElBruno.MAF.FoundryLocal.Adapter" Version="0.2.1" />
+    <PackageReference Include="Microsoft.AI.Foundry.Local" Version="1.2.3" />
+  </ItemGroup>
+
+</Project>

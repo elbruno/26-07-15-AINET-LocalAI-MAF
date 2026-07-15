@@ -18,7 +18,8 @@
             CanRetryPrepare="@canRetryPrepare"
             ModelAlias="@currentModelAlias"
             ModelStatus="@currentModelStatus"
-            ModelStatusDetail="@currentModelStatusDetail" />
+            ModelStatusDetail="@currentModelStatusDetail"
+            Title="02-aichatweb-local.Web" />
 
 <ChatMessageList Messages="@messages" InProgressMessage="@currentResponseMessage">
     <NoMessagesContent>
@@ -72,6 +73,7 @@
     private bool isModelReady;
     private bool isModelDownloaded;
     private bool canRetryPrepare;
+    private bool prepareAttempted;
 
     protected override async Task OnInitializedAsync()
     {
@@ -194,7 +196,7 @@
         currentModelStatusDetail = status.Detail;
         isModelReady = status.IsReady;
         isModelDownloaded = status.IsDownloaded;
-        canRetryPrepare = !status.IsReady;
+        canRetryPrepare = !status.IsReady && prepareAttempted;
     }
 
     private async Task PrepareModelAsync()
@@ -237,6 +239,7 @@
         }
 
         isPreparingModel = true;
+        prepareAttempted = true;
         currentModelStatus = "Preparing model (downloading if needed)...";
         currentModelStatusDetail = null;
         await InvokeAsync(StateHasChanged);

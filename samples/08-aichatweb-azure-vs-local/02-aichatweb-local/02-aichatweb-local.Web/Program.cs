@@ -1,5 +1,6 @@
 using ElBruno.LocalEmbeddings;
 using ElBruno.MAF.FoundryLocal;
+using ElBruno.MAF.FoundryLocal.Components;
 using Microsoft.Extensions.AI;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
@@ -35,7 +36,7 @@ var chatClient = new FoundryLocalChatClientAdapter(
 var embeddingGenerator = await LocalEmbeddingGenerator.CreateAsync();
 
 builder.Services.AddSingleton(lifecycle);
-builder.Services.AddSingleton(new FoundryLocalModelStatusService(modelAlias, lifecycle));
+builder.Services.AddFoundryLocalComponents(modelAlias);
 builder.Services.AddChatClient(chatClient)
     .UseFunctionInvocation(NullLoggerFactory.Instance, cfg =>
     {
