@@ -16,6 +16,7 @@ Environment variables (all optional):
 
 - `FOUNDRY_LOCAL_MODEL` (default: `qwen2.5-0.5b`)
 - `FOUNDRY_LOCAL_PROMPT` (default: `Why is the sky blue?`)
+- `FOUNDRY_LOCAL_CLEANUP_MODEL` (`true`/`false`) — optional non-interactive override for cache cleanup
 
 ## Run
 
@@ -28,6 +29,21 @@ dotnet restore
 dotnet run
 ```
 
+At the end, the sample asks:
+
+```text
+Delete downloaded model? [Y/n]
+```
+
+Default is **Yes**.
+
+For non-interactive runs, force behavior with environment override:
+
+```powershell
+$env:FOUNDRY_LOCAL_CLEANUP_MODEL="true"
+dotnet run
+```
+
 ## Expected output
 
 Output includes:
@@ -37,5 +53,8 @@ Output includes:
 - `Downloading/registering execution providers:`
 - `Resolved model:`
 - `Downloading model:`
+- `Question: Why is the sky blue?` (or your `FOUNDRY_LOCAL_PROMPT`)
 - `Chat completion response:`
 - `Model unloaded.`
+- `Delete downloaded model? [Y/n]`
+- `Model cache removed.` (when answer is yes, or override is `true`)

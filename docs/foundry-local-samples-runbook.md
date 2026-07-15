@@ -196,14 +196,32 @@ dotnet restore
 dotnet run
 ```
 
+At the end, the sample asks:
+
+```text
+Delete downloaded model? [Y/n]
+```
+
+Default is **Yes**.
+
+For non-interactive runs, force cleanup behavior:
+
+```powershell
+$env:FOUNDRY_LOCAL_CLEANUP_MODEL="true"
+dotnet run
+```
+
 Expected output includes:
 
 - `Foundry Local native auto chat sample`
 - `Available execution providers:`
 - `Downloading/registering execution providers:`
 - `Resolved model:`
+- `Question: Why is the sky blue?` (or your prompt override)
 - `Chat completion response:`
 - `Model unloaded.`
+- `Delete downloaded model? [Y/n]`
+- `Model cache removed.` (when answer is yes, or override is `true`)
 
 ## 8) Troubleshooting
 

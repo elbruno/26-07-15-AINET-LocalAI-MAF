@@ -95,6 +95,7 @@ Six standalone console samples are available under `samples\`:
   - `FOUNDRY_LOCAL_WHISPER_MODEL` / `FOUNDRY_LOCAL_AUDIO_MODEL` (audio transcription sample alias override; default: `whisper-tiny`)
   - `FOUNDRY_LOCAL_AUDIO_LANGUAGE` (audio transcription language hint; default: `en`)
   - `FOUNDRY_LOCAL_PROMPT` (native auto chat sample prompt override; default: `Why is the sky blue?`)
+  - `FOUNDRY_LOCAL_CLEANUP_MODEL` (native auto chat cache cleanup toggle; `true` removes model cache after run)
 
 ### Commands
 
@@ -159,6 +160,10 @@ cd ..\06-foundrylocal-native-auto-chat
 $env:FOUNDRY_LOCAL_MODEL="qwen2.5-0.5b"
 $env:FOUNDRY_LOCAL_PROMPT="Why is the sky blue?"
 dotnet restore
+dotnet run
+# end-of-run prompt defaults to Yes: "Delete downloaded model? [Y/n]"
+# optional non-interactive override:
+$env:FOUNDRY_LOCAL_CLEANUP_MODEL="true"
 dotnet run
 ```
 
