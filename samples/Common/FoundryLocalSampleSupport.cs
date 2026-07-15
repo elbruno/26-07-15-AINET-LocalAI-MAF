@@ -74,8 +74,10 @@ Try this:
   1) Verify Foundry Local CLI is installed: foundry --help
   2) Start or restart the local service: foundry service start
   3) Check status and endpoint: foundry service status
-  4) If needed, override endpoint: set {BaseUrlEnvVar}={settings.ConfiguredBaseUrl}
-  5) If needed, override model: set {ModelEnvVar}={settings.Model}
+  4) Optional environment overrides (PowerShell):
+     $env:{BaseUrlEnvVar}="{settings.ConfiguredBaseUrl}"
+     $env:{ModelEnvVar}="{settings.Model}"
+     $env:{ApiKeyEnvVar}="{settings.ApiKey}"
 """;
     }
 

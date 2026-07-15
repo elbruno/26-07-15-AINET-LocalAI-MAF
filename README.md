@@ -99,6 +99,10 @@ Five standalone console samples are available under `samples\`:
 ```powershell
 # 01 - hello world
 cd samples\01-foundrylocal-hello-world
+# optional overrides (defaults shown)
+$env:FOUNDRY_LOCAL_BASE_URL="http://127.0.0.1:5273/v1"
+$env:FOUNDRY_LOCAL_MODEL="qwen2.5-0.5b"
+$env:FOUNDRY_LOCAL_API_KEY="local-dev-key"
 dotnet restore
 dotnet run
 

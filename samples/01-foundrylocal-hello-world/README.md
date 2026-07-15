@@ -23,6 +23,10 @@ If `FOUNDRY_LOCAL_MODEL` is unavailable, the sample falls back to the first mode
 
 ```powershell
 cd samples\01-foundrylocal-hello-world
+# optional overrides
+$env:FOUNDRY_LOCAL_BASE_URL="http://127.0.0.1:5273/v1"
+$env:FOUNDRY_LOCAL_MODEL="qwen2.5-0.5b"
+$env:FOUNDRY_LOCAL_API_KEY="local-dev-key"
 dotnet restore
 dotnet run
 ```
@@ -47,6 +51,10 @@ Try this:
   1) Verify Foundry Local CLI is installed: foundry --help
   2) Start or restart the local service: foundry service start
   3) Check status and endpoint: foundry service status
+  4) Optional environment overrides (PowerShell):
+     $env:FOUNDRY_LOCAL_BASE_URL="http://127.0.0.1:5273/v1"
+     $env:FOUNDRY_LOCAL_MODEL="qwen2.5-0.5b"
+     $env:FOUNDRY_LOCAL_API_KEY="local-dev-key"
 ```
 
 ## Assumptions
