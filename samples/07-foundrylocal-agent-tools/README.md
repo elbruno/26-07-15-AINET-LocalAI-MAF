@@ -22,7 +22,8 @@ Local **agent-style** sample that uses `ElBruno.MAF.FoundryLocal.Adapter` + `Mic
 
 Environment variables (all optional):
 
-- `FOUNDRY_LOCAL_MODEL` (default: `phi-3.5-mini`)
+- `FOUNDRY_LOCAL_MODEL` (default: `qwen2.5-0.5b`)
+- `FOUNDRY_LOCAL_AGENT_FALLBACK_MODEL` (default: `qwen2.5-0.5b`)
 - `FOUNDRY_LOCAL_AGENT_PROMPT` (default demo prompt using time + tip + fact)
 - `FOUNDRY_LOCAL_CLEANUP_MODEL` (`true`/`false`) non-interactive cleanup override
 
@@ -31,11 +32,14 @@ Environment variables (all optional):
 ```powershell
 cd samples\07-foundrylocal-agent-tools
 # optional overrides
-$env:FOUNDRY_LOCAL_MODEL="phi-3.5-mini"
+$env:FOUNDRY_LOCAL_MODEL="qwen2.5-0.5b"
+$env:FOUNDRY_LOCAL_AGENT_FALLBACK_MODEL="qwen2.5-0.5b"
 $env:FOUNDRY_LOCAL_AGENT_PROMPT="I am in Pacific Standard Time. Bill is 42.50 with 18% tip. Use tools and return JSON."
 dotnet restore
 dotnet run
 ```
+
+If no tools are called with the selected model, the sample prints guidance to rerun with `FOUNDRY_LOCAL_AGENT_FALLBACK_MODEL`.
 
 At the end, the sample asks:
 

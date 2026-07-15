@@ -98,6 +98,7 @@ Seven standalone console samples are available under `samples\`:
   - `FOUNDRY_LOCAL_PROMPT` (native auto chat sample prompt override; default: `Why is the sky blue?`)
   - `FOUNDRY_LOCAL_CLEANUP_MODEL` (native auto chat cache cleanup toggle; `true` removes model cache after run)
   - `FOUNDRY_LOCAL_AGENT_PROMPT` (agent tools sample prompt override)
+  - `FOUNDRY_LOCAL_AGENT_FALLBACK_MODEL` (agent tools sample fallback alias when no tool calls are detected)
 
 ### Commands
 
@@ -171,7 +172,8 @@ dotnet run
 # 07 - local agent + tools (adapter + MEAI function invocation)
 cd ..\07-foundrylocal-agent-tools
 # optional overrides (defaults shown)
-$env:FOUNDRY_LOCAL_MODEL="phi-3.5-mini"
+$env:FOUNDRY_LOCAL_MODEL="qwen2.5-0.5b"
+$env:FOUNDRY_LOCAL_AGENT_FALLBACK_MODEL="qwen2.5-0.5b"
 $env:FOUNDRY_LOCAL_AGENT_PROMPT="I am in Pacific Standard Time. Bill is 42.50 with 18% tip. Use tools and return JSON."
 $env:FOUNDRY_LOCAL_CLEANUP_MODEL="false"
 dotnet restore
@@ -189,6 +191,7 @@ dotnet run
 - Includes three sample tools: `get_time_in_timezone`, `calculate_tip`, `get_demo_fact`.
 - Logs each tool invocation to the console so you can see tools being called live.
 - Shows model cache status at startup (already cached vs will be downloaded).
+- Prints rerun guidance with `FOUNDRY_LOCAL_AGENT_FALLBACK_MODEL` when the selected model returns no tool calls.
 - Runs one agent turn with function-invocation middleware and returns a tool-augmented response.
 
 Detailed flow, expected output, and troubleshooting:

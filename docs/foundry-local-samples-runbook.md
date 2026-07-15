@@ -234,7 +234,8 @@ This sample uses `ElBruno.MAF.FoundryLocal.Adapter` with `Microsoft.Extensions.A
 ```powershell
 cd ..\07-foundrylocal-agent-tools
 # optional overrides (defaults shown)
-$env:FOUNDRY_LOCAL_MODEL="phi-3.5-mini"
+$env:FOUNDRY_LOCAL_MODEL="qwen2.5-0.5b"
+$env:FOUNDRY_LOCAL_AGENT_FALLBACK_MODEL="qwen2.5-0.5b"
 $env:FOUNDRY_LOCAL_AGENT_PROMPT="I am in Pacific Standard Time. Bill is 42.50 with 18% tip. Use tools and return JSON."
 $env:FOUNDRY_LOCAL_CLEANUP_MODEL="false"
 dotnet restore
@@ -248,6 +249,7 @@ Expected output includes:
 - `Model cache: already available locally.` or `Model cache: not present. It will be downloaded.`
 - `Registered tools: get_time_in_timezone, calculate_tip, get_demo_fact`
 - `[tool:...]` console logs showing each tool invocation and result
+- `No tool calls were detected ... Try running again with fallback model ...` (only when selected model skips tool use)
 - `Agent response:`
 - `Delete downloaded model? [Y/n]`
 
