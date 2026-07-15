@@ -6,18 +6,18 @@ Use this script to tell a clear “local AI observability” story with the curr
 
 ## Act 1 — Set context (what this repo is)
 
-- Explain this repository currently implements the **analytics experience** of the broader Local AI with .NET vision.
+- Explain this repository now centers on a **samples-first** Foundry Local story, with the analytics experience moved into `samples\09-analytics-aspire`.
 - Point to:
-  - `src\analytics\Analytics.Api` for ingestion/query APIs
-  - `src\analytics\Analytics.Web` for dashboard UX
-  - `src\AppHost` for one-command orchestration
+  - `samples\09-analytics-aspire\analytics\Analytics.Api` for ingestion/query APIs
+  - `samples\09-analytics-aspire\analytics\Analytics.Web` for dashboard UX
+  - `samples\09-analytics-aspire\AppHost` for one-command orchestration
 
 ## Act 2 — Start everything with one command
 
 Run:
 
 ```powershell
-aspire start --apphost src\AppHost\AppHost.csproj
+aspire start --apphost samples\09-analytics-aspire\AppHost\AppHost.csproj
 ```
 
 Talk track:

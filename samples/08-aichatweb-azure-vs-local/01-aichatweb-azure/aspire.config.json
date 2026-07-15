@@ -1,0 +1,5 @@
+{
+  "appHost": {
+    "path": "01-aichatweb-azure.AppHost/01-aichatweb-azure.AppHost.csproj"
+  }
+}

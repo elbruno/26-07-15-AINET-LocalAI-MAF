@@ -1,11 +1,22 @@
 <Solution>
-  <Folder Name="/src/">
-    <Project Path="src/AppHost/AppHost.csproj" />
-    <Project Path="src/Shared/Shared.csproj" />
+  <Folder Name="/samples/08-aichatweb-azure-vs-local/" />
+  <Folder Name="/samples/08-aichatweb-azure-vs-local/01-aichatweb-azure/">
+    <Project Path="samples/08-aichatweb-azure-vs-local/01-aichatweb-azure/01-aichatweb-azure.AppHost/01-aichatweb-azure.AppHost.csproj" />
+    <Project Path="samples/08-aichatweb-azure-vs-local/01-aichatweb-azure/01-aichatweb-azure.ServiceDefaults/01-aichatweb-azure.ServiceDefaults.csproj" />
+    <Project Path="samples/08-aichatweb-azure-vs-local/01-aichatweb-azure/01-aichatweb-azure.Web/01-aichatweb-azure.Web.csproj" />
   </Folder>
-  <Folder Name="/src/analytics/">
-    <Project Path="src/analytics/Analytics.Api/Analytics.Api.csproj" />
-    <Project Path="src/analytics/Analytics.Web/Analytics.Web.csproj" />
+  <Folder Name="/samples/08-aichatweb-azure-vs-local/02-aichatweb-local/">
+    <Project Path="samples/08-aichatweb-azure-vs-local/02-aichatweb-local/02-aichatweb-local.AppHost/02-aichatweb-local.AppHost.csproj" />
+    <Project Path="samples/08-aichatweb-azure-vs-local/02-aichatweb-local/02-aichatweb-local.ServiceDefaults/02-aichatweb-local.ServiceDefaults.csproj" />
+    <Project Path="samples/08-aichatweb-azure-vs-local/02-aichatweb-local/02-aichatweb-local.Web/02-aichatweb-local.Web.csproj" />
+  </Folder>
+  <Folder Name="/samples/09-analytics-aspire/">
+    <Project Path="samples/09-analytics-aspire/AppHost/AppHost.csproj" />
+    <Project Path="samples/09-analytics-aspire/Shared/Shared.csproj" />
+  </Folder>
+  <Folder Name="/samples/09-analytics-aspire/analytics/">
+    <Project Path="samples/09-analytics-aspire/analytics/Analytics.Api/Analytics.Api.csproj" />
+    <Project Path="samples/09-analytics-aspire/analytics/Analytics.Web/Analytics.Web.csproj" />
   </Folder>
   <Folder Name="/tests/">
     <Project Path="tests/Analytics.Tests/Analytics.Tests.csproj" />

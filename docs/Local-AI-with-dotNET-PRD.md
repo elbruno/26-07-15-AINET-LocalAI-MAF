@@ -1,4 +1,4 @@
-# PRD — Local AI with .NET (Session Companion Repository)
+# PRD — Local AI with .NET (Samples-First Repository)
 
 > **How to use this document:** Drop this file into your GitHub repo (e.g. `docs/PRD.md` or root `PRD.md`).
 > Then use **GitHub Copilot (agent / coding agent mode)** or **Copilot Chat** with a prompt like
@@ -7,7 +7,7 @@
 
 | Field | Value |
 |-------|-------|
-| **Product** | `dotnet-local-ai` — a progressive demo repository for running AI locally with .NET |
+| **Product** | `dotnet-local-ai` — a samples-first demo repository for running AI locally with .NET |
 | **Companion talk** | "Local AI with .NET" (20–25 min) |
 | **Related Build session** | **OD805** — *AI Building Blocks for .NET: Add intelligence to your C# apps* |
 | **Reference implementation** | `github.com/elbruno/ElBruno.LLMProxies` |
@@ -20,12 +20,12 @@
 
 ## 1. Summary
 
-`dotnet-local-ai` is a single .NET solution that teaches and demonstrates **running Large Language Models locally** from C#, using **Microsoft.Extensions.AI** as the single abstraction seam. It contains two layers:
+`dotnet-local-ai` is a samples-first .NET solution that teaches and demonstrates **running Large Language Models locally** from C#, using **Microsoft.Extensions.AI** as the single abstraction seam. It contains two layers:
 
 1. **Progressive console demos** (`01` → `04`) that map 1:1 to the session flow: the MEAI abstraction, Ollama, and **Foundry Local**.
-2. **A production-shaped scenario** — a set of **OpenAI-compatible proxies** (Ollama / Foundry cloud / Foundry Local), a **usage-analytics API + Blazor dashboard**, all orchestrated with **.NET Aspire** and instrumented with **OpenTelemetry**. This mirrors the `ElBruno.LLMProxies` reference architecture.
+2. **A companion Aspire sample** — the analytics dashboard/API now lives under `samples\09-analytics-aspire`, alongside the Foundry Local samples and the AI Chat template scenarios.
 
-The through-line the code must prove: **one `IChatClient` interface — the app code never changes; only the backend endpoint does.** From a laptop's CPU/GPU/NPU to the cloud, and proxied at scale with full observability.
+The through-line the code must prove: **one `IChatClient` interface — the app code never changes; only the backend endpoint does.** The repository keeps every runnable experience in `samples\` and presents them as isolated demos.
 
 ---
 
@@ -33,7 +33,7 @@ The through-line the code must prove: **one `IChatClient` interface — the app 
 
 Developers adopting AI in .NET default to cloud APIs and hit four walls: **data privacy** (prompts leave the device), **cost** (per-token billing), **connectivity** (no offline story), and **latency**. Local inference solves these, but the tooling story is fragmented (Ollama vs. ONNX vs. Foundry Local) and there is no clear, .NET-idiomatic reference that shows how to keep app code stable while swapping backends — and how to observe usage once you do.
 
-This repository is the missing reference: it proves that **Microsoft.Extensions.AI** decouples app logic from the model runtime, adds **Foundry Local** as a first-class on-device option, and shows a real-world governance/observability layer via proxies + analytics.
+This repository is the missing reference: it proves that **Microsoft.Extensions.AI** decouples app logic from the model runtime, adds **Foundry Local** as a first-class on-device option, and keeps the sample catalog easy to follow.
 
 ---
 
@@ -42,15 +42,15 @@ This repository is the missing reference: it proves that **Microsoft.Extensions.
 ### 3.1 Goals
 - **G1** — Demonstrate `IChatClient` (Microsoft.Extensions.AI) as the single seam across cloud, Ollama, and Foundry Local, with **zero app-code changes** when switching backends.
 - **G2** — Ship a runnable **Foundry Local** demo: download → load → chat (streaming) → unload, entirely on-device with no Azure subscription.
-- **G3** — Provide **OpenAI-compatible proxies** (BYOK) in front of each backend so any OpenAI SDK/tool can target them by changing only the base URL.
-- **G4** — Capture **usage analytics** (tokens, latency, success/error, backend, model) and visualize them in a Blazor dashboard.
-- **G5** — Orchestrate the whole graph with **.NET Aspire** and emit **OpenTelemetry** traces/metrics/logs.
-- **G6** — Be **demo-safe**: everything starts with one command, uses small default models, and degrades gracefully when a backend is offline.
+- **G3** — Keep every runnable experience under `samples\` with clear, isolated setup instructions.
+- **G4** — Keep the companion Aspire analytics sample runnable and discoverable as `samples\09-analytics-aspire`.
+- **G5** — Preserve the template and local-agent samples as concise demos that are easy to follow in a live session.
+- **G6** — Be **demo-safe**: everything starts with simple commands, uses small default models, and degrades gracefully when a backend is offline.
 
 ### 3.2 Non-goals
 - **NG1** — Not a production-hardened gateway (no multi-tenant auth, rate limiting, or billing beyond illustrative analytics).
 - **NG2** — No model training or fine-tuning.
-- **NG3** — No full RAG / embeddings / MCP / Agent Framework implementation — those live in **OD805**; this repo links to them but does not reimplement them (see §14, Future work).
+- **NG3** — No full RAG / embeddings / MCP / Agent Framework implementation beyond the targeted samples — those live in **OD805**; this repo links to them but does not reimplement them (see §14, Future work).
 - **NG4** — No mobile / MAUI clients.
 
 ---
@@ -68,7 +68,7 @@ This repository is the missing reference: it proves that **Microsoft.Extensions.
 
 ## 5. Session context — how the code maps to the talk
 
-The repository is the "code behind" the 6-block session flow. Copilot should keep this mapping intact so each project can be opened live on stage.
+The repository is the "code behind" the session flow. Copilot should keep this mapping intact so each project can be opened live on stage.
 
 | Session block | Repo artifact |
 |---------------|---------------|
@@ -76,7 +76,7 @@ The repository is the "code behind" the 6-block session flow. Copilot should kee
 | 2. The seam: Microsoft.Extensions.AI | `01-meai-abstraction` |
 | 3. Ollama + MEAI (recap) | `02-ollama` |
 | 4. ⭐ Foundry Local (deep dive) | `03-foundry-local` |
-| 5. Scenario: proxies + analytics | `src/proxies/*`, `src/analytics/*`, `src/AppHost` |
+| 5. Scenario: analytics companion | `samples/09-analytics-aspire/*` |
 | 6. Close + bridge to OD805 | `docs/bridge-to-od805.md`, `docs/resources.md` |
 
 ---
@@ -176,17 +176,16 @@ dotnet-local-ai/
 │  ├─ 01-meai-abstraction/           # G1 — one IChatClient, swap provider by config
 │  ├─ 02-ollama/                     # G1/G3 — Ollama via IChatClient (streaming)
 │  └─ 03-foundry-local/              # G2 — Foundry Local full lifecycle
-├─ src/
-│  ├─ Shared/                        # DTOs, OpenAI contracts, usage-client, telemetry setup
-│  ├─ proxies/
-│  │  ├─ OllamaProxy/                # :5099
-│  │  ├─ FoundryProxy/               # :5100
-│  │  └─ FoundryLocalProxy/          # :5101
-│  ├─ analytics/
-│  │  ├─ Analytics.Api/              # :5110
-│  │  └─ Analytics.Web/              # :5103 (Blazor)
-│  ├─ ProxiesTestApp/                # console: hits each proxy with an identical prompt
-│  └─ AppHost/                       # .NET Aspire orchestration
+├─ samples/
+│  ├─ 09-analytics-aspire/           # Aspire companion sample moved from the old src tree
+│  │  ├─ Shared/                     # DTOs, contracts, telemetry setup
+│  │  ├─ analytics/
+│  │  │  ├─ Analytics.Api/           # :5110
+│  │  │  └─ Analytics.Web/           # :5103 (Blazor)
+│  │  └─ AppHost/                    # .NET Aspire orchestration
+│  ├─ 01-meai-abstraction/
+│  ├─ 02-ollama/
+│  └─ 03-foundry-local/
 ├─ infra/
 │  └─ otel-collector/                # collector config
 └─ tests/
@@ -199,7 +198,7 @@ dotnet-local-ai/
 
 ## 9. Component specifications
 
-### 9.1 `src/Shared` (class library)
+### 9.1 `samples/09-analytics-aspire/Shared` (class library)
 **Purpose:** the contracts and helpers every service reuses.
 - **Requirements**
   - `R-SH-1` Define OpenAI-compatible request/response DTOs (`ChatCompletionRequest`, `ChatCompletionResponse`, `ChatCompletionChunk`, `Message`, `Usage`, `ModelList`).
@@ -264,7 +263,7 @@ All three share the same contract; only the backend differs.
 - `R-TA-1` Send an **identical prompt** to all three proxies and print each response side-by-side with token/latency, proving the OpenAI surface is uniform.
 - `R-TA-2` Configurable target subset (e.g. `--only foundrylocal`) so a demo can skip an offline backend.
 
-### 9.9 `src/AppHost` (.NET Aspire)
+### 9.9 `samples/09-analytics-aspire/AppHost` (.NET Aspire)
 - `R-AH-1` Reference and start: the three proxies, `Analytics.Api`, `Analytics.Web`, and the OTel collector; wire service discovery so `Analytics.Web` → `Analytics.Api` and proxies → `Analytics.Api` resolve by name.
 - `R-AH-2` Expose the Aspire dashboard with all endpoints and live traces.
 - `R-AH-3` Pass backend endpoints/credentials as Aspire configuration/parameters (no secrets in code).
@@ -350,13 +349,13 @@ A milestone is done when: code builds warning-free, its tests pass, `docs/runboo
 
 | Milestone | Scope | Maps to session block |
 |-----------|-------|-----------------------|
-| **M0 — Scaffold** | Solution `.slnx`, `global.json`, `src/Shared` (DTOs + `UsageRecord` + telemetry ext), CI workflow, README skeleton. | — |
+| **M0 — Scaffold** | Solution `.slnx`, `global.json`, `samples/09-analytics-aspire/Shared` (DTOs + `UsageRecord` + telemetry ext), CI workflow, README skeleton. | — |
 | **M1 — The seam** | `samples/01-meai-abstraction` (provider-by-config, streaming). | Block 2 |
 | **M2 — Ollama** | `samples/02-ollama` (sentiment, streaming, offline guidance). | Block 3 |
 | **M3 — Foundry Local** ⭐ | `samples/03-foundry-local` (full lifecycle, EP visibility). | Block 4 |
 | **M4 — Proxies** | `OllamaProxy`, `FoundryProxy`, `FoundryLocalProxy` + `ProxiesTestApp`. | Block 5 |
 | **M5 — Analytics** | `Analytics.Api` + `Analytics.Web` + usage wiring from proxies. | Block 5 |
-| **M6 — Aspire + OTel** | `src/AppHost`, `infra/otel-collector`, one-command run, dashboards. | Block 5 |
+| **M6 — Aspire + OTel** | `samples/09-analytics-aspire/AppHost`, `infra/otel-collector`, one-command run, dashboards. | Block 5 |
 | **M7 — Docs & polish** | `bridge-to-od805.md`, `resources.md`, `why-local.md`, runbook, diagrams. | Blocks 1 & 6 |
 
 Each milestone is independently shippable and demoable.

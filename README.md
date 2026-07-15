@@ -1,11 +1,6 @@
-# Local AI with .NET (Current Scaffold)
+# Local AI with .NET (samples-first)
 
-This repo currently contains the analytics slice of the **Local AI with .NET** demo:
-
-- `src\AppHost` (.NET Aspire orchestration)
-- `src\analytics\Analytics.Api` (Minimal API + SQLite)
-- `src\analytics\Analytics.Web` (Blazor dashboard)
-- `src\Shared` (shared contracts)
+This repository is now organized as a **samples-first Foundry Local demo repo**. The main content lives under `samples\`, with sample `09` carrying the companion Aspire analytics app.
 
 > Full session vision is in `docs\Local-AI-with-dotNET-PRD.md`.
 
@@ -16,64 +11,35 @@ This repo currently contains the analytics slice of the **Local AI with .NET** d
 - (Recommended) Aspire workload/tools for the best AppHost experience:
   - `dotnet workload install aspire`
 
-## Quick start (AppHost, end-to-end)
+## Quick start
 
 From repository root:
 
 ```powershell
 dotnet restore dotnet-local-ai.slnx
 dotnet build dotnet-local-ai.slnx
-aspire start --apphost src\AppHost\AppHost.csproj
 ```
 
-What to expect:
+Then choose a sample under `samples\` and run its README instructions.
 
-- Aspire AppHost starts in the background and reports startup details in the CLI output.
-- `analytics-api` and `analytics-web` start as part of the AppHost graph.
-- Open the `analytics-web` resource from the Aspire dashboard to view the dashboard UI.
+## Sample 09 (companion Aspire analytics app)
 
-## Run services directly (without AppHost)
+The moved analytics app now lives here:
 
-### 1) API
+- `samples\09-analytics-aspire\AppHost`
+- `samples\09-analytics-aspire\analytics\Analytics.Api`
+- `samples\09-analytics-aspire\analytics\Analytics.Web`
+- `samples\09-analytics-aspire\Shared`
+
+Run it with:
 
 ```powershell
-dotnet run --project src\analytics\Analytics.Api\Analytics.Api.csproj
+aspire start --apphost samples\09-analytics-aspire\AppHost\AppHost.csproj
 ```
-
-Expected local endpoints:
-
-- `https://localhost:7013/`
-- `https://localhost:7013/health`
-- `https://localhost:7013/api/usage`
-- `https://localhost:7013/api/usage/summary`
-
-### 2) Web
-
-In a second terminal:
-
-```powershell
-dotnet run --project src\analytics\Analytics.Web\Analytics.Web.csproj
-```
-
-Expected UI URL:
-
-- `https://localhost:7025/`
-
-## Seed demo data (optional)
-
-Post one usage record:
-
-```powershell
-curl -k -X POST https://localhost:7013/api/usage/ingest `
-  -H "Content-Type: application/json" `
-  -d "{\"proxyName\":\"OllamaProxy\",\"backend\":\"ollama\",\"model\":\"llama3.2:1b\",\"promptTokens\":32,\"completionTokens\":76,\"totalTokens\":108,\"latencyMs\":184,\"success\":true}"
-```
-
-Then open `https://localhost:7025/` and confirm KPI cards and the recent requests table show data.
 
 ## Foundry Local samples
 
-Seven standalone console samples are available under `samples\`:
+Nine standalone samples/projects are available under `samples\`:
 
 - `01-foundrylocal-hello-world` — non-streaming single prompt/response with preflight checks.
 - `02-foundrylocal-streaming` — streaming token-by-token output with prompt variants (`eli5`, `bullets`).
@@ -82,6 +48,8 @@ Seven standalone console samples are available under `samples\`:
 - `05-foundrylocal-audio-transcription` — Microsoft Learn parity sample for **native SDK audio transcription** (download/load whisper model, prefer CPU variant, stream transcript output from an audio file).
 - `06-foundrylocal-native-auto-chat` — native SDK sample that resolves model alias, chooses best variant for machine capabilities (GPU/CPU), auto-downloads, asks a question with quality guard, and unloads.
 - `07-foundrylocal-agent-tools` — local agent-style sample using `ElBruno.MAF.FoundryLocal.Adapter` + `Microsoft.Extensions.AI` tool invocation with tools defined in a separate file.
+- `08-aichatweb-azure-vs-local` — side-by-side AI Chat Web template comparison: `01-aichatweb-azure` (cloud baseline) and `02-aichatweb-local` (Foundry Local chat + local embeddings).
+- `09-analytics-aspire` — companion Aspire analytics app moved from `src\` into the samples folder.
 
 ### Prerequisites and environment variables
 
@@ -182,6 +150,15 @@ dotnet run
 # optional non-interactive override:
 $env:FOUNDRY_LOCAL_CLEANUP_MODEL="true"
 dotnet run
+
+# 08 - AI Chat Web template (Azure vs Local, Aspire)
+cd ..\08-aichatweb-azure-vs-local\01-aichatweb-azure
+dotnet run --project .\01-aichatweb-azure.AppHost\01-aichatweb-azure.AppHost.csproj
+# configure Azure OpenAI values as prompted by Aspire local provisioning
+
+cd ..\02-aichatweb-local
+foundry model run phi-4-mini
+dotnet run --project .\02-aichatweb-local.AppHost\02-aichatweb-local.AppHost.csproj
 ```
 
 ### Scenario 07 details (local agent + tools)
@@ -196,6 +173,16 @@ dotnet run
 
 Detailed flow, expected output, and troubleshooting:
 [docs\foundry-local-samples-runbook.md](docs/foundry-local-samples-runbook.md)
+
+### Scenario 08 details (AI Chat Web template: Azure vs Local)
+
+- Located under `samples\08-aichatweb-azure-vs-local\`.
+- Both outputs are generated with Aspire: `dotnet new aichatweb ... --aspire`.
+- `01-aichatweb-azure` is the cloud baseline from `dotnet new aichatweb --provider azureopenai --vector-store local --aspire`.
+- `02-aichatweb-local` uses the same Aspire template structure but swaps only the two provider seams:
+  - Chat `IChatClient` -> Foundry Local (`ElBruno.MAF.FoundryLocal.Adapter`)
+  - Embedding `IEmbeddingGenerator` -> `ElBruno.LocalEmbeddings`
+- AppHost orchestrates each variant; UI, ingestion, and local vector store flow stay aligned with the template.
 
 ## Troubleshooting
 

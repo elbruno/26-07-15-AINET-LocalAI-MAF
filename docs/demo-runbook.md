@@ -17,7 +17,7 @@ Expected outcome:
 ## 2) Start the full graph with AppHost
 
 ```powershell
-aspire start --apphost src\AppHost\AppHost.csproj
+aspire start --apphost samples\09-analytics-aspire\AppHost\AppHost.csproj
 ```
 
 Expected outcome:
@@ -77,13 +77,13 @@ Expected outcome:
 Terminal 1:
 
 ```powershell
-dotnet run --project src\analytics\Analytics.Api\Analytics.Api.csproj
+dotnet run --project samples\09-analytics-aspire\analytics\Analytics.Api\Analytics.Api.csproj
 ```
 
 Terminal 2:
 
 ```powershell
-dotnet run --project src\analytics\Analytics.Web\Analytics.Web.csproj
+dotnet run --project samples\09-analytics-aspire\analytics\Analytics.Web\Analytics.Web.csproj
 ```
 
 Then browse `https://localhost:7025/`.

@@ -15,3 +15,10 @@ TestResults/
 *.user
 *.suo
 .vs/
+**/vector-store.db
+**/vector-store.db-shm
+**/vector-store.db-wal
+**/ingestion-cache/
+**/ingestioncache/
+**/appsettings.Local.json
+**/appsettings.Secrets.json

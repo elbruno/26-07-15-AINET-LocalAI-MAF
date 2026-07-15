@@ -1,0 +1,34 @@
+
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{B658D197-0F35-415C-A4CF-1F35FD444DEA}") = "02-aichatweb-local.AppHost", "02-aichatweb-local.AppHost\02-aichatweb-local.AppHost.csproj", "{8719D40D-E0EF-436E-B5BA-E78F5A00DF0A}"
+EndProject
+Project("{B658D197-0F35-415C-A4CF-1F35FD444DEA}") = "02-aichatweb-local.ServiceDefaults", "02-aichatweb-local.ServiceDefaults\02-aichatweb-local.ServiceDefaults.csproj", "{6BF5CD51-E8C1-40E9-8BA6-FB373E959220}"
+EndProject
+Project("{B658D197-0F35-415C-A4CF-1F35FD444DEA}") = "02-aichatweb-local.Web", "02-aichatweb-local.Web\02-aichatweb-local.Web.csproj", "{39338921-0F7B-4427-8882-F7B6B970F6F9}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8719D40D-E0EF-436E-B5BA-E78F5A00DF0A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8719D40D-E0EF-436E-B5BA-E78F5A00DF0A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8719D40D-E0EF-436E-B5BA-E78F5A00DF0A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8719D40D-E0EF-436E-B5BA-E78F5A00DF0A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6BF5CD51-E8C1-40E9-8BA6-FB373E959220}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6BF5CD51-E8C1-40E9-8BA6-FB373E959220}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6BF5CD51-E8C1-40E9-8BA6-FB373E959220}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6BF5CD51-E8C1-40E9-8BA6-FB373E959220}.Release|Any CPU.Build.0 = Release|Any CPU
+		{39338921-0F7B-4427-8882-F7B6B970F6F9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{39338921-0F7B-4427-8882-F7B6B970F6F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{39338921-0F7B-4427-8882-F7B6B970F6F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{39338921-0F7B-4427-8882-F7B6B970F6F9}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

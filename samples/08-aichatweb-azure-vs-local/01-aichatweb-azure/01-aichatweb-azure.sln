@@ -1,0 +1,34 @@
+
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{7359E4C4-9CF0-4F32-8485-50B71F0450A7}") = "01-aichatweb-azure.AppHost", "01-aichatweb-azure.AppHost\01-aichatweb-azure.AppHost.csproj", "{91555917-84AA-4A43-A1B8-09A04EFCDDB1}"
+EndProject
+Project("{7359E4C4-9CF0-4F32-8485-50B71F0450A7}") = "01-aichatweb-azure.ServiceDefaults", "01-aichatweb-azure.ServiceDefaults\01-aichatweb-azure.ServiceDefaults.csproj", "{ADF202D3-0323-4CDD-BAD5-B8C4393131C7}"
+EndProject
+Project("{7359E4C4-9CF0-4F32-8485-50B71F0450A7}") = "01-aichatweb-azure.Web", "01-aichatweb-azure.Web\01-aichatweb-azure.Web.csproj", "{8A204E13-F386-4089-A54B-2800AF06A5E0}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{91555917-84AA-4A43-A1B8-09A04EFCDDB1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{91555917-84AA-4A43-A1B8-09A04EFCDDB1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{91555917-84AA-4A43-A1B8-09A04EFCDDB1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{91555917-84AA-4A43-A1B8-09A04EFCDDB1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ADF202D3-0323-4CDD-BAD5-B8C4393131C7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ADF202D3-0323-4CDD-BAD5-B8C4393131C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ADF202D3-0323-4CDD-BAD5-B8C4393131C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ADF202D3-0323-4CDD-BAD5-B8C4393131C7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8A204E13-F386-4089-A54B-2800AF06A5E0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8A204E13-F386-4089-A54B-2800AF06A5E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8A204E13-F386-4089-A54B-2800AF06A5E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8A204E13-F386-4089-A54B-2800AF06A5E0}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

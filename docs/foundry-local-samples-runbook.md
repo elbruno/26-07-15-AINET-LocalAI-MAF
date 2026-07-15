@@ -253,7 +253,53 @@ Expected output includes:
 - `Agent response:`
 - `Delete downloaded model? [Y/n]`
 
-## 9) Troubleshooting
+## 9) Run sample 08 (AI Chat Web template: Azure vs Local, Aspire)
+
+This scenario has two Aspire outputs under `samples\08-aichatweb-azure-vs-local\`.
+
+Run Azure baseline:
+
+```powershell
+cd ..\08-aichatweb-azure-vs-local\01-aichatweb-azure
+dotnet run --project .\01-aichatweb-azure.AppHost\01-aichatweb-azure.AppHost.csproj
+```
+
+Run local baseline:
+
+```powershell
+foundry model run phi-4-mini
+cd ..\02-aichatweb-local
+dotnet run --project .\02-aichatweb-local.AppHost\02-aichatweb-local.AppHost.csproj
+```
+
+Expected behavior:
+
+- AppHost + Web projects start for each variant.
+- Azure variant uses Azure OpenAI provisioning from AppHost.
+- Local variant uses Foundry Local chat + `ElBruno.LocalEmbeddings` with the same UI and ingestion flow.
+- Both use the local Sqlite vector store for retrieved-citation answers.
+
+## 10) Run sample 09 (companion Aspire analytics app)
+
+This sample now lives under `samples\09-analytics-aspire\`.
+
+```powershell
+aspire start --apphost samples\09-analytics-aspire\AppHost\AppHost.csproj
+```
+
+Direct runs:
+
+```powershell
+dotnet run --project samples\09-analytics-aspire\analytics\Analytics.Api\Analytics.Api.csproj
+dotnet run --project samples\09-analytics-aspire\analytics\Analytics.Web\Analytics.Web.csproj
+```
+
+Expected behavior:
+
+- Aspire starts the analytics API and web dashboard from the moved sample folder.
+- The dashboard can be opened from the Aspire UI or directly at the local HTTPS endpoint.
+
+## 11) Troubleshooting
 
 ### Service offline / unreachable
 
