@@ -36,10 +36,24 @@ The header status shows one of these states:
 - **Delete downloaded model** (trash icon)  
   Unloads and removes cached model files. Disabled when model is not downloaded.
 
+## Recommended user flow
+
+Use this sequence for the most reliable first-run experience:
+
+1. Open the app and check model status text.
+2. Click **Prepare model** once.
+3. Wait until status changes to **Loaded**.
+4. Ask one of the quick sample questions.
+5. If needed, click **Refresh model status**.
+6. Use **Open model location** only for inspection, and **Delete downloaded model** only when you want to force a clean re-download.
+
 ## Why this fixed the prior issue
 
 Previous status refresh used only diagnostics snapshot values, which can stay stale when no model operation runs.  
 Now refresh actively queries model cache/load state, and **Prepare model** performs explicit download + load.
+
+Additionally, status and model actions now ensure `FoundryLocalManager` is initialized before catalog/model calls.  
+This removes the startup error: `FoundryLocalManager has not been created. Call CreateAsync first.`
 
 ## Troubleshooting
 
@@ -54,3 +68,9 @@ If status is **Not downloaded** and Prepare fails:
 1. Check the message appended in chat (error detail).
 2. Verify local disk access and network availability for model download.
 3. Click **Refresh model status** after resolving the issue.
+
+If status is **Status unavailable**:
+
+1. Click **Refresh model status** once (manager initialization is retried automatically).
+2. Click **Prepare model**.
+3. If still failing, restart the app host and retry.

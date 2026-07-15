@@ -17,9 +17,10 @@ dotnet run --project .\02-aichatweb-local.AppHost\02-aichatweb-local.AppHost.csp
 
 Then in the web app:
 
-1. Use **Prepare model** (download icon) to download/load the configured model if needed.
-2. Use **Refresh model status** (refresh icon) to re-check the local model cache/load state.
-3. Optional model actions:
+1. Click **Prepare model** (download icon) once to initialize Foundry Local manager, then download/load the configured model if needed.
+2. Wait for **Loaded** status.
+3. Use **Refresh model status** (refresh icon) any time to re-check local model cache/load state.
+4. Optional model actions:
    - **Open model location** (folder icon) when a model is downloaded.
    - **Delete downloaded model** (trash icon) to clear local cache.
 

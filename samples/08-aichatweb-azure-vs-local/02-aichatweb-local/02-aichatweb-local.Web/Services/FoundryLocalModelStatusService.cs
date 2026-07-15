@@ -1,5 +1,6 @@
 using ElBruno.MAF.FoundryLocal;
 using Microsoft.AI.Foundry.Local;
+using Microsoft.Extensions.Logging.Abstractions;
 using System.Diagnostics;
 
 namespace _02_aichatweb_local.Web.Services;
@@ -8,6 +9,8 @@ public sealed class FoundryLocalModelStatusService(
     string configuredModelAlias,
     FoundryLocalModelLifecycleService lifecycle)
 {
+    private static readonly SemaphoreSlim ManagerInitLock = new(1, 1);
+
     public FoundryLocalModelStatus GetCurrentStatus()
     {
         try
@@ -34,6 +37,7 @@ public sealed class FoundryLocalModelStatusService(
     {
         try
         {
+            await EnsureManagerInitializedAsync(cancellationToken);
             var snapshot = lifecycle.GetDiagnosticsSnapshot();
             var resolvedAlias = string.IsNullOrWhiteSpace(snapshot.ModelAlias)
                 ? configuredModelAlias
@@ -77,6 +81,7 @@ public sealed class FoundryLocalModelStatusService(
     {
         try
         {
+            await EnsureManagerInitializedAsync(cancellationToken);
             await lifecycle.DownloadModelAsync(configuredModelAlias, cancellationToken);
 
             var model = await ResolveModelAsync(cancellationToken);
@@ -110,6 +115,7 @@ public sealed class FoundryLocalModelStatusService(
     {
         try
         {
+            await EnsureManagerInitializedAsync(cancellationToken);
             var model = await ResolveModelAsync(cancellationToken);
             if (model is null)
             {
@@ -142,6 +148,7 @@ public sealed class FoundryLocalModelStatusService(
     {
         try
         {
+            await EnsureManagerInitializedAsync(cancellationToken);
             var model = await ResolveModelAsync(cancellationToken);
             if (model is null)
             {
@@ -169,6 +176,33 @@ public sealed class FoundryLocalModelStatusService(
     {
         var catalog = await FoundryLocalManager.Instance.GetCatalogAsync(cancellationToken);
         return await catalog.GetModelAsync(configuredModelAlias, cancellationToken);
+    }
+
+    private static async Task EnsureManagerInitializedAsync(CancellationToken cancellationToken)
+    {
+        if (FoundryLocalManager.IsInitialized)
+        {
+            return;
+        }
+
+        await ManagerInitLock.WaitAsync(cancellationToken);
+        try
+        {
+            if (!FoundryLocalManager.IsInitialized)
+            {
+                await FoundryLocalManager.CreateAsync(
+                    new Configuration
+                    {
+                        AppName = "02-aichatweb-local.Web"
+                    },
+                    NullLogger.Instance,
+                    cancellationToken);
+            }
+        }
+        finally
+        {
+            ManagerInitLock.Release();
+        }
     }
 
     private static string BuildStatusText(FoundryLocalDiagnosticsSnapshot snapshot)

@@ -1,5 +1,4 @@
 ﻿@page "/"
-@using System.ComponentModel
 @inject IChatClient ChatClient
 @inject NavigationManager Nav
 @inject SemanticSearch Search
@@ -43,21 +42,14 @@
 
 @code {
     private const string SystemPrompt = @"
-        You are an assistant who answers questions about information you retrieve.
-        Do not answer questions about anything else.
-        Use only simple markdown to format your responses.
+        You are an assistant that answers using ONLY the provided retrieved context.
+        If context is missing or insufficient, say you don't have enough context in the loaded documents.
+        Do not use external knowledge.
+        Use only simple markdown.
 
-        Use the LoadDocuments tool to prepare for searches before answering any questions.
-
-        Use the Search tool to find relevant information. When you do this, end your
-        reply with citations in the special XML format:
-
+        End your reply with citations in this exact XML format when there are results:
         <citation filename='string'>exact quote here</citation>
-
-        Always include the citation in your response if there are results.
-
-        The quote must be max 5 words, taken word-for-word from the search result, and is the basis for why the citation is relevant.
-        Don't refer to the presence of citations; just emit these tags right at the end, with no surrounding text.
+        The quote must be max 5 words and copied exactly from retrieved context.
         ";
 
     private int statefulMessageCount;
@@ -85,17 +77,7 @@
     {
         statefulMessageCount = 0;
         messages.Add(new(ChatRole.System, SystemPrompt));
-        chatOptions.Tools =
-        [
-            AIFunctionFactory.Create(
-                LoadDocumentsAsync,
-                "LoadDocuments",
-                "Loads the documents needed for performing searches. Must be completed before a search can be executed, but only needs to be completed once."),
-            AIFunctionFactory.Create(
-                SearchAsync,
-                "Search",
-                "Searches for information using a phrase or keyword across loaded documents.")
-        ];
+        await Search.LoadDocumentsAsync();
         await RefreshModelStatusAsync();
     }
 
@@ -115,11 +97,16 @@
             return;
         }
 
+        var requestMessages = new List<ChatMessage>(messages.Skip(statefulMessageCount));
+        var question = userMessage.Text ?? string.Empty;
+        var retrievedContext = await BuildRetrievedContextAsync(question);
+        requestMessages.Add(new ChatMessage(ChatRole.System, retrievedContext));
+
         // Stream and display a new response from the IChatClient
         var responseText = new TextContent("");
         currentResponseMessage = new ChatMessage(ChatRole.Assistant, [responseText]);
         currentResponseCancellation = new();
-        await foreach (var update in ChatClient.GetStreamingResponseAsync(messages.Skip(statefulMessageCount), chatOptions, currentResponseCancellation.Token))
+        await foreach (var update in ChatClient.GetStreamingResponseAsync(requestMessages, chatOptions, currentResponseCancellation.Token))
         {
             messages.AddMessages(update, filter: c => c is not TextContent);
 
@@ -151,6 +138,23 @@
         currentResponseMessage = null;
         chatSuggestions?.Update(messages);
         await RefreshModelStatusAsync();
+    }
+
+    private async Task<string> BuildRetrievedContextAsync(string question)
+    {
+        var results = await Search.SearchAsync(question, documentIdFilter: null, maxResults: 5);
+        if (results.Count == 0)
+        {
+            return "Retrieved context: none. If there is no relevant context, say you do not have enough context.";
+        }
+
+        var lines = results.Select(result =>
+            $"- filename: {result.DocumentId}\n  excerpt: {result.Text}");
+
+        return
+            "Retrieved context:\n" +
+            string.Join("\n", lines) +
+            "\n\nUse only this context for the answer.";
     }
 
     private void CancelAnyCurrentResponse()
@@ -257,23 +261,6 @@
             isPreparingModel = false;
             await InvokeAsync(StateHasChanged);
         }
-    }
-
-    [Description("Loads the documents needed for performing searches. Must be completed before a search can be executed, but only needs to be completed once.")]
-    private async Task LoadDocumentsAsync()
-    {
-        await InvokeAsync(StateHasChanged);
-        await Search.LoadDocumentsAsync();
-    }
-
-    [Description("Searches for information using a phrase or keyword. Relies on documents already being loaded.")]
-    private async Task<IEnumerable<string>> SearchAsync(
-        [Description("The phrase to search for.")] string searchPhrase)
-    {
-        await InvokeAsync(StateHasChanged);
-        var results = await Search.SearchAsync(searchPhrase, documentIdFilter: null, maxResults: 5);
-        return results.Select(result =>
-            $"<result filename=\"{result.DocumentId}\">{result.Text}</result>");
     }
 
     public void Dispose()
