@@ -236,6 +236,7 @@ cd ..\07-foundrylocal-agent-tools
 # optional overrides (defaults shown)
 $env:FOUNDRY_LOCAL_MODEL="phi-3.5-mini"
 $env:FOUNDRY_LOCAL_AGENT_PROMPT="I am in Pacific Standard Time. Bill is 42.50 with 18% tip. Use tools and return JSON."
+$env:FOUNDRY_LOCAL_CLEANUP_MODEL="false"
 dotnet restore
 dotnet run
 ```
@@ -243,9 +244,12 @@ dotnet run
 Expected output includes:
 
 - `Foundry Local agent + tools sample`
-- `Step 1/5 ... Step 5/5`
+- `Step 1/6 ... Step 6/6`
+- `Model cache: already available locally.` or `Model cache: not present. It will be downloaded.`
 - `Registered tools: get_time_in_timezone, calculate_tip, get_demo_fact`
+- `[tool:...]` console logs showing each tool invocation and result
 - `Agent response:`
+- `Delete downloaded model? [Y/n]`
 
 ## 9) Troubleshooting
 

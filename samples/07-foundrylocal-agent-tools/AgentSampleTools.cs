@@ -25,37 +25,54 @@ internal static class AgentSampleTools
 
     private static string GetTimeInTimezone(string timezoneId)
     {
+        Console.WriteLine($"[tool:get_time_in_timezone] called with timezoneId='{timezoneId}'");
+
         if (string.IsNullOrWhiteSpace(timezoneId) ||
             timezoneId.Equals("local", StringComparison.OrdinalIgnoreCase))
         {
-            return DateTimeOffset.Now.ToString("O");
+            var result = DateTimeOffset.Now.ToString("O");
+            Console.WriteLine($"[tool:get_time_in_timezone] result='{result}'");
+            return result;
         }
 
         try
         {
             var tz = TimeZoneInfo.FindSystemTimeZoneById(timezoneId);
-            return TimeZoneInfo.ConvertTime(DateTimeOffset.Now, tz).ToString("O");
+            var result = TimeZoneInfo.ConvertTime(DateTimeOffset.Now, tz).ToString("O");
+            Console.WriteLine($"[tool:get_time_in_timezone] result='{result}'");
+            return result;
         }
         catch
         {
-            return DateTimeOffset.Now.ToString("O");
+            var result = DateTimeOffset.Now.ToString("O");
+            Console.WriteLine($"[tool:get_time_in_timezone] invalid timezone, fallback result='{result}'");
+            return result;
         }
     }
 
     private static string CalculateTip(double amount, double percentage)
     {
+        Console.WriteLine($"[tool:calculate_tip] called with amount={amount}, percentage={percentage}");
         var tip = Math.Round(amount * percentage / 100.0, 2, MidpointRounding.AwayFromZero);
         var total = Math.Round(amount + tip, 2, MidpointRounding.AwayFromZero);
-        return $"tip={tip:F2};total={total:F2}";
+        var result = $"tip={tip:F2};total={total:F2}";
+        Console.WriteLine($"[tool:calculate_tip] result='{result}'");
+        return result;
     }
 
     private static string GetDemoFact(string topic)
     {
+        Console.WriteLine($"[tool:get_demo_fact] called with topic='{topic}'");
+
         if (string.IsNullOrWhiteSpace(topic))
         {
-            return "Local AI keeps model execution on your machine for privacy and low latency.";
+            const string fallback = "Local AI keeps model execution on your machine for privacy and low latency.";
+            Console.WriteLine($"[tool:get_demo_fact] result='{fallback}'");
+            return fallback;
         }
 
-        return $"Demo fact about {topic.Trim()}: local agent workflows can use tools without a REST endpoint.";
+        var result = $"Demo fact about {topic.Trim()}: local agent workflows can use tools without a REST endpoint.";
+        Console.WriteLine($"[tool:get_demo_fact] result='{result}'");
+        return result;
     }
 }

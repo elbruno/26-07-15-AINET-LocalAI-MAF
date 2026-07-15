@@ -173,9 +173,23 @@ cd ..\07-foundrylocal-agent-tools
 # optional overrides (defaults shown)
 $env:FOUNDRY_LOCAL_MODEL="phi-3.5-mini"
 $env:FOUNDRY_LOCAL_AGENT_PROMPT="I am in Pacific Standard Time. Bill is 42.50 with 18% tip. Use tools and return JSON."
+$env:FOUNDRY_LOCAL_CLEANUP_MODEL="false"
 dotnet restore
 dotnet run
+# end-of-run prompt defaults to Yes: "Delete downloaded model? [Y/n]"
+# optional non-interactive override:
+$env:FOUNDRY_LOCAL_CLEANUP_MODEL="true"
+dotnet run
 ```
+
+### Scenario 07 details (local agent + tools)
+
+- Uses `ElBruno.MAF.FoundryLocal.Adapter` to run local Foundry model execution through `Microsoft.Extensions.AI` (`IChatClient`) without an OpenAI-compatible REST URL.
+- Registers tool functions from `samples\07-foundrylocal-agent-tools\AgentSampleTools.cs` to keep `Program.cs` focused on the demo flow.
+- Includes three sample tools: `get_time_in_timezone`, `calculate_tip`, `get_demo_fact`.
+- Logs each tool invocation to the console so you can see tools being called live.
+- Shows model cache status at startup (already cached vs will be downloaded).
+- Runs one agent turn with function-invocation middleware and returns a tool-augmented response.
 
 Detailed flow, expected output, and troubleshooting:
 [docs\foundry-local-samples-runbook.md](docs/foundry-local-samples-runbook.md)
