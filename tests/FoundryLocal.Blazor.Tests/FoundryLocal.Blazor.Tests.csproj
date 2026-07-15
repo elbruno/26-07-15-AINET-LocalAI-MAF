@@ -1,0 +1,32 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <IsPackable>false</IsPackable>
+    <!-- Deliberately does NOT reference the FoundryLocal.Blazor RCL: that RCL is
+         RID-locked to win-x64 and carries native Foundry Local assets, so a bUnit
+         render test against it cannot restore/build on the ubuntu CI runner. This
+         project instead reads ChatHeader.razor as source and enforces the Razor
+         boolean-attribute contract that the disabled-button fix established, so the
+         regression is guarded on every platform. -->
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
+    <PackageReference Include="xunit" Version="2.9.3" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="3.1.4">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Guard the real component source, copied next to the test assembly. -->
+    <Content Include="..\..\samples\08-aichatweb-azure-vs-local\FoundryLocal.Blazor\ChatHeader.razor" Link="TestData\ChatHeader.razor">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+</Project>

@@ -21,11 +21,14 @@
   <Folder Name="/tests/">
     <Project Path="tests/Analytics.Tests/Analytics.Tests.csproj" />
     <Project Path="tests/Shared.Tests/Shared.Tests.csproj" />
+    <Project Path="tests/AiChatWeb.Local.Tests/AiChatWeb.Local.Tests.csproj" />
+    <Project Path="tests/FoundryLocal.Blazor.Tests/FoundryLocal.Blazor.Tests.csproj" />
   </Folder>
   <Folder Name="/samples/">
     <Project Path="samples/04-foundrylocal-native-chat-completions/FoundryLocal.NativeChatCompletions.csproj" />
     <Project Path="samples/05-foundrylocal-audio-transcription/FoundryLocal.AudioTranscription.csproj" />
     <Project Path="samples/06-foundrylocal-native-auto-chat/FoundryLocal.NativeAutoChat.csproj" />
     <Project Path="samples/07-foundrylocal-agent-tools/FoundryLocal.AgentTools.csproj" />
+    <Project Path="samples/10-live-speech-to-text/LiveSpeechToText.csproj" />
   </Folder>
 </Solution>

@@ -45,7 +45,8 @@ builder.Services.AddChatClient(chatClient)
     })
     .UseOpenTelemetry(configure: c =>
         c.EnableSensitiveData = builder.Environment.IsDevelopment());
-builder.Services.AddEmbeddingGenerator(embeddingGenerator);
+builder.Services.AddEmbeddingGenerator(embeddingGenerator)
+    .UseOpenTelemetry();
 
 var vectorStorePath = Path.Combine(AppContext.BaseDirectory, "vector-store.db");
 var vectorStoreConnectionString = $"Data Source={vectorStorePath}";

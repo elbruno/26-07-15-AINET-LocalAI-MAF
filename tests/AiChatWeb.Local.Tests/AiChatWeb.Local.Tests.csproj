@@ -1,0 +1,30 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
+    <PackageReference Include="xunit" Version="2.9.3" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="3.1.4">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.DataIngestion" Version="10.7.0-preview.1.26309.5" />
+    <PackageReference Include="Microsoft.Extensions.DataIngestion.Markdig" Version="10.7.0-preview.1.26309.5" />
+    <PackageReference Include="Microsoft.ML.Tokenizers" Version="1.0.1" />
+    <PackageReference Include="Microsoft.ML.Tokenizers.Data.O200kBase" Version="1.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Reuse the real sample document so the test guards behavior over actual content. -->
+    <Content Include="..\..\samples\08-aichatweb-azure-vs-local\02-aichatweb-local\02-aichatweb-local.Web\wwwroot\Data\Example_GPS_Watch.md" Link="TestData\Example_GPS_Watch.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+</Project>

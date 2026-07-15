@@ -24,7 +24,7 @@ Then choose a sample under `samples\` and run its README instructions.
 
 ## Foundry Local samples
 
-Nine standalone samples/projects are available under `samples\`:
+Ten standalone samples/projects are available under `samples\`:
 
 - `01-foundrylocal-hello-world` — non-streaming single prompt/response with preflight checks.
 - `02-foundrylocal-streaming` — streaming token-by-token output with prompt variants (`eli5`, `bullets`).
@@ -35,6 +35,7 @@ Nine standalone samples/projects are available under `samples\`:
 - `07-foundrylocal-agent-tools` — local agent-style sample using `ElBruno.MAF.FoundryLocal.Adapter` + `Microsoft.Extensions.AI` tool invocation with tools defined in a separate file.
 - `08-aichatweb-azure-vs-local` — side-by-side AI Chat Web template comparison: `01-aichatweb-azure` (cloud baseline) and `02-aichatweb-local` (Foundry Local chat + local embeddings).
 - `09-analytics-aspire` — companion Aspire analytics app moved from `src\` into the samples folder.
+- `10-live-speech-to-text` — live **microphone → text** transcription running fully locally. Auto-downloads an ONNX Whisper model from HuggingFace via `ElBruno.Whisper` / `ElBruno.HuggingFace.Downloader` (Whisper/nemotron are not in the Foundry Local catalog) and captures the mic with NAudio. Windows-only.
 
 ### Prerequisites and environment variables
 
@@ -144,6 +145,14 @@ dotnet run --project .\01-aichatweb-azure.AppHost\01-aichatweb-azure.AppHost.csp
 cd ..\02-aichatweb-local
 foundry model run phi-4-mini
 dotnet run --project .\02-aichatweb-local.AppHost\02-aichatweb-local.AppHost.csproj
+
+# 10 - live speech-to-text (mic -> text, local Whisper; Windows-only)
+cd ..\..\10-live-speech-to-text
+# optional overrides (defaults shown)
+$env:WHISPER_MODEL="tiny.en"
+$env:WHISPER_LANGUAGE="en"
+dotnet run
+# model auto-downloads from HuggingFace on first run; then speak and press ENTER to stop
 ```
 
 ## Troubleshooting
