@@ -26,11 +26,24 @@ var chatClient = new ChatClient(
     new ApiKeyCredential(settings.ApiKey),
     new OpenAIClientOptions { Endpoint = new Uri(settings.BaseUrl) });
 
-var completion = await chatClient.CompleteChatAsync(
-[
-    new SystemChatMessage("You are a concise assistant."),
-    new UserChatMessage("Say hello from Foundry Local in one short sentence.")
-]);
+ClientResult<ChatCompletion> completion;
+try
+{
+    completion = await chatClient.CompleteChatAsync(
+    [
+        new SystemChatMessage("You are a concise assistant."),
+        new UserChatMessage("Say hello from Foundry Local in one short sentence.")
+    ]);
+}
+catch (ClientResultException ex)
+{
+    Console.Error.WriteLine();
+    Console.Error.WriteLine(
+        $"Model invocation failed for '{preflight.SelectedModel}' with HTTP {(int)ex.Status} ({ex.Status}).");
+    Console.Error.WriteLine("This usually means the selected model is not chat-capable or is not loaded.");
+    Console.Error.WriteLine("Try setting FOUNDRY_LOCAL_MODEL to an installed chat model.");
+    return 1;
+}
 
 var response = string.Concat(completion.Value.Content.Select(c => c.Text)).Trim();
 Console.WriteLine();

@@ -20,7 +20,7 @@ Environment variables (all optional):
 - `FOUNDRY_LOCAL_MODEL` (default: `qwen2.5-0.5b`)
 - `FOUNDRY_LOCAL_API_KEY` (default: `local-dev-key`)
 
-If `FOUNDRY_LOCAL_MODEL` is unavailable, the app falls back to the first model returned by `/v1/models`.
+If `FOUNDRY_LOCAL_MODEL` is unavailable, the app falls back to the first **chat-capable** model it can detect from `/v1/models`.
 
 ## Run
 

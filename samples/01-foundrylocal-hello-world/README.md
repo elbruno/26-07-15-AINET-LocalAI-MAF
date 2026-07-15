@@ -17,7 +17,7 @@ Environment variables (all optional):
 - `FOUNDRY_LOCAL_MODEL` (default: `qwen2.5-0.5b`)
 - `FOUNDRY_LOCAL_API_KEY` (default: `local-dev-key`)
 
-If `FOUNDRY_LOCAL_MODEL` is unavailable, the sample falls back to the first model returned by `/v1/models`.
+If `FOUNDRY_LOCAL_MODEL` is unavailable, the sample falls back to the first **chat-capable** model it can detect from `/v1/models`.
 
 ## Run
 
@@ -55,6 +55,14 @@ Try this:
      $env:FOUNDRY_LOCAL_BASE_URL="http://127.0.0.1:5273/v1"
      $env:FOUNDRY_LOCAL_MODEL="qwen2.5-0.5b"
      $env:FOUNDRY_LOCAL_API_KEY="local-dev-key"
+```
+
+## Expected output (model invocation failure)
+
+```text
+Model invocation failed for '...' with HTTP 500 (InternalServerError).
+This usually means the selected model is not chat-capable or is not loaded.
+Try setting FOUNDRY_LOCAL_MODEL to an installed chat model.
 ```
 
 ## Assumptions
