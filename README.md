@@ -161,30 +161,6 @@ foundry model run phi-4-mini
 dotnet run --project .\02-aichatweb-local.AppHost\02-aichatweb-local.AppHost.csproj
 ```
 
-### Scenario 07 details (local agent + tools)
-
-- Uses `ElBruno.MAF.FoundryLocal.Adapter` to run local Foundry model execution through `Microsoft.Extensions.AI` (`IChatClient`) without an OpenAI-compatible REST URL.
-- Registers tool functions from `samples\07-foundrylocal-agent-tools\AgentSampleTools.cs` to keep `Program.cs` focused on the demo flow.
-- Includes three sample tools: `get_time_in_timezone`, `calculate_tip`, `get_demo_fact`.
-- Logs each tool invocation to the console so you can see tools being called live.
-- Shows model cache status at startup (already cached vs will be downloaded).
-- Prints rerun guidance with `FOUNDRY_LOCAL_AGENT_FALLBACK_MODEL` when the selected model returns no tool calls.
-- Runs one agent turn with function-invocation middleware and returns a tool-augmented response.
-
-Detailed flow, expected output, and troubleshooting:
-[docs\foundry-local-samples-runbook.md](docs/foundry-local-samples-runbook.md)
-
-### Scenario 08 details (AI Chat Web template: Azure vs Local)
-
-- Located under `samples\08-aichatweb-azure-vs-local\`.
-- Both outputs are generated with Aspire: `dotnet new aichatweb ... --aspire`.
-- Document-to-Markdown conversion is in-process with `ElBruno.MarkItDotNet`; no Docker MarkItDown container is required.
-- `01-aichatweb-azure` is the cloud baseline from `dotnet new aichatweb --provider azureopenai --vector-store local --aspire`.
-- `02-aichatweb-local` uses the same Aspire template structure but swaps only the two provider seams:
-  - Chat `IChatClient` -> Foundry Local (`ElBruno.MAF.FoundryLocal.Adapter`)
-  - Embedding `IEmbeddingGenerator` -> `ElBruno.LocalEmbeddings`
-- AppHost orchestrates each variant; UI, ingestion, and local vector store flow stay aligned with the template.
-
 ## Troubleshooting
 
 - **SDK not found / wrong version:** run `dotnet --info` and ensure SDK `10.0.301` is installed.
