@@ -1,6 +1,0 @@
-C:\src\26-07-15-AINET-LocalAI-MAF\samples\04-foundrylocal-native-chat-completions\obj\Debug\net8.0-windows10.0.26100\FoundryLocal.NativeChatCompletions.csproj.AssemblyReference.cache
-C:\src\26-07-15-AINET-LocalAI-MAF\samples\04-foundrylocal-native-chat-completions\obj\Debug\net8.0-windows10.0.26100\FoundryLocal.NativeChatCompletions.GeneratedMSBuildEditorConfig.editorconfig
-C:\src\26-07-15-AINET-LocalAI-MAF\samples\04-foundrylocal-native-chat-completions\obj\Debug\net8.0-windows10.0.26100\FoundryLocal.NativeChatCompletions.AssemblyInfoInputs.cache
-C:\src\26-07-15-AINET-LocalAI-MAF\samples\04-foundrylocal-native-chat-completions\obj\Debug\net8.0-windows10.0.26100\FoundryLocal.NativeChatCompletions.AssemblyInfo.cs
-C:\src\26-07-15-AINET-LocalAI-MAF\samples\04-foundrylocal-native-chat-completions\obj\Debug\net8.0-windows10.0.26100\FoundryLocal.NativeChatCompletions.csproj.CoreCompileInputs.cache
-C:\src\26-07-15-AINET-LocalAI-MAF\samples\04-foundrylocal-native-chat-completions\obj\Debug\net8.0-windows10.0.26100\FoundryLocal.NativeChatCompletions.sourcelink.json
