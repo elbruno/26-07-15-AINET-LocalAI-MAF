@@ -80,7 +80,7 @@ Six standalone console samples are available under `samples\`:
 - `03-foundrylocal-scenarios` — practical scenarios (`summarize`, `sentiment`, `structured`) with deterministic prompts.
 - `04-foundrylocal-native-chat-completions` — Microsoft Learn parity sample for **native SDK chat completions** (in-process `FoundryLocalManager` flow). Use this when you need direct SDK model lifecycle control (discover/register EPs, download/load/unload model), not OpenAI endpoint mode.
 - `05-foundrylocal-audio-transcription` — Microsoft Learn parity sample for **native SDK audio transcription** (download/load whisper model, prefer CPU variant, stream transcript output from an audio file).
-- `06-foundrylocal-native-auto-chat` — native SDK sample that resolves catalog model alias, auto-downloads model when missing, loads, streams response, and unloads.
+- `06-foundrylocal-native-auto-chat` — native SDK sample that resolves model alias, chooses best variant for machine capabilities (GPU/CPU), auto-downloads, asks a question with quality guard, and unloads.
 
 ### Prerequisites and environment variables
 
@@ -157,7 +157,7 @@ dotnet run -- "C:\path\to\audio.mp3"
 # 06 - native auto chat (SDK-first, no endpoint URL config)
 cd ..\06-foundrylocal-native-auto-chat
 # optional overrides (defaults shown)
-$env:FOUNDRY_LOCAL_MODEL="qwen2.5-0.5b"
+$env:FOUNDRY_LOCAL_MODEL="phi-3.5-mini"
 $env:FOUNDRY_LOCAL_PROMPT="Why is the sky blue?"
 dotnet restore
 dotnet run

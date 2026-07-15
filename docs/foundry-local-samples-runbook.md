@@ -185,12 +185,12 @@ Input file behavior:
 
 ## 7) Run sample 06 (native auto chat, SDK-first)
 
-This sample does not use an OpenAI-compatible endpoint URL. It uses the native SDK flow to discover/register EPs, resolve model alias, auto-download if needed, load, run streaming chat, and unload.
+This sample does not use an OpenAI-compatible endpoint URL. It uses the native SDK flow to discover/register EPs, resolve model alias, auto-download if needed, load, run chat with quality guard, and unload.
 
 ```powershell
 cd ..\06-foundrylocal-native-auto-chat
 # optional overrides (defaults shown)
-$env:FOUNDRY_LOCAL_MODEL="qwen2.5-0.5b"
+$env:FOUNDRY_LOCAL_MODEL="phi-3.5-mini"
 $env:FOUNDRY_LOCAL_PROMPT="Why is the sky blue?"
 dotnet restore
 dotnet run
@@ -214,11 +214,14 @@ dotnet run
 Expected output includes:
 
 - `Foundry Local native auto chat sample`
+- `Step 1/6 ... Step 6/6` (live-demo friendly progress)
 - `Available execution providers:`
 - `Downloading/registering execution providers:`
-- `Resolved model:`
+- `Resolved model alias:`
+- `Selected variant: ... (GPU|CPU)` (based on registered machine capabilities)
 - `Question: Why is the sky blue?` (or your prompt override)
-- `Chat completion response:`
+- `Answer:`
+- `Primary response looked malformed or off-topic. Retrying once...` (only if fallback kicks in)
 - `Model unloaded.`
 - `Delete downloaded model? [Y/n]`
 - `Model cache removed.` (when answer is yes, or override is `true`)
