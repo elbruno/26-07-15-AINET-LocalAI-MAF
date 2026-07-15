@@ -2,10 +2,14 @@ using Betalgo.Ranul.OpenAI.ObjectModels.RequestModels;
 using Microsoft.AI.Foundry.Local;
 using Microsoft.Extensions.Logging.Abstractions;
 
+const string ModelEnvVar = "FOUNDRY_LOCAL_MODEL";
+const string NativeModelEnvVar = "FOUNDRY_LOCAL_NATIVE_MODEL";
+const string DefaultModelAlias = "qwen2.5-0.5b";
+
 var modelAlias =
-    Environment.GetEnvironmentVariable("FOUNDRY_LOCAL_MODEL")
-    ?? Environment.GetEnvironmentVariable("FOUNDRY_LOCAL_NATIVE_MODEL")
-    ?? "qwen2.5-0.5b";
+    Environment.GetEnvironmentVariable(ModelEnvVar)
+    ?? Environment.GetEnvironmentVariable(NativeModelEnvVar)
+    ?? DefaultModelAlias;
 
 Console.WriteLine("Foundry Local native chat completions sample");
 Console.WriteLine($"Requested model alias: {modelAlias}");
@@ -57,7 +61,17 @@ else
 }
 
 var catalog = await manager.GetCatalogAsync();
-var model = await catalog.GetModelAsync(modelAlias) ?? throw new InvalidOperationException($"Model '{modelAlias}' not found in local catalog.");
+var model = await catalog.GetModelAsync(modelAlias);
+if (model is null)
+{
+    Console.Error.WriteLine();
+    Console.Error.WriteLine($"Model '{modelAlias}' was not found in the local catalog.");
+    Console.Error.WriteLine("Optional environment overrides (PowerShell):");
+    Console.Error.WriteLine($"  $env:{NativeModelEnvVar}=\"{DefaultModelAlias}\"");
+    Console.Error.WriteLine($"  # or: $env:{ModelEnvVar}=\"{DefaultModelAlias}\"");
+    manager.Dispose();
+    return;
+}
 
 Console.WriteLine();
 Console.WriteLine($"Resolved model: {model.Alias} ({model.Id})");

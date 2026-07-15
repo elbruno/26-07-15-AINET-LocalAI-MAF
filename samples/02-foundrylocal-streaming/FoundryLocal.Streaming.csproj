@@ -8,6 +8,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="..\Common\FoundryLocalSampleSupport.cs" Link="Common\FoundryLocalSampleSupport.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="OpenAI" Version="2.12.0" />
   </ItemGroup>
 

@@ -1,12 +1,19 @@
 using Microsoft.AI.Foundry.Local;
 using Microsoft.Extensions.Logging.Abstractions;
 
+const string WhisperModelEnvVar = "FOUNDRY_LOCAL_WHISPER_MODEL";
+const string AudioModelEnvVar = "FOUNDRY_LOCAL_AUDIO_MODEL";
+const string ModelEnvVar = "FOUNDRY_LOCAL_MODEL";
+const string AudioLanguageEnvVar = "FOUNDRY_LOCAL_AUDIO_LANGUAGE";
+const string DefaultModelAlias = "whisper-tiny";
+const string DefaultAudioLanguage = "en";
+
 var modelAlias =
     FirstNonEmpty(
-        Environment.GetEnvironmentVariable("FOUNDRY_LOCAL_WHISPER_MODEL"),
-        Environment.GetEnvironmentVariable("FOUNDRY_LOCAL_AUDIO_MODEL"),
-        Environment.GetEnvironmentVariable("FOUNDRY_LOCAL_MODEL"))
-    ?? "whisper-tiny";
+        Environment.GetEnvironmentVariable(WhisperModelEnvVar),
+        Environment.GetEnvironmentVariable(AudioModelEnvVar),
+        Environment.GetEnvironmentVariable(ModelEnvVar))
+    ?? DefaultModelAlias;
 
 var sampleDirectory = ResolveSampleDirectory();
 var defaultAudioPath = Path.Combine(sampleDirectory, "Recording.mp3");
@@ -77,7 +84,18 @@ try
     }
 
     var catalog = await manager.GetCatalogAsync();
-    var model = await catalog.GetModelAsync(modelAlias) ?? throw new InvalidOperationException($"Model '{modelAlias}' not found in local catalog.");
+    var model = await catalog.GetModelAsync(modelAlias);
+    if (model is null)
+    {
+        Console.Error.WriteLine();
+        Console.Error.WriteLine($"Model '{modelAlias}' was not found in the local catalog.");
+        Console.Error.WriteLine("Optional environment overrides (PowerShell):");
+        Console.Error.WriteLine($"  $env:{WhisperModelEnvVar}=\"{DefaultModelAlias}\"");
+        Console.Error.WriteLine($"  $env:{AudioModelEnvVar}=\"{DefaultModelAlias}\"");
+        Console.Error.WriteLine($"  # or: $env:{ModelEnvVar}=\"{DefaultModelAlias}\"");
+        manager.Dispose();
+        return 1;
+    }
 
     Console.WriteLine();
     Console.WriteLine($"Resolved model: {model.Alias} ({model.Id})");
@@ -107,7 +125,7 @@ try
     loadedModel = model;
     Console.WriteLine("done.");
 
-    var language = FirstNonEmpty(Environment.GetEnvironmentVariable("FOUNDRY_LOCAL_AUDIO_LANGUAGE")) ?? "en";
+    var language = FirstNonEmpty(Environment.GetEnvironmentVariable(AudioLanguageEnvVar)) ?? DefaultAudioLanguage;
     var audioClient = await model.GetAudioClientAsync();
     audioClient.Settings.Language = language;
 

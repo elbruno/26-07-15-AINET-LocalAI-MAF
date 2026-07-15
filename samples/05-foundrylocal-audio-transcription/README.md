@@ -33,6 +33,11 @@ If the file is missing, the sample prints an actionable message with the expecte
 
 ```powershell
 cd samples\05-foundrylocal-audio-transcription
+# optional overrides
+$env:FOUNDRY_LOCAL_WHISPER_MODEL="whisper-tiny"
+$env:FOUNDRY_LOCAL_AUDIO_MODEL="whisper-tiny"
+$env:FOUNDRY_LOCAL_MODEL="whisper-tiny"
+$env:FOUNDRY_LOCAL_AUDIO_LANGUAGE="en"
 dotnet restore
 dotnet run
 ```

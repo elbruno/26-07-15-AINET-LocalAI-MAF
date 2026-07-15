@@ -108,6 +108,11 @@ dotnet run
 
 # 02 - streaming
 cd ..\02-foundrylocal-streaming
+# optional overrides (defaults shown)
+$env:FOUNDRY_LOCAL_BASE_URL="http://127.0.0.1:5273/v1"
+$env:FOUNDRY_LOCAL_MODEL="qwen2.5-0.5b"
+$env:FOUNDRY_LOCAL_API_KEY="local-dev-key"
+$env:FOUNDRY_LOCAL_PROMPT_VARIANT="eli5"
 dotnet restore
 dotnet run
 # optional variant
@@ -115,6 +120,10 @@ dotnet run -- bullets
 
 # 03 - scenarios
 cd ..\03-foundrylocal-scenarios
+# optional overrides (defaults shown)
+$env:FOUNDRY_LOCAL_BASE_URL="http://127.0.0.1:5273/v1"
+$env:FOUNDRY_LOCAL_MODEL="qwen2.5-0.5b"
+$env:FOUNDRY_LOCAL_API_KEY="local-dev-key"
 dotnet restore
 dotnet run -- summarize
 dotnet run -- sentiment
@@ -124,11 +133,19 @@ dotnet run
 
 # 04 - native chat completions (Microsoft Learn parity; native SDK in-process, not OpenAI endpoint mode)
 cd ..\04-foundrylocal-native-chat-completions
+# optional overrides (defaults shown)
+$env:FOUNDRY_LOCAL_MODEL="qwen2.5-0.5b"
+$env:FOUNDRY_LOCAL_NATIVE_MODEL="qwen2.5-0.5b"
 dotnet restore
 dotnet run
 
 # 05 - native audio transcription (Microsoft Learn parity)
 cd ..\05-foundrylocal-audio-transcription
+# optional overrides (defaults shown)
+$env:FOUNDRY_LOCAL_WHISPER_MODEL="whisper-tiny"
+$env:FOUNDRY_LOCAL_AUDIO_MODEL="whisper-tiny"
+$env:FOUNDRY_LOCAL_MODEL="whisper-tiny"
+$env:FOUNDRY_LOCAL_AUDIO_LANGUAGE="en"
 dotnet restore
 dotnet run
 # optional custom file

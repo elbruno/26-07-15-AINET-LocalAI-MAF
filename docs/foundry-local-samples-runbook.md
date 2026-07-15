@@ -53,6 +53,11 @@ Expected output includes:
 
 ```powershell
 cd ..\02-foundrylocal-streaming
+# optional overrides (defaults shown)
+$env:FOUNDRY_LOCAL_BASE_URL="http://127.0.0.1:5273/v1"
+$env:FOUNDRY_LOCAL_MODEL="qwen2.5-0.5b"
+$env:FOUNDRY_LOCAL_API_KEY="local-dev-key"
+$env:FOUNDRY_LOCAL_PROMPT_VARIANT="eli5"
 dotnet restore
 dotnet run
 ```
@@ -74,6 +79,10 @@ Expected output includes:
 
 ```powershell
 cd ..\03-foundrylocal-scenarios
+# optional overrides (defaults shown)
+$env:FOUNDRY_LOCAL_BASE_URL="http://127.0.0.1:5273/v1"
+$env:FOUNDRY_LOCAL_MODEL="qwen2.5-0.5b"
+$env:FOUNDRY_LOCAL_API_KEY="local-dev-key"
 dotnet restore
 ```
 
@@ -108,8 +117,8 @@ Prerequisites for this sample:
 Optional model alias override:
 
 ```powershell
+$env:FOUNDRY_LOCAL_MODEL="qwen2.5-0.5b"
 $env:FOUNDRY_LOCAL_NATIVE_MODEL="qwen2.5-0.5b"
-# or use FOUNDRY_LOCAL_MODEL
 ```
 
 Run:
@@ -143,7 +152,9 @@ Optional model alias override:
 
 ```powershell
 $env:FOUNDRY_LOCAL_WHISPER_MODEL="whisper-tiny"
-# or use FOUNDRY_LOCAL_AUDIO_MODEL / FOUNDRY_LOCAL_MODEL
+$env:FOUNDRY_LOCAL_AUDIO_MODEL="whisper-tiny"
+$env:FOUNDRY_LOCAL_MODEL="whisper-tiny"
+$env:FOUNDRY_LOCAL_AUDIO_LANGUAGE="en"
 ```
 
 Run:
