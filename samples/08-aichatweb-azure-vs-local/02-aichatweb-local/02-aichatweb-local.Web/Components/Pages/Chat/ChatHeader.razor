@@ -1,11 +1,90 @@
 <div class="chat-header-container main-background-gradient">
     <div class="chat-header-controls page-width">
-        <button class="btn-default" @onclick="@OnNewChat">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="new-chat-icon">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-            </svg>
-            New chat
-        </button>
+        <div class="header-actions">
+            <button class="btn-default" @onclick="@OnNewChat">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="new-chat-icon">
+                    <title>New chat</title>
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                </svg>
+                New chat
+            </button>
+            <button class="icon-action-button"
+                    @onclick="@OnPrepareModel"
+                    disabled="@IsPreparingModel || IsModelReady"
+                    aria-label="@PrepareButtonLabel"
+                    title="@PrepareButtonTooltip"
+                    data-tooltip="@PrepareButtonTooltip">
+                @if (IsPreparingModel)
+                {
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                        <title>Preparing model</title>
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6l4 2m4-2a8 8 0 1 1-16 0 8 8 0 0 1 16 0Z" />
+                    </svg>
+                }
+                else if (IsModelReady)
+                {
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                        <title>Model ready</title>
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                    </svg>
+                }
+                else if (CanRetryPrepare)
+                {
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                        <title>Retry model preparation</title>
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865A8.25 8.25 0 0 1 17.834 6.165l3.181 3.183" />
+                    </svg>
+                }
+                else
+                {
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                        <title>Prepare model</title>
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M3 15.75V19.5a1.5 1.5 0 0 0 1.5 1.5h15a1.5 1.5 0 0 0 1.5-1.5v-3.75M7.5 10.5 12 15m0 0 4.5-4.5M12 15V3" />
+                    </svg>
+                }
+            </button>
+            <button class="icon-action-button"
+                    @onclick="@OnOpenModelLocation"
+                    disabled="@IsPreparingModel"
+                    aria-label="Open downloaded model location"
+                    title="Open downloaded model location"
+                    data-tooltip="Open downloaded model location">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <title>Open model location</title>
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12.75V12A2.25 2.25 0 0 1 4.5 9.75h15A2.25 2.25 0 0 1 21.75 12v6A2.25 2.25 0 0 1 19.5 20.25h-15A2.25 2.25 0 0 1 2.25 18v-.75M2.25 12.75l3-3m-3 3 3 3M21.75 12.75l-3-3m3 3-3 3" />
+                </svg>
+            </button>
+            <button class="icon-action-button destructive"
+                    @onclick="@OnDeleteModel"
+                    disabled="@IsPreparingModel"
+                    aria-label="Delete downloaded model"
+                    title="Delete downloaded model"
+                    data-tooltip="Delete downloaded model">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <title>Delete downloaded model</title>
+                    <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673A2.25 2.25 0 0 1 15.916 21.75H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0A48.11 48.11 0 0 1 8.25 5.393m7.5 0a48.667 48.667 0 0 0-7.5 0" />
+                </svg>
+            </button>
+            <button class="icon-action-button"
+                    @onclick="@OnRefreshStatus"
+                    disabled="@IsPreparingModel"
+                    aria-label="Refresh model status"
+                    title="Refresh model status"
+                    data-tooltip="Refresh model status">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <title>Refresh model status</title>
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865A8.25 8.25 0 0 1 17.834 6.165l3.181 3.183" />
+                </svg>
+            </button>
+        </div>
+        <div class="model-status" aria-live="polite">
+            <div class="model-status-alias">@ModelAlias</div>
+            <div class="model-status-text">@ModelStatus</div>
+            @if (!string.IsNullOrWhiteSpace(ModelStatusDetail))
+            {
+                <div class="model-status-detail">@ModelStatusDetail</div>
+            }
+        </div>
     </div>
 
     <h1 class="page-width">02-aichatweb-local.Web</h1>
@@ -14,4 +93,50 @@
 @code {
     [Parameter]
     public EventCallback OnNewChat { get; set; }
+
+    [Parameter]
+    public EventCallback OnPrepareModel { get; set; }
+
+    [Parameter]
+    public EventCallback OnOpenModelLocation { get; set; }
+
+    [Parameter]
+    public EventCallback OnDeleteModel { get; set; }
+
+    [Parameter]
+    public EventCallback OnRefreshStatus { get; set; }
+
+    [Parameter]
+    public bool IsPreparingModel { get; set; }
+
+    [Parameter]
+    public bool IsModelReady { get; set; }
+
+    [Parameter]
+    public bool CanRetryPrepare { get; set; }
+
+    [Parameter]
+    public string ModelAlias { get; set; } = "";
+
+    [Parameter]
+    public string ModelStatus { get; set; } = "";
+
+    [Parameter]
+    public string? ModelStatusDetail { get; set; }
+
+    private string PrepareButtonLabel => IsPreparingModel
+        ? "Preparing model"
+        : IsModelReady
+            ? "Model ready"
+            : CanRetryPrepare
+                ? "Retry model preparation"
+                : "Prepare model";
+
+    private string PrepareButtonTooltip => IsPreparingModel
+        ? "Preparing model and downloading if needed"
+        : IsModelReady
+            ? "Model is ready"
+            : CanRetryPrepare
+                ? "Retry model preparation"
+                : "Prepare model and download if missing";
 }

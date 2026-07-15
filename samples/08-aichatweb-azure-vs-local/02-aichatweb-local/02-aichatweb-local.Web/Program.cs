@@ -1,6 +1,7 @@
 using ElBruno.LocalEmbeddings;
 using ElBruno.MAF.FoundryLocal;
 using Microsoft.Extensions.AI;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Extensions.Options;
 using _02_aichatweb_local.Web.Components;
@@ -33,8 +34,14 @@ var chatClient = new FoundryLocalChatClientAdapter(
     NullLogger<FoundryLocalChatClientAdapter>.Instance);
 var embeddingGenerator = await LocalEmbeddingGenerator.CreateAsync();
 
+builder.Services.AddSingleton(lifecycle);
+builder.Services.AddSingleton(new FoundryLocalModelStatusService(modelAlias, lifecycle));
 builder.Services.AddChatClient(chatClient)
-    .UseFunctionInvocation()
+    .UseFunctionInvocation(NullLoggerFactory.Instance, cfg =>
+    {
+        cfg.MaximumIterationsPerRequest = 8;
+        cfg.IncludeDetailedErrors = true;
+    })
     .UseOpenTelemetry(configure: c =>
         c.EnableSensitiveData = builder.Environment.IsDevelopment());
 builder.Services.AddEmbeddingGenerator(embeddingGenerator);

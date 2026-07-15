@@ -32,3 +32,9 @@
 - Bishop implemented `hello-world`, `streaming`, and `scenarios` Foundry Local samples.
 - Apone and Bishop added a shared sample support helper to reduce duplication and keep sample behavior consistent.
 - Ripley updated README coverage and authored a Foundry Local samples runbook for execution guidance.
+
+
+### 2026-07-15: Sample 08-02 invocation and model diagnostics flow aligned
+- Bishop fixed sample `08-02` tool invocation by aligning tool names with function invocation configuration.
+- Hicks added model alias + model status UI using the Foundry lifecycle diagnostics service.
+- Validation build passed for the `08-02` solution, confirming the combined changes are healthy.

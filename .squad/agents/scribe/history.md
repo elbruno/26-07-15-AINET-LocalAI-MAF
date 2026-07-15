@@ -23,3 +23,5 @@ Initial setup complete.
 - 2026-07-14: Logged Ripley documentation delivery, added decision entry for demo docs baseline, and persisted orchestration/session records.
 
 - 2026-07-14: Recorded Foundry Local sample decisions, orchestration log, session record, and cross-agent history updates.
+
+- 2026-07-15: Recorded sample `08-02` invocation/diagnostics decisions, persisted orchestration+session logs, and updated Bishop/Hicks histories.

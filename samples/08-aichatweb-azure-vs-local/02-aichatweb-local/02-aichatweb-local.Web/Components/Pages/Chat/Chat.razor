@@ -3,11 +3,22 @@
 @inject IChatClient ChatClient
 @inject NavigationManager Nav
 @inject SemanticSearch Search
+@inject FoundryLocalModelStatusService ModelStatusService
 @implements IDisposable
 
 <PageTitle>Chat</PageTitle>
 
-<ChatHeader OnNewChat="@ResetConversationAsync" />
+<ChatHeader OnNewChat="@ResetConversationAsync"
+            OnPrepareModel="@PrepareModelAsync"
+            OnOpenModelLocation="@OpenModelLocationAsync"
+            OnDeleteModel="@DeleteDownloadedModelAsync"
+            OnRefreshStatus="@RefreshStatusAsync"
+            IsPreparingModel="@isPreparingModel"
+            IsModelReady="@isModelReady"
+            CanRetryPrepare="@canRetryPrepare"
+            ModelAlias="@currentModelAlias"
+            ModelStatus="@currentModelStatus"
+            ModelStatusDetail="@currentModelStatusDetail" />
 
 <ChatMessageList Messages="@messages" InProgressMessage="@currentResponseMessage">
     <NoMessagesContent>
@@ -43,31 +54,55 @@
         ";
 
     private int statefulMessageCount;
-    private readonly ChatOptions chatOptions = new();
+    private readonly ChatOptions chatOptions = new()
+    {
+        ToolMode = ChatToolMode.RequireAny
+    };
     private readonly List<ChatMessage> messages = new();
     private CancellationTokenSource? currentResponseCancellation;
     private ChatMessage? currentResponseMessage;
     private ChatInput? chatInput;
     private ChatSuggestions? chatSuggestions;
+    private string currentModelAlias = "";
+    private string currentModelStatus = "";
+    private string? currentModelStatusDetail;
+    private bool isPreparingModel;
+    private bool isModelReady;
+    private bool canRetryPrepare;
 
     protected override void OnInitialized()
     {
         statefulMessageCount = 0;
         messages.Add(new(ChatRole.System, SystemPrompt));
-        chatOptions.Tools = [
-            AIFunctionFactory.Create(LoadDocumentsAsync),
-            AIFunctionFactory.Create(SearchAsync)
+        chatOptions.Tools =
+        [
+            AIFunctionFactory.Create(
+                LoadDocumentsAsync,
+                "LoadDocuments",
+                "Loads the documents needed for performing searches. Must be completed before a search can be executed, but only needs to be completed once."),
+            AIFunctionFactory.Create(
+                SearchAsync,
+                "Search",
+                "Searches for information using a phrase or keyword across loaded documents.")
         ];
+        RefreshModelStatus();
     }
 
     private async Task AddUserMessageAsync(ChatMessage userMessage)
     {
         CancelAnyCurrentResponse();
+        RefreshModelStatus();
 
         // Add the user message to the conversation
         messages.Add(userMessage);
         chatSuggestions?.Clear();
         await chatInput!.FocusAsync();
+
+        if (!await EnsureModelReadyAsync())
+        {
+            chatSuggestions?.Update(messages);
+            return;
+        }
 
         // Stream and display a new response from the IChatClient
         var responseText = new TextContent("");
@@ -86,6 +121,7 @@
         statefulMessageCount = chatOptions.ConversationId is not null ? messages.Count : 0;
         currentResponseMessage = null;
         chatSuggestions?.Update(messages);
+        RefreshModelStatus();
     }
 
     private void CancelAnyCurrentResponse()
@@ -108,7 +144,87 @@
         chatOptions.ConversationId = null;
         statefulMessageCount = 0;
         chatSuggestions?.Clear();
+        RefreshModelStatus();
         await chatInput!.FocusAsync();
+    }
+
+    private void RefreshModelStatus()
+    {
+        var status = ModelStatusService.GetCurrentStatus();
+        currentModelAlias = status.ModelAlias;
+        currentModelStatus = status.StatusText;
+        currentModelStatusDetail = status.Detail;
+        isModelReady = status.IsReady;
+        canRetryPrepare = !status.IsReady &&
+                          (currentModelStatus.Contains("Unavailable", StringComparison.OrdinalIgnoreCase)
+                           || !string.IsNullOrWhiteSpace(currentModelStatusDetail));
+    }
+
+    private async Task PrepareModelAsync()
+    {
+        await EnsureModelReadyAsync();
+    }
+
+    private Task RefreshStatusAsync()
+    {
+        RefreshModelStatus();
+        return InvokeAsync(StateHasChanged);
+    }
+
+    private async Task OpenModelLocationAsync()
+    {
+        var result = await ModelStatusService.OpenModelLocationAsync(CancellationToken.None);
+        messages.Add(new ChatMessage(ChatRole.Assistant, result.Message));
+        RefreshModelStatus();
+        await InvokeAsync(StateHasChanged);
+    }
+
+    private async Task DeleteDownloadedModelAsync()
+    {
+        var result = await ModelStatusService.DeleteDownloadedModelAsync(CancellationToken.None);
+        messages.Add(new ChatMessage(ChatRole.Assistant, result.Message));
+        RefreshModelStatus();
+        await InvokeAsync(StateHasChanged);
+    }
+
+    private async Task<bool> EnsureModelReadyAsync()
+    {
+        if (isPreparingModel)
+        {
+            return false;
+        }
+
+        isPreparingModel = true;
+        currentModelStatus = "Preparing model (downloading if needed)...";
+        currentModelStatusDetail = null;
+        await InvokeAsync(StateHasChanged);
+
+        try
+        {
+            var status = await ModelStatusService.EnsureModelReadyAsync(CancellationToken.None);
+            currentModelAlias = status.ModelAlias;
+            currentModelStatus = status.StatusText;
+            currentModelStatusDetail = status.Detail;
+            isModelReady = status.IsReady;
+            canRetryPrepare = !status.IsReady &&
+                              (currentModelStatus.Contains("Unavailable", StringComparison.OrdinalIgnoreCase)
+                               || !string.IsNullOrWhiteSpace(currentModelStatusDetail));
+
+            if (status.IsReady)
+            {
+                return true;
+            }
+
+            messages.Add(new ChatMessage(
+                ChatRole.Assistant,
+                $"Model '{status.ModelAlias}' is not ready. {status.StatusText}. {status.Detail ?? "Check Foundry Local service and download the model locally."}"));
+            return false;
+        }
+        finally
+        {
+            isPreparingModel = false;
+            await InvokeAsync(StateHasChanged);
+        }
     }
 
     [Description("Loads the documents needed for performing searches. Must be completed before a search can be executed, but only needs to be completed once.")]
@@ -120,11 +236,10 @@
 
     [Description("Searches for information using a phrase or keyword. Relies on documents already being loaded.")]
     private async Task<IEnumerable<string>> SearchAsync(
-        [Description("The phrase to search for.")] string searchPhrase,
-        [Description("If possible, specify the filename to search that file only. Leave empty to search all files.")] string filenameFilter = "")
+        [Description("The phrase to search for.")] string searchPhrase)
     {
         await InvokeAsync(StateHasChanged);
-        var results = await Search.SearchAsync(searchPhrase, filenameFilter, maxResults: 5);
+        var results = await Search.SearchAsync(searchPhrase, documentIdFilter: null, maxResults: 5);
         return results.Select(result =>
             $"<result filename=\"{result.DocumentId}\">{result.Text}</result>");
     }

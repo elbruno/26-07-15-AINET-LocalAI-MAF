@@ -13,3 +13,5 @@
 ## Session Updates
 
 - 2026-07-14: Implemented dashboard shell with API client, filters, KPI cards, and empty/error handling states.
+
+- 2026-07-15: Added model alias and model status UI via the Foundry lifecycle diagnostics service.
