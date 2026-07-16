@@ -42,8 +42,43 @@ Optional environment variables:
 
 | Variable | Default | Description |
 |---|---|---|
-| `FOUNDRY_LOCAL_SPEECH_MODEL` | `nemotron-speech-streaming-en-0.6b` | Streaming ASR model alias |
+| `FOUNDRY_LOCAL_SPEECH_MODEL` | *(prompt — English)* | Streaming ASR model alias. When unset, the app asks which model to use (English default, or multilingual). |
 | `FOUNDRY_LOCAL_SPEECH_LANGUAGE` | `en` | Language (`en`, `es`, `de`, `zh-CN`, … or `auto` for multilingual models) |
+| `FOUNDRY_LOCAL_TIMESTAMPS` | *(prompt — off)* | `true`/`false` — non-interactive override for the "include timestamps" prompt |
+| `FOUNDRY_LOCAL_CLEANUP_MODEL` | *(prompt)* | `true`/`false` — non-interactive override for the end-of-run "delete model" prompt |
+
+### Startup prompts
+
+When `FOUNDRY_LOCAL_SPEECH_MODEL` / `FOUNDRY_LOCAL_TIMESTAMPS` are not set, the app asks two questions at startup:
+
+```text
+Select the transcription model:
+  [1] English       (nemotron-speech-streaming-en-0.6b)   (default)
+  [2] Multilingual  (nemotron-3.5-asr-streaming-0.6b)
+Choose [1/2] (default 1):
+
+Include timestamps in the transcription? [y/N]:
+```
+
+Pressing ENTER accepts the defaults (**English** model, timestamps **off**). With timestamps on,
+each finalized phrase is prefixed with an `[mm:ss]` marker relative to the start of the session,
+so it's clear when each phrase was spoken:
+
+```text
+  [00:04] [FINAL] Hello, this is a live transcription test.
+```
+
+### Deleting the downloaded model
+
+At the end of the session (after the model is unloaded), the sample asks:
+
+```text
+Delete downloaded model? [Y/n]
+```
+
+The default is **Yes** — pressing ENTER removes the model from the Foundry Local cache
+(`model.RemoveFromCacheAsync()`), so it re-downloads on the next run. Answer `n` to keep it cached.
+For non-interactive runs, set `FOUNDRY_LOCAL_CLEANUP_MODEL=true` (always delete) or `false` (always keep).
 
 ### Available streaming ASR models (Foundry Local catalog)
 
@@ -73,8 +108,16 @@ Then **speak into your microphone**. Interim words stream in cyan; each finalize
    Foundry Local -- Live Audio Transcription (streaming)
 ===========================================================
 
+Select the transcription model:
+  [1] English       (nemotron-speech-streaming-en-0.6b)   (default)
+  [2] Multilingual  (nemotron-3.5-asr-streaming-0.6b)
+Choose [1/2] (default 1): 1
+
+Include timestamps in the transcription? [y/N]: n
+
 Requested model alias: nemotron-speech-streaming-en-0.6b
 Language:              en
+Timestamps:            off
 
 Downloading/registering execution providers:
   CUDAExecutionProvider              100.0%
@@ -97,6 +140,10 @@ hello this is a live transcription test
 
 Unloading model...
 Model unloaded.
+
+Delete downloaded model? [Y/n]
+Removing model from local cache...
+Model cache removed.
 ```
 
 ## Notes

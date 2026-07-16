@@ -157,11 +157,18 @@ dotnet run
 
 # 11 - Foundry Local streaming transcription (mic -> text, real-time; Windows-only)
 cd ..\11-foundrylocal-live-transcription
-# optional overrides (defaults shown)
+dotnet run
+# On startup it asks which model (English default / multilingual) and whether to show timestamps (default no)
+# Foundry Local auto-downloads the streaming ASR model on first run; speak and press ENTER to stop
+# optional non-interactive overrides (skip the startup prompts):
 $env:FOUNDRY_LOCAL_SPEECH_MODEL="nemotron-speech-streaming-en-0.6b"
 $env:FOUNDRY_LOCAL_SPEECH_LANGUAGE="en"
+$env:FOUNDRY_LOCAL_TIMESTAMPS="false"
 dotnet run
-# Foundry Local auto-downloads the streaming ASR model on first run; speak and press ENTER to stop
+# end-of-run prompt defaults to Yes: "Delete downloaded model? [Y/n]"
+# optional non-interactive override:
+$env:FOUNDRY_LOCAL_CLEANUP_MODEL="true"
+dotnet run
 ```
 
 ## Troubleshooting

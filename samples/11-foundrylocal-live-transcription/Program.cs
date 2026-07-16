@@ -23,20 +23,35 @@ using System.Threading.Channels;
 
 const string SpeechModelEnvVar = "FOUNDRY_LOCAL_SPEECH_MODEL";
 const string SpeechLanguageEnvVar = "FOUNDRY_LOCAL_SPEECH_LANGUAGE";
-const string DefaultModelAlias = "nemotron-speech-streaming-en-0.6b";
+const string CleanupModelEnvVar = "FOUNDRY_LOCAL_CLEANUP_MODEL";
+const string TimestampsEnvVar = "FOUNDRY_LOCAL_TIMESTAMPS";
+const string EnglishModelAlias = "nemotron-speech-streaming-en-0.6b";
+const string MultilingualModelAlias = "nemotron-3.5-asr-streaming-0.6b";
 const string DefaultLanguage = "en";
 const int SampleRate = 16000;
 const int MaxNameLength = 30;
-
-var modelAlias = FirstNonEmpty(Environment.GetEnvironmentVariable(SpeechModelEnvVar)) ?? DefaultModelAlias;
-var language = FirstNonEmpty(Environment.GetEnvironmentVariable(SpeechLanguageEnvVar)) ?? DefaultLanguage;
 
 Console.WriteLine("===========================================================");
 Console.WriteLine("   Foundry Local -- Live Audio Transcription (streaming)");
 Console.WriteLine("===========================================================");
 Console.WriteLine();
+
+// Resolve the speech model: honor the env-var override, otherwise ask the user.
+// English is the default; a multilingual model is offered as the alternative.
+var modelAlias = FirstNonEmpty(Environment.GetEnvironmentVariable(SpeechModelEnvVar))
+                 ?? PromptModelChoice(EnglishModelAlias, MultilingualModelAlias);
+
+// Timestamps make it clearer WHEN each phrase was spoken. Default is OFF.
+var includeTimestamps = ParseBool(Environment.GetEnvironmentVariable(TimestampsEnvVar))
+                        ?? PromptTimestamps();
+
+var language = FirstNonEmpty(Environment.GetEnvironmentVariable(SpeechLanguageEnvVar)) ?? DefaultLanguage;
+var cleanupOverride = ParseCleanupOverride(Environment.GetEnvironmentVariable(CleanupModelEnvVar));
+
+Console.WriteLine();
 Console.WriteLine($"Requested model alias: {modelAlias}");
 Console.WriteLine($"Language:              {language}");
+Console.WriteLine($"Timestamps:            {(includeTimestamps ? "on" : "off")}");
 Console.WriteLine();
 
 if (!OperatingSystem.IsWindows())
@@ -97,9 +112,9 @@ try
         Console.Error.WriteLine($"Model '{modelAlias}' was not found in the Foundry Local catalog.");
         Console.Error.WriteLine("Streaming ASR models include:");
         Console.Error.WriteLine("  nemotron-speech-streaming-en-0.6b   (English, default)");
-        Console.Error.WriteLine("  nemotron-speech-streaming-es-0.6b   (Spanish)");
         Console.Error.WriteLine("  nemotron-3.5-asr-streaming-0.6b     (multilingual)");
-        Console.Error.WriteLine($"Override with:  $env:{SpeechModelEnvVar}=\"nemotron-speech-streaming-en-0.6b\"");
+        Console.Error.WriteLine("  nemotron-speech-streaming-es-0.6b   (Spanish)");
+        Console.Error.WriteLine($"Override with:  $env:{SpeechModelEnvVar}=\"{EnglishModelAlias}\"");
         manager.Dispose();
         return 1;
     }
@@ -137,6 +152,9 @@ try
 
     await session.StartAsync(CancellationToken.None);
 
+    // Wall-clock reference for optional [mm:ss] timestamps on finalized phrases.
+    var sessionClock = System.Diagnostics.Stopwatch.StartNew();
+
     // Consume transcription results: interim (cyan, in-place) + final (new line).
     var readTask = Task.Run(async () =>
     {
@@ -148,7 +166,16 @@ try
                 if (result.IsFinal)
                 {
                     Console.WriteLine();
-                    Console.WriteLine($"  [FINAL] {text}");
+                    if (includeTimestamps)
+                    {
+                        var stamp = sessionClock.Elapsed;
+                        Console.WriteLine($"  [{(int)stamp.TotalMinutes:D2}:{stamp.Seconds:D2}] [FINAL] {text}");
+                    }
+                    else
+                    {
+                        Console.WriteLine($"  [FINAL] {text}");
+                    }
+
                     Console.Out.Flush();
                 }
                 else if (!string.IsNullOrEmpty(text))
@@ -236,9 +263,22 @@ finally
     if (loadedModel is not null)
     {
         await loadedModel.UnloadAsync();
+        Console.WriteLine("Model unloaded.");
+
+        var shouldCleanup = cleanupOverride ?? AskToDeleteDownloadedModel();
+        if (shouldCleanup)
+        {
+            Console.WriteLine();
+            Console.WriteLine("Removing model from local cache...");
+            await loadedModel.RemoveFromCacheAsync();
+            Console.WriteLine("Model cache removed.");
+        }
+    }
+    else
+    {
+        Console.WriteLine("Model unloaded.");
     }
 
-    Console.WriteLine("Model unloaded.");
     manager.Dispose();
 }
 
@@ -246,3 +286,76 @@ return 0;
 
 static string? FirstNonEmpty(params string?[] values) =>
     values.FirstOrDefault(static value => !string.IsNullOrWhiteSpace(value));
+
+static string PromptModelChoice(string englishAlias, string multilingualAlias)
+{
+    Console.WriteLine("Select the transcription model:");
+    Console.WriteLine($"  [1] English       ({englishAlias})   (default)");
+    Console.WriteLine($"  [2] Multilingual  ({multilingualAlias})");
+    Console.Write("Choose [1/2] (default 1): ");
+    var answer = Console.ReadLine()?.Trim();
+    return answer == "2" ? multilingualAlias : englishAlias;
+}
+
+static bool PromptTimestamps()
+{
+    Console.WriteLine();
+    Console.Write("Include timestamps in the transcription? [y/N]: ");
+    var answer = Console.ReadLine()?.Trim();
+    return !string.IsNullOrEmpty(answer)
+           && (answer.Equals("y", StringComparison.OrdinalIgnoreCase)
+               || answer.Equals("yes", StringComparison.OrdinalIgnoreCase));
+}
+
+static bool? ParseBool(string? value)
+{
+    if (string.IsNullOrWhiteSpace(value))
+    {
+        return null;
+    }
+
+    if (value.Equals("true", StringComparison.OrdinalIgnoreCase)
+        || value.Equals("1", StringComparison.OrdinalIgnoreCase)
+        || value.Equals("yes", StringComparison.OrdinalIgnoreCase)
+        || value.Equals("y", StringComparison.OrdinalIgnoreCase)
+        || value.Equals("on", StringComparison.OrdinalIgnoreCase))
+    {
+        return true;
+    }
+
+    return false;
+}
+
+static bool? ParseCleanupOverride(string? value)
+{
+    if (string.IsNullOrWhiteSpace(value))
+    {
+        return null;
+    }
+
+    if (value.Equals("true", StringComparison.OrdinalIgnoreCase))
+    {
+        return true;
+    }
+
+    if (value.Equals("false", StringComparison.OrdinalIgnoreCase))
+    {
+        return false;
+    }
+
+    return null;
+}
+
+static bool AskToDeleteDownloadedModel()
+{
+    Console.WriteLine();
+    Console.Write("Delete downloaded model? [Y/n] ");
+    var answer = Console.ReadLine()?.Trim();
+    if (string.IsNullOrWhiteSpace(answer))
+    {
+        return true;
+    }
+
+    return !answer.Equals("n", StringComparison.OrdinalIgnoreCase)
+           && !answer.Equals("no", StringComparison.OrdinalIgnoreCase);
+}
