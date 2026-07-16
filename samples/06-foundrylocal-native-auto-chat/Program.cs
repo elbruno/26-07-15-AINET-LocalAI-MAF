@@ -48,16 +48,30 @@ try
     Console.WriteLine("Step 3/6: Downloading/registering execution providers");
     if (eps.Length > 0)
     {
-        var completedEps = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        // Print live progress for the active EP so long downloads don't look stuck.
+        var activeEp = string.Empty;
+        var reportedProgress = false;
         await manager.DownloadAndRegisterEpsAsync((epName, percent) =>
         {
-            if (percent >= 100f && completedEps.Add(epName))
+            reportedProgress = true;
+            if (!string.Equals(activeEp, epName, StringComparison.Ordinal))
             {
-                Console.WriteLine($"  {epName.PadRight(maxNameLength)}  100.0%");
+                if (!string.IsNullOrEmpty(activeEp))
+                {
+                    Console.WriteLine();
+                }
+
+                activeEp = epName;
             }
+
+            Console.Write($"\r  {epName.PadRight(maxNameLength)}  {percent,6:F1}%");
         });
 
-        if (completedEps.Count == 0)
+        if (reportedProgress)
+        {
+            Console.WriteLine();
+        }
+        else
         {
             Console.WriteLine("  Execution providers already registered.");
         }
