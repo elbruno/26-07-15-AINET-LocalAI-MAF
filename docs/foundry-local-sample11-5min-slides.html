@@ -160,6 +160,23 @@
       display: block;
     }
 
+    .slide-art {
+      width: 100%;
+      max-height: 230px;
+      object-fit: cover;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      margin-bottom: 10px;
+      display: block;
+    }
+
+    .nvidia-logo {
+      width: 100%;
+      max-width: 260px;
+      margin: 4px 0 8px;
+      display: block;
+    }
+
     @keyframes grow {
       from { transform: scaleX(0); }
       to { transform: scaleX(1); }
@@ -277,6 +294,7 @@
         </div>
         <div class="card">
           <h2>Foundry Local</h2>
+          <img class="slide-art" src="assets/sample11-slides/slide-01-hero.png" alt="Local speech AI hero visual" />
           <ul>
             <li>Runs AI models fully on-device for local-first app experiences.</li>
             <li>Handles model download, loading, and reuse with a simple runtime lifecycle.</li>
@@ -302,6 +320,7 @@
           </div>
         </div>
         <div class="card">
+          <img class="slide-art" src="assets/sample11-slides/slide-02-lifecycle.png" alt="Foundry Local lifecycle visual" />
           <div class="metric">
             <div class="metric-label">First run setup work</div>
             <div class="track"><div class="fill" style="width:92%"></div></div>
@@ -328,6 +347,7 @@
       <span class="badge">Model download/load</span>
       <span class="badge">Live stream session</span>
       <span class="badge">Unload + cache cleanup</span>
+      <img class="slide-art" src="assets/sample11-slides/slide-03-code.png" alt="Developer coding live transcription app" />
       <pre>await FoundryLocalManager.CreateAsync(config, NullLogger.Instance);
 var manager = FoundryLocalManager.Instance;
 
@@ -369,14 +389,8 @@ await loadedModel.RemoveFromCacheAsync(); // optional</pre>
           <p class="muted">Local runtime, model lifecycle control, and repeatable developer flow.</p>
         </div>
         <div class="card">
-          <svg class="logo-visual" viewBox="0 0 420 180" role="img" aria-label="NVIDIA visual">
-            <rect x="20" y="25" width="380" height="130" rx="14" fill="#f0fdf4" stroke="#bbf7d0"/>
-            <path d="M65 90c22-28 62-36 93-16 17 11 29 30 31 52H65z" fill="#22c55e"/>
-            <path d="M90 90c14-18 40-23 59-11 10 6 18 17 20 29H90z" fill="#15803d"/>
-            <circle cx="138" cy="102" r="11" fill="#f0fdf4" stroke="#166534" stroke-width="3"/>
-            <text x="214" y="96" font-size="30" fill="#166534" font-family="Segoe UI, sans-serif" font-weight="700">NVIDIA</text>
-            <text x="214" y="121" font-size="14" fill="#166534" font-family="Segoe UI, sans-serif">Streaming ASR models</text>
-          </svg>
+          <img class="slide-art" src="assets/sample11-slides/slide-04-wrapup.png" alt="NVIDIA and local AI wrap-up visual" />
+          <img class="nvidia-logo" src="../images/nvidia-logo-vert-rgb-blk-no-reg-for-screen-p-2000.png" alt="NVIDIA logo" />
           <h2 style="font-size:1.2rem;">NVIDIA</h2>
           <p class="muted">High-quality speech models powering low-latency local transcription.</p>
         </div>
