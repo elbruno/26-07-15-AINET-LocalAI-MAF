@@ -3,189 +3,282 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Foundry Local + Sample 11 Live Transcription (5 min)</title>
+  <title>NVIDIA + Foundry Local | Sample 11 Live Transcription</title>
   <style>
     :root {
-      --bg: #0b1020;
-      --panel: #121a33;
-      --text: #eaf1ff;
-      --muted: #a8b6d7;
-      --accent: #65d6ff;
-      --ok: #63e6be;
-      --warn: #ffd166;
+      --bg: #f6f8fb;
+      --panel: #ffffff;
+      --text: #111827;
+      --muted: #4b5563;
+      --border: #d1d5db;
+      --accent: #0f4fa8;
+      --accent-soft: #e8f0ff;
+      --success: #0f766e;
     }
+
     * { box-sizing: border-box; }
+
     body {
       margin: 0;
       font-family: "Segoe UI", Inter, system-ui, sans-serif;
-      background: radial-gradient(circle at top, #1a2550, var(--bg) 45%);
+      background: var(--bg);
       color: var(--text);
     }
-    .deck { min-height: 100vh; display: grid; place-items: center; padding: 24px; }
+
+    .deck {
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+    }
+
     .slide {
       width: min(1080px, 95vw);
       min-height: min(690px, 88vh);
-      background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01));
-      border: 1px solid rgba(255,255,255,0.12);
-      border-radius: 16px;
-      padding: 32px 40px;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 34px 42px;
       display: none;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+      box-shadow: 0 12px 28px rgba(15, 23, 42, 0.08);
     }
+
     .slide.active { display: block; }
-    h1, h2 { margin: 0 0 14px; line-height: 1.15; }
+
+    h1, h2 {
+      margin: 0 0 14px;
+      line-height: 1.15;
+      color: var(--text);
+    }
+
     h1 { font-size: 2.2rem; }
-    h2 { font-size: 1.7rem; color: var(--accent); }
-    p, li { font-size: 1.15rem; line-height: 1.5; }
+    h2 { font-size: 1.85rem; }
+
+    p, li {
+      font-size: 1.12rem;
+      line-height: 1.5;
+      color: var(--text);
+    }
+
     .muted { color: var(--muted); }
-    ul { margin: 0.4rem 0 0.9rem 1.2rem; }
-    code, pre {
-      font-family: "Cascadia Code", Consolas, monospace;
-      background: rgba(0,0,0,0.35);
+
+    ul { margin: 0.45rem 0 0.9rem 1.2rem; }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 22px;
+      margin-top: 10px;
+    }
+
+    .card {
+      border: 1px solid var(--border);
       border-radius: 10px;
-    }
-    code { padding: 2px 6px; font-size: 0.95rem; }
-    pre {
-      margin: 12px 0;
       padding: 14px;
-      overflow: auto;
-      border: 1px solid rgba(255,255,255,0.12);
-      font-size: 0.95rem;
-      white-space: pre-wrap;
+      background: #fcfdff;
     }
+
+    .eyebrow {
+      display: inline-block;
+      font-size: 0.88rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: var(--accent-soft);
+      border: 1px solid #bfd5ff;
+      border-radius: 999px;
+      padding: 4px 10px;
+      margin-bottom: 10px;
+    }
+
     .badge {
       display: inline-block;
       margin-right: 8px;
       margin-bottom: 8px;
       padding: 4px 10px;
       border-radius: 999px;
-      background: rgba(101,214,255,0.15);
+      background: #eef4ff;
       color: var(--accent);
-      border: 1px solid rgba(101,214,255,0.35);
-      font-size: 0.9rem;
+      border: 1px solid #c9dbff;
+      font-size: 0.88rem;
+      font-weight: 600;
     }
-    .ok { color: var(--ok); }
-    .warn { color: var(--warn); }
+
+    code, pre {
+      font-family: "Cascadia Code", Consolas, monospace;
+      border-radius: 8px;
+    }
+
+    code {
+      background: #eef2f7;
+      padding: 2px 6px;
+      font-size: 0.93rem;
+    }
+
+    pre {
+      margin: 12px 0;
+      padding: 14px;
+      overflow: auto;
+      border: 1px solid var(--border);
+      background: #f8fafc;
+      font-size: 0.92rem;
+      white-space: pre-wrap;
+      color: #111827;
+    }
+
+    a { color: var(--accent); font-weight: 600; }
+    .success { color: var(--success); font-weight: 600; }
+
     .footer {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-top: 18px;
+      margin-top: 20px;
       color: var(--muted);
-      font-size: 0.95rem;
+      font-size: 0.94rem;
     }
-    .kbd { border: 1px solid rgba(255,255,255,0.35); border-radius: 6px; padding: 1px 6px; }
+
+    .kbd {
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 1px 6px;
+      background: #fff;
+    }
+
     .progress {
-      height: 8px;
+      height: 7px;
       margin-top: 10px;
       border-radius: 999px;
-      background: rgba(255,255,255,0.08);
+      background: #e5e7eb;
       overflow: hidden;
     }
-    .bar { height: 100%; background: linear-gradient(90deg, #63e6be, #65d6ff); width: 0; }
+
+    .bar {
+      height: 100%;
+      background: #2563eb;
+      width: 0;
+    }
+
+    @media (max-width: 900px) {
+      .slide { padding: 26px 24px; }
+      .grid-2 { grid-template-columns: 1fr; }
+      h1 { font-size: 1.9rem; }
+      h2 { font-size: 1.55rem; }
+    }
   </style>
 </head>
 <body>
   <main class="deck" id="deck">
     <section class="slide active">
-      <h1>Foundry Local + Sample 11<br />Live Transcription in 5 Minutes</h1>
-      <p class="muted">Repo: <code>samples\11-foundrylocal-live-transcription</code></p>
-      <p><strong>Local AI goes beyond chat—speech is first-class too.</strong></p>
-      <p>Goal: show real-time microphone transcription with Foundry Local streaming ASR, including first-run model acquisition and cached-run speed.</p>
-      <div class="footer"><span>1 / 7</span><span>Use <span class="kbd">←</span>/<span class="kbd">→</span> or Space</span></div>
+      <span class="eyebrow">NVIDIA + Azure AI Foundry Local</span>
+      <h1>Real-time speech AI on your machine, with production-style model management</h1>
+      <div class="grid-2">
+        <div class="card">
+          <h2>Why this matters</h2>
+          <ul>
+            <li>NVIDIA Nemotron streaming ASR models run locally via Foundry Local.</li>
+            <li>Low-latency transcription without routing microphone audio to cloud services.</li>
+            <li>Same runtime lifecycle pattern you can reuse across local AI workloads.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h2>Story for this demo</h2>
+          <ul>
+            <li>Show developer experience, not just output.</li>
+            <li>Prove first run vs cached run behavior clearly.</li>
+            <li>Connect NVIDIA model quality with Foundry Local runtime simplicity.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer"><span>1 / 6</span><span>Use <span class="kbd">&larr;</span>/<span class="kbd">&rarr;</span> or Space</span></div>
       <div class="progress"><div class="bar"></div></div>
     </section>
 
     <section class="slide">
-      <h2>5-minute flow (tight and repeatable)</h2>
+      <span class="eyebrow">Sample 11 framing</span>
+      <h2>Live transcription demo: what the audience sees</h2>
+      <p class="muted">Repo path: <code>samples\11-foundrylocal-live-transcription</code></p>
       <ul>
-        <li><strong>0:00–0:45</strong> Context: why local speech matters.</li>
-        <li><strong>0:45–1:30</strong> Open code and call out the lifecycle in <code>Program.cs</code>.</li>
-        <li><strong>1:30–3:40</strong> Live demo: run sample, speak, watch interim + final text.</li>
-        <li><strong>3:40–4:30</strong> Explain first run vs cached run behavior.</li>
-        <li><strong>4:30–5:00</strong> Close with portability and next steps.</li>
+        <li>Run the console app, select a streaming ASR model alias, and start speaking.</li>
+        <li>Interim text appears in near real-time; finalized phrases are marked <code>[FINAL]</code>.</li>
+        <li>Demo uses local microphone capture (Windows) and a local Foundry Local runtime.</li>
       </ul>
-      <p class="muted">Same narrative every time: discover → download → load → stream → cleanup.</p>
-      <div class="footer"><span>2 / 7</span><span>Demo-friendly pacing</span></div>
+      <pre>cd samples\11-foundrylocal-live-transcription
+ dotnet run</pre>
+      <p>Speaker note: emphasize that this is the real sample flow, not prerecorded output.</p>
+      <div class="footer"><span>2 / 6</span><span>From sample 11 Program.cs behavior</span></div>
       <div class="progress"><div class="bar"></div></div>
     </section>
 
     <section class="slide">
-      <h2>Model aliases and what Foundry Local does for you</h2>
-      <p>In this sample, users pick a model alias; <strong>Foundry Local handles acquisition/runtime setup</strong>.</p>
-      <p>Catalog aliases used in sample 11 docs/code paths:</p>
+      <span class="eyebrow">Foundry Local lifecycle</span>
+      <h2>Runtime lifecycle: discover, download, cache, serve</h2>
       <ul>
-        <li><code>nemotron-speech-streaming-en-0.6b</code> (default English)</li>
-        <li><code>nemotron-speech-streaming-es-0.6b</code> (Spanish)</li>
-        <li><code>nemotron-3.5-asr-streaming-0.6b</code> (multilingual)</li>
+        <li><strong>Discover runtime backends:</strong> execution providers are discovered and registered on startup.</li>
+        <li><strong>Resolve model by alias:</strong> app requests the selected NVIDIA/Nemotron streaming model from the local catalog.</li>
+        <li><strong>Download if missing:</strong> first run triggers Foundry-managed download and model load.</li>
+        <li><strong>Reuse cache on later runs:</strong> cached model avoids repeated download work and starts faster.</li>
+        <li><strong>Create local endpoint/session:</strong> Foundry Local binds runtime services on available local ports and the app opens a live transcription session.</li>
+        <li><strong>Optional cleanup:</strong> app can unload and remove model cache to force a fresh first-run path.</li>
       </ul>
-      <p class="muted">These are NVIDIA/Nemotron streaming ASR aliases surfaced by the Foundry Local catalog.</p>
-      <div class="footer"><span>3 / 7</span><span>From README + Program.cs prompts/errors</span></div>
+      <div class="footer"><span>3 / 6</span><span>Accurate lifecycle expectations for live demos</span></div>
       <div class="progress"><div class="bar"></div></div>
     </section>
 
     <section class="slide">
-      <h2>Key code references (Program.cs)</h2>
-      <span class="badge">Discover EPs</span>
-      <span class="badge">Download model</span>
-      <span class="badge">Load + session</span>
-      <span class="badge">Interim/final stream</span>
-      <span class="badge">Cleanup</span>
+      <span class="eyebrow">Sample 11 code</span>
+      <h2>Key C# code to call out live</h2>
+      <span class="badge">EP discovery</span>
+      <span class="badge">Model download/load</span>
+      <span class="badge">Live stream session</span>
+      <span class="badge">Unload + cache cleanup</span>
       <pre>await FoundryLocalManager.CreateAsync(config, NullLogger.Instance);
+var manager = FoundryLocalManager.Instance;
+
 var executionProviders = manager.DiscoverEps();
 await manager.DownloadAndRegisterEpsAsync(...);
 
 var catalog = await manager.GetCatalogAsync();
 var model = await catalog.GetModelAsync(modelAlias);
-await model.DownloadAsync(...);
+await model.DownloadAsync(...);   // first run download
 await model.LoadAsync();
 
+var audioClient = await model.GetAudioClientAsync();
 var session = audioClient.CreateLiveTranscriptionSession();
-await session.StartAsync(...);
-await foreach (var result in session.GetStream(...)) { ... } // interim + final
+await session.StartAsync(CancellationToken.None);
+await foreach (var result in session.GetStream(CancellationToken.None)) { ... }
 
 await loadedModel.UnloadAsync();
-await loadedModel.RemoveFromCacheAsync(); // optional cleanup</pre>
-      <div class="footer"><span>4 / 7</span><span>All from <code>samples\11-foundrylocal-live-transcription\Program.cs</code></span></div>
+await loadedModel.RemoveFromCacheAsync(); // optional</pre>
+      <div class="footer"><span>4 / 6</span><span>From <code>samples\11-foundrylocal-live-transcription\Program.cs</code></span></div>
       <div class="progress"><div class="bar"></div></div>
     </section>
 
     <section class="slide">
-      <h2>Live demo choreography</h2>
-      <pre>cd samples\11-foundrylocal-live-transcription
-dotnet run</pre>
+      <span class="eyebrow">Demo outcomes</span>
+      <h2>Results to highlight during the run</h2>
       <ul>
-        <li>Choose model alias (or use env var <code>FOUNDRY_LOCAL_SPEECH_MODEL</code>).</li>
-        <li>Speak clearly: interim text renders in cyan.</li>
-        <li>Watch finalized phrases print as <code>[FINAL]</code>.</li>
-        <li>Press Enter to stop, then show unload/cleanup prompt.</li>
+        <li><strong>Runtime transparency:</strong> audience sees model resolution, download progress, and load steps.</li>
+        <li><strong>Streaming UX:</strong> interim vs final transcription output is visible and easy to explain.</li>
+        <li><strong>Operational reality:</strong> first run is setup-heavy; subsequent runs are faster due to cache reuse.</li>
+        <li><strong>Control:</strong> optional cache removal demonstrates deterministic replays of first-run behavior.</li>
       </ul>
-      <p class="ok">Trust signal: you show exactly what the code does, not a hidden script.</p>
-      <div class="footer"><span>5 / 7</span><span>Zero cloud calls; fully local path</span></div>
+      <p class="success">Live callout: “This is local, model-backed transcription with explicit lifecycle control.”</p>
+      <div class="footer"><span>5 / 6</span><span>Clear talking points, no overclaiming</span></div>
       <div class="progress"><div class="bar"></div></div>
     </section>
 
     <section class="slide">
-      <h2>First run vs cached run</h2>
+      <span class="eyebrow">Wrap-up</span>
+      <h2>NVIDIA speech models + Foundry Local = practical local AI transcription</h2>
       <ul>
-        <li><strong>First run:</strong> execution providers + selected model are downloaded/registered, then loaded.</li>
-        <li><strong>Cached run:</strong> model resolves from local Foundry cache, so startup is faster.</li>
-        <li><strong>Optional reset:</strong> choose cleanup at exit (<code>RemoveFromCacheAsync()</code>) to force a fresh first-run path next time.</li>
+        <li>Sample 11 demonstrates end-to-end local streaming ASR with real code and runtime signals.</li>
+        <li>Foundry Local handles model lifecycle mechanics so teams can focus on product behavior.</li>
+        <li>The same pattern extends to additional local model-powered app experiences.</li>
       </ul>
-      <p class="warn">Call this out live so the audience understands the startup-time difference.</p>
-      <div class="footer"><span>6 / 7</span><span>Expectation setting avoids confusion</span></div>
-      <div class="progress"><div class="bar"></div></div>
-    </section>
-
-    <section class="slide">
-      <h2>Close (30 seconds)</h2>
-      <ul>
-        <li>Sample 11 proves real-time speech is a first-class local AI workload.</li>
-        <li>Alias-driven model choice keeps demos simple while Foundry Local handles runtime plumbing.</li>
-        <li>The same lifecycle pattern scales to other local model scenarios in this repo.</li>
-      </ul>
-      <p><strong>One-liner:</strong> “Pick the alias, speak, and ship—Foundry Local manages the hard parts locally.”</p>
-      <div class="footer"><span>7 / 7</span><span>Done in 5 minutes</span></div>
+      <p>Docs: <a href="https://learn.microsoft.com/azure/foundry-local/" target="_blank" rel="noopener noreferrer">learn.microsoft.com/azure/foundry-local</a></p>
+      <div class="footer"><span>6 / 6</span><span>Thank you</span></div>
       <div class="progress"><div class="bar"></div></div>
     </section>
   </main>
@@ -193,6 +286,7 @@ dotnet run</pre>
   <script>
     const slides = Array.from(document.querySelectorAll('.slide'));
     let i = 0;
+
     const setSlide = (idx) => {
       i = (idx + slides.length) % slides.length;
       slides.forEach((s, n) => s.classList.toggle('active', n === i));
@@ -202,12 +296,14 @@ dotnet run</pre>
         if (bar) bar.style.width = percent + '%';
       });
     };
+
     document.addEventListener('keydown', (e) => {
       if (['ArrowRight', ' ', 'PageDown'].includes(e.key)) setSlide(i + 1);
       if (['ArrowLeft', 'PageUp'].includes(e.key)) setSlide(i - 1);
       if (e.key === 'Home') setSlide(0);
       if (e.key === 'End') setSlide(slides.length - 1);
     });
+
     setSlide(0);
   </script>
 </body>
