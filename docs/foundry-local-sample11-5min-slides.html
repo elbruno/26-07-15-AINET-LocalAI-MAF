@@ -172,8 +172,8 @@
 
     .nvidia-logo {
       width: 100%;
-      max-width: 260px;
-      margin: 4px 0 8px;
+      max-width: 280px;
+      margin: 16px auto;
       display: block;
     }
 
@@ -294,7 +294,6 @@
         </div>
         <div class="card">
           <h2>Foundry Local</h2>
-          <img class="slide-art" src="assets/sample11-slides/slide-01-hero.png" alt="Local speech AI hero visual" />
           <ul>
             <li>Runs AI models fully on-device for local-first app experiences.</li>
             <li>Handles model download, loading, and reuse with a simple runtime lifecycle.</li>
@@ -311,6 +310,7 @@
       <h2>Runtime lifecycle at a glance</h2>
       <div class="visual-grid">
         <div class="card">
+          <img class="slide-art" src="assets/sample11-slides/slide-02-lifecycle.png" alt="Foundry Local lifecycle visual" />
           <div class="stage"><span class="dot"></span><strong>Discover providers</strong></div>
           <div class="stage"><span class="dot"></span><strong>Resolve model alias</strong></div>
           <div class="stage"><span class="dot"></span><strong>Download + load on first run</strong></div>
@@ -347,7 +347,6 @@
       <span class="badge">Model download/load</span>
       <span class="badge">Live stream session</span>
       <span class="badge">Unload + cache cleanup</span>
-      <img class="slide-art" src="assets/sample11-slides/slide-03-code.png" alt="Developer coding live transcription app" />
       <pre>await FoundryLocalManager.CreateAsync(config, NullLogger.Instance);
 var manager = FoundryLocalManager.Instance;
 
@@ -375,24 +374,12 @@ await loadedModel.RemoveFromCacheAsync(); // optional</pre>
       <h2>NVIDIA speech models + Foundry Local = practical local AI transcription</h2>
       <div class="grid-2">
         <div class="card">
-          <svg class="logo-visual" viewBox="0 0 420 180" role="img" aria-label="Foundry Local visual">
-            <rect x="20" y="25" width="380" height="130" rx="14" fill="#eef4ff" stroke="#c9dbff"/>
-            <rect x="45" y="55" width="145" height="70" rx="10" fill="#ffffff" stroke="#9ec0ff"/>
-            <rect x="230" y="55" width="145" height="70" rx="10" fill="#ffffff" stroke="#9ec0ff"/>
-            <path d="M190 90 L230 90" stroke="#2563eb" stroke-width="4" stroke-linecap="round"/>
-            <circle cx="210" cy="90" r="7" fill="#2563eb"/>
-            <text x="55" y="97" font-size="18" fill="#0f4fa8" font-family="Segoe UI, sans-serif">Model</text>
-            <text x="244" y="97" font-size="18" fill="#0f4fa8" font-family="Segoe UI, sans-serif">App</text>
-            <text x="35" y="45" font-size="16" fill="#1d4ed8" font-family="Segoe UI, sans-serif">Foundry Local Runtime</text>
-          </svg>
+          <img class="slide-art" src="assets/sample11-slides/slide-04-wrapup.png" alt="Foundry Local and NVIDIA wrap-up visual" />
           <h2 style="font-size:1.2rem;">Foundry Local</h2>
           <p class="muted">Local runtime, model lifecycle control, and repeatable developer flow.</p>
         </div>
         <div class="card">
-          <img class="slide-art" src="assets/sample11-slides/slide-04-wrapup.png" alt="NVIDIA and local AI wrap-up visual" />
           <img class="nvidia-logo" src="../images/nvidia-logo-vert-rgb-blk-no-reg-for-screen-p-2000.png" alt="NVIDIA logo" />
-          <h2 style="font-size:1.2rem;">NVIDIA</h2>
-          <p class="muted">High-quality speech models powering low-latency local transcription.</p>
         </div>
       </div>
       <p>Docs: <a href="https://learn.microsoft.com/azure/foundry-local/" target="_blank" rel="noopener noreferrer">learn.microsoft.com/azure/foundry-local</a></p>
