@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Foundry Local + Sample 11 Live Transcription (5 min)</title>
+  <style>
+    :root {
+      --bg: #0b1020;
+      --panel: #121a33;
+      --text: #eaf1ff;
+      --muted: #a8b6d7;
+      --accent: #65d6ff;
+      --ok: #63e6be;
+      --warn: #ffd166;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Inter, system-ui, sans-serif;
+      background: radial-gradient(circle at top, #1a2550, var(--bg) 45%);
+      color: var(--text);
+    }
+    .deck { min-height: 100vh; display: grid; place-items: center; padding: 24px; }
+    .slide {
+      width: min(1080px, 95vw);
+      min-height: min(690px, 88vh);
+      background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01));
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 16px;
+      padding: 32px 40px;
+      display: none;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+    }
+    .slide.active { display: block; }
+    h1, h2 { margin: 0 0 14px; line-height: 1.15; }
+    h1 { font-size: 2.2rem; }
+    h2 { font-size: 1.7rem; color: var(--accent); }
+    p, li { font-size: 1.15rem; line-height: 1.5; }
+    .muted { color: var(--muted); }
+    ul { margin: 0.4rem 0 0.9rem 1.2rem; }
+    code, pre {
+      font-family: "Cascadia Code", Consolas, monospace;
+      background: rgba(0,0,0,0.35);
+      border-radius: 10px;
+    }
+    code { padding: 2px 6px; font-size: 0.95rem; }
+    pre {
+      margin: 12px 0;
+      padding: 14px;
+      overflow: auto;
+      border: 1px solid rgba(255,255,255,0.12);
+      font-size: 0.95rem;
+      white-space: pre-wrap;
+    }
+    .badge {
+      display: inline-block;
+      margin-right: 8px;
+      margin-bottom: 8px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(101,214,255,0.15);
+      color: var(--accent);
+      border: 1px solid rgba(101,214,255,0.35);
+      font-size: 0.9rem;
+    }
+    .ok { color: var(--ok); }
+    .warn { color: var(--warn); }
+    .footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 18px;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+    .kbd { border: 1px solid rgba(255,255,255,0.35); border-radius: 6px; padding: 1px 6px; }
+    .progress {
+      height: 8px;
+      margin-top: 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.08);
+      overflow: hidden;
+    }
+    .bar { height: 100%; background: linear-gradient(90deg, #63e6be, #65d6ff); width: 0; }
+  </style>
+</head>
+<body>
+  <main class="deck" id="deck">
+    <section class="slide active">
+      <h1>Foundry Local + Sample 11<br />Live Transcription in 5 Minutes</h1>
+      <p class="muted">Repo: <code>samples\11-foundrylocal-live-transcription</code></p>
+      <p><strong>Local AI goes beyond chat—speech is first-class too.</strong></p>
+      <p>Goal: show real-time microphone transcription with Foundry Local streaming ASR, including first-run model acquisition and cached-run speed.</p>
+      <div class="footer"><span>1 / 7</span><span>Use <span class="kbd">←</span>/<span class="kbd">→</span> or Space</span></div>
+      <div class="progress"><div class="bar"></div></div>
+    </section>
+
+    <section class="slide">
+      <h2>5-minute flow (tight and repeatable)</h2>
+      <ul>
+        <li><strong>0:00–0:45</strong> Context: why local speech matters.</li>
+        <li><strong>0:45–1:30</strong> Open code and call out the lifecycle in <code>Program.cs</code>.</li>
+        <li><strong>1:30–3:40</strong> Live demo: run sample, speak, watch interim + final text.</li>
+        <li><strong>3:40–4:30</strong> Explain first run vs cached run behavior.</li>
+        <li><strong>4:30–5:00</strong> Close with portability and next steps.</li>
+      </ul>
+      <p class="muted">Same narrative every time: discover → download → load → stream → cleanup.</p>
+      <div class="footer"><span>2 / 7</span><span>Demo-friendly pacing</span></div>
+      <div class="progress"><div class="bar"></div></div>
+    </section>
+
+    <section class="slide">
+      <h2>Model aliases and what Foundry Local does for you</h2>
+      <p>In this sample, users pick a model alias; <strong>Foundry Local handles acquisition/runtime setup</strong>.</p>
+      <p>Catalog aliases used in sample 11 docs/code paths:</p>
+      <ul>
+        <li><code>nemotron-speech-streaming-en-0.6b</code> (default English)</li>
+        <li><code>nemotron-speech-streaming-es-0.6b</code> (Spanish)</li>
+        <li><code>nemotron-3.5-asr-streaming-0.6b</code> (multilingual)</li>
+      </ul>
+      <p class="muted">These are NVIDIA/Nemotron streaming ASR aliases surfaced by the Foundry Local catalog.</p>
+      <div class="footer"><span>3 / 7</span><span>From README + Program.cs prompts/errors</span></div>
+      <div class="progress"><div class="bar"></div></div>
+    </section>
+
+    <section class="slide">
+      <h2>Key code references (Program.cs)</h2>
+      <span class="badge">Discover EPs</span>
+      <span class="badge">Download model</span>
+      <span class="badge">Load + session</span>
+      <span class="badge">Interim/final stream</span>
+      <span class="badge">Cleanup</span>
+      <pre>await FoundryLocalManager.CreateAsync(config, NullLogger.Instance);
+var executionProviders = manager.DiscoverEps();
+await manager.DownloadAndRegisterEpsAsync(...);
+
+var catalog = await manager.GetCatalogAsync();
+var model = await catalog.GetModelAsync(modelAlias);
+await model.DownloadAsync(...);
+await model.LoadAsync();
+
+var session = audioClient.CreateLiveTranscriptionSession();
+await session.StartAsync(...);
+await foreach (var result in session.GetStream(...)) { ... } // interim + final
+
+await loadedModel.UnloadAsync();
+await loadedModel.RemoveFromCacheAsync(); // optional cleanup</pre>
+      <div class="footer"><span>4 / 7</span><span>All from <code>samples\11-foundrylocal-live-transcription\Program.cs</code></span></div>
+      <div class="progress"><div class="bar"></div></div>
+    </section>
+
+    <section class="slide">
+      <h2>Live demo choreography</h2>
+      <pre>cd samples\11-foundrylocal-live-transcription
+dotnet run</pre>
+      <ul>
+        <li>Choose model alias (or use env var <code>FOUNDRY_LOCAL_SPEECH_MODEL</code>).</li>
+        <li>Speak clearly: interim text renders in cyan.</li>
+        <li>Watch finalized phrases print as <code>[FINAL]</code>.</li>
+        <li>Press Enter to stop, then show unload/cleanup prompt.</li>
+      </ul>
+      <p class="ok">Trust signal: you show exactly what the code does, not a hidden script.</p>
+      <div class="footer"><span>5 / 7</span><span>Zero cloud calls; fully local path</span></div>
+      <div class="progress"><div class="bar"></div></div>
+    </section>
+
+    <section class="slide">
+      <h2>First run vs cached run</h2>
+      <ul>
+        <li><strong>First run:</strong> execution providers + selected model are downloaded/registered, then loaded.</li>
+        <li><strong>Cached run:</strong> model resolves from local Foundry cache, so startup is faster.</li>
+        <li><strong>Optional reset:</strong> choose cleanup at exit (<code>RemoveFromCacheAsync()</code>) to force a fresh first-run path next time.</li>
+      </ul>
+      <p class="warn">Call this out live so the audience understands the startup-time difference.</p>
+      <div class="footer"><span>6 / 7</span><span>Expectation setting avoids confusion</span></div>
+      <div class="progress"><div class="bar"></div></div>
+    </section>
+
+    <section class="slide">
+      <h2>Close (30 seconds)</h2>
+      <ul>
+        <li>Sample 11 proves real-time speech is a first-class local AI workload.</li>
+        <li>Alias-driven model choice keeps demos simple while Foundry Local handles runtime plumbing.</li>
+        <li>The same lifecycle pattern scales to other local model scenarios in this repo.</li>
+      </ul>
+      <p><strong>One-liner:</strong> “Pick the alias, speak, and ship—Foundry Local manages the hard parts locally.”</p>
+      <div class="footer"><span>7 / 7</span><span>Done in 5 minutes</span></div>
+      <div class="progress"><div class="bar"></div></div>
+    </section>
+  </main>
+
+  <script>
+    const slides = Array.from(document.querySelectorAll('.slide'));
+    let i = 0;
+    const setSlide = (idx) => {
+      i = (idx + slides.length) % slides.length;
+      slides.forEach((s, n) => s.classList.toggle('active', n === i));
+      const percent = ((i + 1) / slides.length) * 100;
+      slides.forEach((s) => {
+        const bar = s.querySelector('.bar');
+        if (bar) bar.style.width = percent + '%';
+      });
+    };
+    document.addEventListener('keydown', (e) => {
+      if (['ArrowRight', ' ', 'PageDown'].includes(e.key)) setSlide(i + 1);
+      if (['ArrowLeft', 'PageUp'].includes(e.key)) setSlide(i - 1);
+      if (e.key === 'Home') setSlide(0);
+      if (e.key === 'End') setSlide(slides.length - 1);
+    });
+    setSlide(0);
+  </script>
+</body>
+</html>

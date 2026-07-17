@@ -11,6 +11,12 @@
       "universe": "Alien",
       "assigned_at": "2026-07-15T07:38:06.686-04:00",
       "agent_count": 9
+    },
+    {
+      "assignment_id": "2026-07-17-devrel-storytelling-001",
+      "universe": "Alien",
+      "assigned_at": "2026-07-17T11:14:28.692-04:00",
+      "agent_count": 10
     }
   ],
   "assignment_cast_snapshots": {
@@ -42,6 +48,24 @@
         "Ralph",
         "Rai",
         "Lambert"
+      ]
+    },
+    "2026-07-17-devrel-storytelling-001": {
+      "project": "26-07-15-AINET-LocalAI-MAF",
+      "source_spec": "docs\\Local-AI-with-dotNET-PRD.md",
+      "assigned_at": "2026-07-17T11:14:28.692-04:00",
+      "universe": "Alien",
+      "members": [
+        "Ripley",
+        "Bishop",
+        "Hicks",
+        "Apone",
+        "Vasquez",
+        "Scribe",
+        "Ralph",
+        "Rai",
+        "Lambert",
+        "Dallas"
       ]
     }
   }

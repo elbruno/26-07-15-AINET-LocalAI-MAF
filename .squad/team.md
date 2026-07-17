@@ -17,6 +17,7 @@
 | Hicks | Frontend Dev | `.squad/agents/hicks/charter.md` | Active |
 | Apone | Platform DevOps | `.squad/agents/apone/charter.md` | Active |
 | Lambert | Aspire Specialist | `.squad/agents/lambert/charter.md` | Active |
+| Dallas | DevRel & Storytelling Engineer | `.squad/agents/dallas/charter.md` | Active |
 | Vasquez | Tester | `.squad/agents/vasquez/charter.md` | Active |
 | Scribe | Session Logger | `.squad/agents/scribe/charter.md` | Active |
 | Ralph | Work Monitor | `.squad/agents/ralph/charter.md` | Active |
@@ -33,3 +34,4 @@
 ## Recent Updates
 
 - 2026-07-15: Added Lambert as the Aspire specialist for AppHost, integrations, service discovery, observability, and local developer workflow.
+- 2026-07-17: Added Dallas as DevRel & Storytelling specialist for promotion content, social copy, and self-contained HTML slide decks covering sample 11 and related samples.

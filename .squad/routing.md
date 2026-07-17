@@ -11,6 +11,7 @@ How to decide who handles what.
 | Frontend dashboard and UX | Hicks | Blazor dashboard, filters, charts, empty-state behavior |
 | Platform, CI/build automation, run reliability | Apone | Build guards, environment setup, one-command run experience |
 | Aspire AppHost, integrations, service discovery, observability | Lambert | AppHost composition, resource wiring, dashboard diagnostics |
+| DevRel, storytelling, promotion, social copy, and HTML slide decks | Dallas | Sample narratives, talk outlines, launch posts, and browser-ready slide decks for sample 11 and related samples |
 | Code review | Ripley | Review PRs, check quality, suggest improvements |
 | Testing | Vasquez | Unit/integration tests, edge cases, acceptance verification |
 | Scope & priorities | Ripley | What to build next, trade-offs, decisions |
