@@ -78,6 +78,98 @@
       background: #fcfdff;
     }
 
+    .visual-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 20px;
+      margin-top: 12px;
+    }
+
+    .stage {
+      display: grid;
+      grid-template-columns: 26px 1fr;
+      gap: 10px;
+      margin: 10px 0;
+      align-items: center;
+    }
+
+    .dot {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: #60a5fa;
+      border: 2px solid #1d4ed8;
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    .flow {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 10px;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .flow span {
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: #eef4ff;
+      border: 1px solid #c9dbff;
+      color: var(--accent);
+      font-size: 0.88rem;
+      font-weight: 600;
+    }
+
+    .metric {
+      margin: 12px 0;
+    }
+
+    .metric-label {
+      font-size: 0.92rem;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    .track {
+      width: 100%;
+      height: 14px;
+      border-radius: 999px;
+      background: #e5e7eb;
+      overflow: hidden;
+    }
+
+    .fill {
+      height: 100%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #2563eb, #60a5fa);
+      animation: grow 1.4s ease forwards;
+      transform-origin: left;
+      transform: scaleX(0);
+    }
+
+    .fill.delay-1 { animation-delay: 0.25s; }
+    .fill.delay-2 { animation-delay: 0.5s; }
+
+    .logo-visual {
+      width: 100%;
+      height: 150px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: #fff;
+      margin-bottom: 8px;
+      display: block;
+    }
+
+    @keyframes grow {
+      from { transform: scaleX(0); }
+      to { transform: scaleX(1); }
+    }
+
+    @keyframes pulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.2); }
+      50% { box-shadow: 0 0 0 9px rgba(37, 99, 235, 0); }
+    }
+
     .eyebrow {
       display: inline-block;
       font-size: 0.88rem;
@@ -163,6 +255,7 @@
     @media (max-width: 900px) {
       .slide { padding: 26px 24px; }
       .grid-2 { grid-template-columns: 1fr; }
+      .visual-grid { grid-template-columns: 1fr; }
       h1 { font-size: 1.9rem; }
       h2 { font-size: 1.55rem; }
     }
@@ -183,46 +276,48 @@
           </ul>
         </div>
         <div class="card">
-          <h2>Story for this demo</h2>
+          <h2>Foundry Local</h2>
           <ul>
-            <li>Show developer experience, not just output.</li>
-            <li>Prove first run vs cached run behavior clearly.</li>
-            <li>Connect NVIDIA model quality with Foundry Local runtime simplicity.</li>
+            <li>Runs AI models fully on-device for local-first app experiences.</li>
+            <li>Handles model download, loading, and reuse with a simple runtime lifecycle.</li>
+            <li>Works with local endpoints so demos stay fast, private, and reliable.</li>
           </ul>
         </div>
       </div>
-      <div class="footer"><span>1 / 6</span><span>Use <span class="kbd">&larr;</span>/<span class="kbd">&rarr;</span> or Space</span></div>
-      <div class="progress"><div class="bar"></div></div>
-    </section>
-
-    <section class="slide">
-      <span class="eyebrow">Sample 11 framing</span>
-      <h2>Live transcription demo: what the audience sees</h2>
-      <p class="muted">Repo path: <code>samples\11-foundrylocal-live-transcription</code></p>
-      <ul>
-        <li>Run the console app, select a streaming ASR model alias, and start speaking.</li>
-        <li>Interim text appears in near real-time; finalized phrases are marked <code>[FINAL]</code>.</li>
-        <li>Demo uses local microphone capture (Windows) and a local Foundry Local runtime.</li>
-      </ul>
-      <pre>cd samples\11-foundrylocal-live-transcription
- dotnet run</pre>
-      <p>Speaker note: emphasize that this is the real sample flow, not prerecorded output.</p>
-      <div class="footer"><span>2 / 6</span><span>From sample 11 Program.cs behavior</span></div>
+      <div class="footer"><span>1 / 4</span><span>Use <span class="kbd">&larr;</span>/<span class="kbd">&rarr;</span> or Space</span></div>
       <div class="progress"><div class="bar"></div></div>
     </section>
 
     <section class="slide">
       <span class="eyebrow">Foundry Local lifecycle</span>
-      <h2>Runtime lifecycle: discover, download, cache, serve</h2>
-      <ul>
-        <li><strong>Discover runtime backends:</strong> execution providers are discovered and registered on startup.</li>
-        <li><strong>Resolve model by alias:</strong> app requests the selected NVIDIA/Nemotron streaming model from the local catalog.</li>
-        <li><strong>Download if missing:</strong> first run triggers Foundry-managed download and model load.</li>
-        <li><strong>Reuse cache on later runs:</strong> cached model avoids repeated download work and starts faster.</li>
-        <li><strong>Create local endpoint/session:</strong> Foundry Local binds runtime services on available local ports and the app opens a live transcription session.</li>
-        <li><strong>Optional cleanup:</strong> app can unload and remove model cache to force a fresh first-run path.</li>
-      </ul>
-      <div class="footer"><span>3 / 6</span><span>Accurate lifecycle expectations for live demos</span></div>
+      <h2>Runtime lifecycle at a glance</h2>
+      <div class="visual-grid">
+        <div class="card">
+          <div class="stage"><span class="dot"></span><strong>Discover providers</strong></div>
+          <div class="stage"><span class="dot"></span><strong>Resolve model alias</strong></div>
+          <div class="stage"><span class="dot"></span><strong>Download + load on first run</strong></div>
+          <div class="stage"><span class="dot"></span><strong>Serve from cache on next run</strong></div>
+          <div class="flow">
+            <span>Discover</span><span>Download</span><span>Cache</span><span>Serve</span>
+          </div>
+        </div>
+        <div class="card">
+          <div class="metric">
+            <div class="metric-label">First run setup work</div>
+            <div class="track"><div class="fill" style="width:92%"></div></div>
+          </div>
+          <div class="metric">
+            <div class="metric-label">Cached run startup speed</div>
+            <div class="track"><div class="fill delay-1" style="width:68%"></div></div>
+          </div>
+          <div class="metric">
+            <div class="metric-label">Live transcription continuity</div>
+            <div class="track"><div class="fill delay-2" style="width:84%"></div></div>
+          </div>
+          <p class="muted">Visual story: setup cost once, then fast local iteration.</p>
+        </div>
+      </div>
+      <div class="footer"><span>2 / 4</span><span>Visual framing for live impact</span></div>
       <div class="progress"><div class="bar"></div></div>
     </section>
 
@@ -251,34 +346,43 @@ await foreach (var result in session.GetStream(CancellationToken.None)) { ... }
 
 await loadedModel.UnloadAsync();
 await loadedModel.RemoveFromCacheAsync(); // optional</pre>
-      <div class="footer"><span>4 / 6</span><span>From <code>samples\11-foundrylocal-live-transcription\Program.cs</code></span></div>
-      <div class="progress"><div class="bar"></div></div>
-    </section>
-
-    <section class="slide">
-      <span class="eyebrow">Demo outcomes</span>
-      <h2>Results to highlight during the run</h2>
-      <ul>
-        <li><strong>Runtime transparency:</strong> audience sees model resolution, download progress, and load steps.</li>
-        <li><strong>Streaming UX:</strong> interim vs final transcription output is visible and easy to explain.</li>
-        <li><strong>Operational reality:</strong> first run is setup-heavy; subsequent runs are faster due to cache reuse.</li>
-        <li><strong>Control:</strong> optional cache removal demonstrates deterministic replays of first-run behavior.</li>
-      </ul>
-      <p class="success">Live callout: “This is local, model-backed transcription with explicit lifecycle control.”</p>
-      <div class="footer"><span>5 / 6</span><span>Clear talking points, no overclaiming</span></div>
+      <div class="footer"><span>3 / 4</span><span>From <code>samples\11-foundrylocal-live-transcription\Program.cs</code></span></div>
       <div class="progress"><div class="bar"></div></div>
     </section>
 
     <section class="slide">
       <span class="eyebrow">Wrap-up</span>
       <h2>NVIDIA speech models + Foundry Local = practical local AI transcription</h2>
-      <ul>
-        <li>Sample 11 demonstrates end-to-end local streaming ASR with real code and runtime signals.</li>
-        <li>Foundry Local handles model lifecycle mechanics so teams can focus on product behavior.</li>
-        <li>The same pattern extends to additional local model-powered app experiences.</li>
-      </ul>
+      <div class="grid-2">
+        <div class="card">
+          <svg class="logo-visual" viewBox="0 0 420 180" role="img" aria-label="Foundry Local visual">
+            <rect x="20" y="25" width="380" height="130" rx="14" fill="#eef4ff" stroke="#c9dbff"/>
+            <rect x="45" y="55" width="145" height="70" rx="10" fill="#ffffff" stroke="#9ec0ff"/>
+            <rect x="230" y="55" width="145" height="70" rx="10" fill="#ffffff" stroke="#9ec0ff"/>
+            <path d="M190 90 L230 90" stroke="#2563eb" stroke-width="4" stroke-linecap="round"/>
+            <circle cx="210" cy="90" r="7" fill="#2563eb"/>
+            <text x="55" y="97" font-size="18" fill="#0f4fa8" font-family="Segoe UI, sans-serif">Model</text>
+            <text x="244" y="97" font-size="18" fill="#0f4fa8" font-family="Segoe UI, sans-serif">App</text>
+            <text x="35" y="45" font-size="16" fill="#1d4ed8" font-family="Segoe UI, sans-serif">Foundry Local Runtime</text>
+          </svg>
+          <h2 style="font-size:1.2rem;">Foundry Local</h2>
+          <p class="muted">Local runtime, model lifecycle control, and repeatable developer flow.</p>
+        </div>
+        <div class="card">
+          <svg class="logo-visual" viewBox="0 0 420 180" role="img" aria-label="NVIDIA visual">
+            <rect x="20" y="25" width="380" height="130" rx="14" fill="#f0fdf4" stroke="#bbf7d0"/>
+            <path d="M65 90c22-28 62-36 93-16 17 11 29 30 31 52H65z" fill="#22c55e"/>
+            <path d="M90 90c14-18 40-23 59-11 10 6 18 17 20 29H90z" fill="#15803d"/>
+            <circle cx="138" cy="102" r="11" fill="#f0fdf4" stroke="#166534" stroke-width="3"/>
+            <text x="214" y="96" font-size="30" fill="#166534" font-family="Segoe UI, sans-serif" font-weight="700">NVIDIA</text>
+            <text x="214" y="121" font-size="14" fill="#166534" font-family="Segoe UI, sans-serif">Streaming ASR models</text>
+          </svg>
+          <h2 style="font-size:1.2rem;">NVIDIA</h2>
+          <p class="muted">High-quality speech models powering low-latency local transcription.</p>
+        </div>
+      </div>
       <p>Docs: <a href="https://learn.microsoft.com/azure/foundry-local/" target="_blank" rel="noopener noreferrer">learn.microsoft.com/azure/foundry-local</a></p>
-      <div class="footer"><span>6 / 6</span><span>Thank you</span></div>
+      <div class="footer"><span>4 / 4</span><span>Thank you</span></div>
       <div class="progress"><div class="bar"></div></div>
     </section>
   </main>
