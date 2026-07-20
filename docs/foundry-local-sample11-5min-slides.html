@@ -301,7 +301,7 @@
           </ul>
         </div>
       </div>
-      <div class="footer"><span>1 / 4</span><span>Use <span class="kbd">&larr;</span>/<span class="kbd">&rarr;</span> or Space</span></div>
+      <div class="footer"><span>1 / 8</span><span>Use <span class="kbd">&larr;</span>/<span class="kbd">&rarr;</span> or Space</span></div>
       <div class="progress"><div class="bar"></div></div>
     </section>
 
@@ -336,13 +336,13 @@
           <p class="muted">Visual story: setup cost once, then fast local iteration.</p>
         </div>
       </div>
-      <div class="footer"><span>2 / 4</span><span>Visual framing for live impact</span></div>
+      <div class="footer"><span>2 / 8</span><span>Visual framing for live impact</span></div>
       <div class="progress"><div class="bar"></div></div>
     </section>
 
     <section class="slide">
       <span class="eyebrow">Sample 11 code</span>
-      <h2>Key C# code to call out live</h2>
+      <h2>Complete Sample 11 code view</h2>
       <span class="badge">EP discovery</span>
       <span class="badge">Model download/load</span>
       <span class="badge">Live stream session</span>
@@ -365,7 +365,44 @@ await foreach (var result in session.GetStream(CancellationToken.None)) { ... }
 
 await loadedModel.UnloadAsync();
 await loadedModel.RemoveFromCacheAsync(); // optional</pre>
-      <div class="footer"><span>3 / 4</span><span>From <code>samples\11-foundrylocal-live-transcription\Program.cs</code></span></div>
+      <div class="footer"><span>3 / 8</span><span>From <code>samples\11-foundrylocal-live-transcription\Program.cs</code></span></div>
+      <div class="progress"><div class="bar"></div></div>
+    </section>
+
+    <section class="slide">
+      <span class="eyebrow">Foundry Local block 1</span>
+      <h2>Starting Foundry Local</h2>
+      <pre>await FoundryLocalManager.CreateAsync(config, NullLogger.Instance);
+var manager = FoundryLocalManager.Instance;
+
+var executionProviders = manager.DiscoverEps();
+await manager.DownloadAndRegisterEpsAsync(...);</pre>
+      <div class="footer"><span>4 / 8</span><span>Initialize runtime + execution providers</span></div>
+      <div class="progress"><div class="bar"></div></div>
+    </section>
+
+    <section class="slide">
+      <span class="eyebrow">Foundry Local block 2</span>
+      <h2>Get catalog and models from Foundry Local</h2>
+      <pre>var catalog = await manager.GetCatalogAsync();
+var model = await catalog.GetModelAsync(modelAlias);
+await model.DownloadAsync(...);   // first run download
+await model.LoadAsync();</pre>
+      <div class="footer"><span>5 / 8</span><span>Resolve alias, download once, then load</span></div>
+      <div class="progress"><div class="bar"></div></div>
+    </section>
+
+    <section class="slide">
+      <span class="eyebrow">Foundry Local block 3</span>
+      <h2>Get Audio Client from the Foundry Local Catalog</h2>
+      <pre>var audioClient = await model.GetAudioClientAsync();
+var session = audioClient.CreateLiveTranscriptionSession();
+await session.StartAsync(CancellationToken.None);
+await foreach (var result in session.GetStream(CancellationToken.None)) { ... }
+
+await loadedModel.UnloadAsync();
+await loadedModel.RemoveFromCacheAsync(); // optional</pre>
+      <div class="footer"><span>6 / 8</span><span>Start live stream, then unload/cleanup</span></div>
       <div class="progress"><div class="bar"></div></div>
     </section>
 
@@ -383,7 +420,19 @@ await loadedModel.RemoveFromCacheAsync(); // optional</pre>
         </div>
       </div>
       <p>Docs: <a href="https://learn.microsoft.com/azure/foundry-local/" target="_blank" rel="noopener noreferrer">learn.microsoft.com/azure/foundry-local</a></p>
-      <div class="footer"><span>4 / 4</span><span>Thank you</span></div>
+      <div class="footer"><span>7 / 8</span><span>Thank you</span></div>
+      <div class="progress"><div class="bar"></div></div>
+    </section>
+
+    <section class="slide">
+      <span class="eyebrow">End</span>
+      <h2>End slide</h2>
+      <div class="card">
+        <p><strong>Sample:</strong> <code>samples\11-foundrylocal-live-transcription</code></p>
+        <p><strong>Docs:</strong> <a href="https://learn.microsoft.com/azure/foundry-local/" target="_blank" rel="noopener noreferrer">learn.microsoft.com/azure/foundry-local</a></p>
+        <p class="success">Q&amp;A</p>
+      </div>
+      <div class="footer"><span>8 / 8</span><span>Thanks!</span></div>
       <div class="progress"><div class="bar"></div></div>
     </section>
   </main>
